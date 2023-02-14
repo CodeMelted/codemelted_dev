@@ -21,6 +21,8 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+
+const PROTOCOL_HOST = location.protocol + '//' + location.host;
 const TITLE = "Melt the Code - DEV";
 const HTML_TEMPLATE = `
 <style>
@@ -98,10 +100,10 @@ const HTML_TEMPLATE = `
 </style>
 
 <div id="divFixedFooter" class="cm-fixed-footer">
-    <button id="btnCpp"><img style="height: 25px;" src="icons/icons8-c++-48.png" /><br/>C++</button>
-    <button id="btnPwsh"><img style="height: 25px;" src="icons/ps_black_64.png" /><br/>pwsh</button>
-    <button id="btnDeno"><img style="height: 25px;" src="icons/icons8-deno-100x100.png" /><br />deno</button>
-    <button id="btnFlutter"><img style="height: 25px;" src="icons/icons8-flutter-48.png" /><br />Flutter</button>
+    <button id="btnCpp"><img style="height: 25px;" src=${PROTOCOL_HOST}/website-nav/icons/icons8-c++-48.png /><br/>C++</button>
+    <button id="btnPwsh"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/ps_black_64.png" /><br/>pwsh</button>
+    <button id="btnDeno"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/icons8-deno-100x100.png" /><br />deno</button>
+    <button id="btnFlutter"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/icons8-flutter-48.png" /><br />Flutter</button>
 </div>
 `;
 
@@ -134,10 +136,10 @@ const PAGE_OPTIONS_TEMPLATE = `
     }
 </style>
 <div class="cm-page-options">
-    <button id="btnSupport"><img src="icons/bmc-button.png" /></button>
-    <button id="btnPrint"><img src="icons/icons8-print-96.png" /></button>
-    <button id="btnDocs"><img src="icons/icons8-code-48.png" /></button>
-    <button id="btnCoverage"><img src="icons/icons8-test-64.png" /></button>
+    <button id="btnSupport"><img src="${PROTOCOL_HOST}/website-nav/icons/bmc-button.png" /></button>
+    <button id="btnPrint"><img src="${PROTOCOL_HOST}/website-nav/icons/icons8-print-96.png" /></button>
+    <button id="btnDocs"><img src="${PROTOCOL_HOST}/website-nav/icons/icons8-code-48.png" /></button>
+    <button id="btnCoverage"><img src="${PROTOCOL_HOST}/website-nav/icons/icons8-test-64.png" /></button>
 </div>
 `;
 
