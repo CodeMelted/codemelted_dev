@@ -1,0 +1,32 @@
+<style>
+    @import url("https://socials.codemelted.com/gh-page-nav/hacker-theme.css");
+</style>
+<div class="content-main">
+    <hr />
+    <div id="disqus_thread"></div>
+</div>
+<script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+
+    if (urlParams.has("id")) {
+        const id = urlParams.get("id");
+        let disqus_config = function () {
+            this.page.url = id;
+            this.page.identifier = id;
+        };
+
+        (function() { // DON'T EDIT BELOW THIS LINE
+            let d = document, s = d.createElement('script');
+            s.src = 'https://codemelted.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    } else {
+        document.getElementById("disqus_thread").innerHTML =
+            "<h1>ERROR: Cannot load disqus comments. ID not specified</h1>";
+    }
+
+
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
