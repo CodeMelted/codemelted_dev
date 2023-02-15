@@ -32,9 +32,9 @@
     <meta name="author" content="Mark Shaffer">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="monetization" content="`$ilp.uphold.com/q94gJPq8PFF4">
-    <link rel="icon" type="image/x-icon" href="../../website-nav/favicon_io/favicon.ico">
-    <link rel="stylesheet" href="../../website-nav/css/hacker-theme.css">
-    <script src="../../website-nav/index.js" defer></script>
+    <link rel="icon" type="image/x-icon" href="../../../../website-nav/favicon_io/favicon.ico">
+    <link rel="stylesheet" href="../../../../website-nav/css/hacker-theme.css">
+    <script src="../../../../website-nav/index.js" defer></script>
 </head><body><div class="content-main">
     CONTENT
 </div></body></html>
@@ -42,14 +42,41 @@
 
 function build {
     # -------------------------------------------------------------------------
-    # Constants
+    # Constants:
     # -------------------------------------------------------------------------
-    [string]$PROJ_NAME = "Module Design Site Builder"
+    [string]$PROJ_NAME = "melt_the_code - pwsh Module Publisher"
     [string]$SCRIPT_PATH = $PSScriptRoot
-    [string]$DIST_PATH = "$SCRIPT_PATH/_dist"
+    [string]$SRC_PATH = "$SCRIPT_PATH/melt_the_code"
+    [string]$DIST_PATH = "$SRC_PATH/_dist/pwsh/melt_the_code"
+
+    function test {
+        Write-Host "MESSAGE: Now executing pester tests"
+        Get-Date
+        Write-Host
+        [string]$currentLocation = (Get-Location).ToString()
+        Set-Location -Path $SRC_PATH
+        Invoke-Pester -CodeCoverage "$SRC_PATH/melt_the_code.psm1"
+        if ($result.FailedCount -gt 0) {
+            Set-Location -Path $currentLocation
+            throw "Testing failed, failed tests occurred with pwsh module"
+        }
+        Remove-Item -Path $SRC_PATH/coverage.xml -Force
+        Invoke-ScriptAnalyzer . -Recurse
+        Set-Location -Path $currentLocation
+        Write-Host
+        Write-Host "MESSAGE: Pester tests completed"
+    }
+
+    function publish {
+        Write-Host "MESSAGE: UNDER DEVELOPMENT to publish to MS script environment"
+    }
 
     # -------------------------------------------------------------------------
-    # Print our header statement
+    # Main Entry of script
+    # -------------------------------------------------------------------------
+
+    # -------------------------------------------------------------------------
+    # Write out our header
     # -------------------------------------------------------------------------
     Write-Host $PROJ_NAME
     Write-Host
@@ -59,21 +86,42 @@ function build {
     # -------------------------------------------------------------------------
     Remove-Item -Path $DIST_PATH -Force -Recurse -ErrorAction Ignore
     New-Item -Path $DIST_PATH -ItemType Directory
+    New-Item -Path $DIST_PATH/docs -ItemType Directory
+    New-Item -Path $DIST_PATH/coverage -ItemType Directory
 
     # -------------------------------------------------------------------------
-    # Copy our images to the _dist directory
+    # Generate our main site items
     # -------------------------------------------------------------------------
-    Copy-Item -Path "$SCRIPT_PATH/images" $DIST_PATH -Recurse -Force
-
-    # -------------------------------------------------------------------------
-    # Generate our main README.md file
-    # -------------------------------------------------------------------------
-    $readmeData = ConvertFrom-Markdown -Path $SCRIPT_PATH/melt_firebase.md
+    $readmeData = ConvertFrom-Markdown -Path $SRC_PATH/docs/README.md
     $htmlData = $HTML_TEMPLATE.Replace("CONTENT", $readmeData.Html)
-    $htmlData | Out-File -FilePath "$DIST_PATH/melt_firebase.html" -Force
+    $htmlData | Out-File -FilePath "$DIST_PATH/docs/index.html" -Force
 
-    $readmeData = ConvertFrom-Markdown -Path $SCRIPT_PATH/melt_the_code.md
+    $readmeData = ConvertFrom-Markdown -Path $SRC_PATH/coverage/README.md
     $htmlData = $HTML_TEMPLATE.Replace("CONTENT", $readmeData.Html)
-    $htmlData | Out-File -FilePath "$DIST_PATH/melt_the_code.html" -Force
+    $htmlData | Out-File -FilePath "$DIST_PATH/coverage/index.html" -Force
+
+    # -------------------------------------------------------------------------
+    # Go Execute our pwsh Tests
+    # -------------------------------------------------------------------------
+    Write-Host "MESSAGE: Now executing pester tests"
+    Get-Date
+    Write-Host
+    [string]$currentLocation = (Get-Location).ToString()
+    Set-Location -Path $SRC_PATH
+    Invoke-Pester -CodeCoverage "$SRC_PATH/melt_the_code.psm1"
+    if ($result.FailedCount -gt 0) {
+        Set-Location -Path $currentLocation
+        throw "Testing failed, failed tests occurred with pwsh module"
+    }
+    Remove-Item -Path $SRC_PATH/coverage.xml -Force
+    Invoke-ScriptAnalyzer . -Recurse
+    Set-Location -Path $currentLocation
+    Write-Host
+    Write-Host "MESSAGE: Pester tests completed"
+
+    # -------------------------------------------------------------------------
+    # Now go see if we are publishing or not
+    # -------------------------------------------------------------------------
+    # TBD
 }
-build
+build $args[0]

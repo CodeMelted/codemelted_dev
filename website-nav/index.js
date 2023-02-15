@@ -183,7 +183,7 @@ const PAGE_OPTIONS_TEMPLATE = `
 `;
 
 // Page navigation
-const HOME_PAGE = "https://codemelted.dev";
+const HOME_PAGE = "/modules";
 const PORTAL_PAGE = "https://codemelted.com";
 const URL_PAGE = {
     "Pwsh"    : `${HOME_PAGE}/pwsh/melt_the_code/docs`,

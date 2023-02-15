@@ -47,8 +47,14 @@ function build {
     [string]$PROJ_NAME = "codemelted.dev - Site Builder"
     [string]$SCRIPT_PATH = $PSScriptRoot
     [string]$DIST_PATH = "$SCRIPT_PATH/_dist"
-    [string]$MODULES_DESIGN_SRC_PATH = "$SCRIPT_PATH/modules/design"
-    [string]$MODULES_DESIGN_DIST_PATH = "$DIST_PATH/modules/design"
+    [string]$DISQUS_SRC_PATH = "$SCRIPT_PATH/disqus"
+    [string]$DISQUS_DIST_PATH = "$DIST_PATH/disqus"
+    [string]$MODULES_SRC_PATH = "$SCRIPT_PATH/modules"
+    [string]$MODULES_DIST_PATH = "$DIST_PATH/modules"
+    [string]$MODULES_DESIGN_SRC_PATH = "$MODULES_SRC_PATH/design/images"
+    [string]$MODULES_DESIGN_DIST_PATH = "$MODULES_DIST_PATH/design/images"
+    [string]$MODULES_PWSH_SRC_PATH = "$MODULES_SRC_PATH/pwsh"
+    [string]$MODULES_PWSH_DIST_PATH = "$MODULES_SRC_PATH/pwsh/melt_the_code/_dist"
 
     # -------------------------------------------------------------------------
     # Print our header statement
@@ -63,12 +69,22 @@ function build {
     New-Item -Path $DIST_PATH -ItemType Directory
 
     # -------------------------------------------------------------------------
-    # Build our Modules Design Artifacts
+    # Copy our disqus widget
     # -------------------------------------------------------------------------
-    Set-Location $MODULES_DESIGN_SRC_PATH
+    Copy-Item -Path $DISQUS_SRC_PATH $DISQUS_DIST_PATH -Recurse -Force
+
+    # -------------------------------------------------------------------------
+    # Copy our module design artifacts
+    # -------------------------------------------------------------------------
+    Copy-Item -Path $MODULES_DESIGN_SRC_PATH $MODULES_DESIGN_DIST_PATH -Recurse -Force
+
+    # -------------------------------------------------------------------------
+    # Build our code modules
+    # -------------------------------------------------------------------------
+    Set-Location $MODULES_PWSH_SRC_PATH
     ./build.ps1
     Set-Location $SCRIPT_PATH
-    Copy-Item -Path "$MODULES_DESIGN_SRC_PATH/_dist/" $MODULES_DESIGN_DIST_PATH -Recurse -Force
+    Copy-Item -Path "$MODULES_PWSH_DIST_PATH/*" $MODULES_DIST_PATH -Recurse -Force
 
     # -------------------------------------------------------------------------
     # Generate our main site items
