@@ -50,7 +50,42 @@ const HTML_TEMPLATE = `
     }
 
     body {
+        margin-top: 60px;
         margin-bottom: 65px;
+    }
+
+    /* Header */
+    .cm-fixed-header {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        border: 1px solid black;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 55px;
+        background-color: black;
+        color: white;
+        font-family: sans-serif;
+        font-size: 12px;
+        z-index: 2147483648;
+    }
+    .cm-fixed-header button {
+        background-color: black;
+        color: white;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        font-size: 12px;
+    }
+    .cm-logo {
+        display: block;
+        height: 35px;
+        margin-top: 12px;
+        margin-left: 23px;
+    }
+    .cm-logo:hover {
+        cursor: pointer;
     }
 
     /* Footer */
@@ -59,7 +94,7 @@ const HTML_TEMPLATE = `
         padding-bottom: 5px;
         z-index: 2147483648;
         display: grid;
-        grid-template-columns: auto auto auto auto;
+        grid-template-columns: auto auto auto;
         position: fixed;
         bottom: 0;
         left: 0;
@@ -99,8 +134,12 @@ const HTML_TEMPLATE = `
     }
 </style>
 
+<div id="divFixedHeader" class="cm-fixed-header">
+    <img id="imgLogo" alt="logo" class="cm-logo" src="${PROTOCOL_HOST}/website-nav/logos/logo-593x100.png" />
+    <button id="btnWeb"><img style="height: 35px;" src="${PROTOCOL_HOST}/website-nav/icons/icons8-website-48.png" /></button>
+</div>
+
 <div id="divFixedFooter" class="cm-fixed-footer">
-    <button id="btnCpp"><img style="height: 25px;" src=${PROTOCOL_HOST}/website-nav/icons/icons8-c++-48.png /><br/>C++</button>
     <button id="btnPwsh"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/ps_black_64.png" /><br/>pwsh</button>
     <button id="btnDeno"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/icons8-deno-100x100.png" /><br />deno</button>
     <button id="btnFlutter"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/icons8-flutter-48.png" /><br />Flutter</button>
@@ -147,7 +186,6 @@ const PAGE_OPTIONS_TEMPLATE = `
 const HOME_PAGE = "https://codemelted.dev";
 const PORTAL_PAGE = "https://codemelted.com";
 const URL_PAGE = {
-    "Cpp"     : ``,
     "Pwsh"    : `${HOME_PAGE}/pwsh/melt_the_code/docs`,
     "Deno"    : `${HOME_PAGE}/deno/melt_the_code/docs`,
     "Flutter" : ``,
@@ -214,9 +252,11 @@ function main() {
         // If print action, go setup our print process
         // Anything else simply just popups the window
         if (popupAction === "print") {
+            document.getElementById("divFixedHeader").style.display = "none";
             document.getElementById("divFixedFooter").style.display = "none";
             document.getElementsByClassName("cm-page-options")[0]
                 .style.display = "none";
+            document.body.style.marginTop = "5px";
             setTimeout(() => {
                 window.print();
                 if (!isMobile()) {
@@ -224,12 +264,13 @@ function main() {
                 }
           }, 500);
         }
-    } else if (!isEmbedded) {
-        // We were not properly embedded, go make sure we are rendered properly
-        // under the main portal,
-        alert("Would redirect to portal");
-        // window.location.href = `${PORTAL_PAGE}?iframe=${href}`;
     } else {
+        // Hide some controls based on if we are embedded
+        if (isEmbedded) {
+            document.getElementById("divFixedHeader").style.display = "none";
+            document.body.style.marginTop = "5px";
+        }
+
         // Create the button actions to navigate to the appropriate page.
         // and set the if it is active or not depending on the page
         // navigated to.
@@ -254,6 +295,16 @@ function main() {
                 coverageHRef = value.replace("/docs", "/coverage");
             }
         }
+
+        // Now assign our button actions, states from above will affect
+        // how some of those action are performed.
+        document.getElementById("imgLogo").addEventListener("click", () => {
+            window.location.href = "/";
+        });
+
+        document.getElementById("btnWeb").addEventListener("click", () => {
+            window.location.href = `${PORTAL_PAGE}?iframe=${href}`;
+        });
 
         document.getElementById("btnSupport").addEventListener("click", () => {
             popupWindow("https://www.buymeacoffee.com/codemelted",
@@ -283,6 +334,7 @@ function main() {
             document.getElementById("btnCoverage").style.display = "none";
         }
         if (href.includes("jeep-pi")) {
+            document.getElementById("divFixedHeader").style.display = "none";
             document.getElementById("divFixedFooter").style.display = "none";
         }
     }

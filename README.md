@@ -4,10 +4,10 @@ Ever wanted the ability to write the same cross platform code regardless of lang
 
 # Choose Your Module
 
-<h2><a href=""><img style="height: 35px;" src="/website-nav/icons/icons8-code-48.png"></a> Melt the Code</h2>
+<h2><a href="modules/design/melt_the_code.html"><img style="height: 35px;" src="website-nav/icons/icons8-code-48.png"></a> Melt the Code</h2>
 
 Say something cool
 
-<h2><a href=""><img style="height: 35px;" src="/website-nav/icons/icons8-firebase-96.png"></a> Melt Firebase</h2>
+<h2><a href="modules/design/melt_firebase.html"><img style="height: 35px;" src="website-nav/icons/icons8-firebase-96.png"></a> Melt Firebase</h2>
 
 Say something cool
