@@ -110,5 +110,15 @@ function build {
     $htmlData = $HTML_TEMPLATE.Replace("CONTENT", $readmeData.Html)
     $htmlData | Out-File -FilePath "$DIST_PATH/index.html" -Force
     Copy-Item -Path "$SCRIPT_PATH/website-nav" $DIST_PATH -Recurse -Force
+    Copy-Item -Path "$SCRIPT_PATH/404.html" $DIST_PATH -Force
+
+    # -------------------------------------------------------------------------
+    # Deploy to firebase
+    # -------------------------------------------------------------------------
+    if ($args -ne $null) {
+        if ($args[0].ToString().ToLower() -eq "--deploy") {
+            firebase deploy --only hosting:codemelted-dev
+        }
+    }
 }
-build
+build $args[0]

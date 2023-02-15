@@ -1,4 +1,4 @@
-<h1> <img style="height: 35px;" src="https://codemelted.dev/gh-page-nav/icons/icons8-c++-48.png" /> Cross Platform Module - C/C++ </h1>
+<h1> <img style="height: 35px;" src="https://codemelted.dev/website-nav/icons/icons8-c++-48.png" /> Cross Platform Module - C/C++ </h1>
 
 UNDER DEVELOPMENT
 
@@ -30,4 +30,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-<script src="../gh-page-nav/index.js"></script>
+<script src="../website-nav/index.js"></script>

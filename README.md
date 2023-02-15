@@ -34,7 +34,7 @@ Raspberry Pi | Raspberry Pi is a low level single board computer that can be uti
 
 ## Functional Decomposition
 
-![](modules/design/images/use-case-model.png)
+<img style="width: 100%;" src="modules/design/images/use-case-model.png" />
 
 The **Use Case Model** depicted above shows `melt_the_code Module` use cases to be implemented.  The identified use cases reflect common domains for solving typical software engineering tasks.  Each use case will implement a set of functions common to those domains providing a consistent and similar API regardless of the chosen SDK.  Any short comings of the SDK to provide functionality will be handled via a `C/C++ FFI Bridge`.
 

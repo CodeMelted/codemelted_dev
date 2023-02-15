@@ -1,8 +1,8 @@
 // deno-lint-ignore-file no-explicit-any
 /**
- * <a href="https://codemelted.dev"><img src="https://codemelted.dev/gh-page-nav/logos/logo-593x100.png" /></a>
+ * <a href="https://codemelted.dev"><img src="https://codemelted.dev/website-nav/logos/logo-593x100.png" /></a>
  * <br /> <br />
- * <h1><img style="height: 30px;" src="https://codemelted.dev/gh-page-nav/icons/icons8-deno-100x100.png" /> melt_the_code Deno Module </h1>
+ * <h1><img style="height: 30px;" src="https://codemelted.dev/website-nav/icons/icons8-deno-100x100.png" /> melt_the_code Deno Module </h1>
  * Something cool.
  * <h2> Quick Start </h2>
  * The following represents the minimum to setup and call

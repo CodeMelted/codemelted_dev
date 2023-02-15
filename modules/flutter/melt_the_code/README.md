@@ -1,4 +1,4 @@
-<div style="text-align: center;"><img style="width: 100%;" src="https://codemelted.dev/gh-page-nav/logos/logo-593x100.png" /></div>
+<div style="text-align: center;"><img style="width: 100%;" src="https://codemelted.dev/website-nav/logos/logo-593x100.png" /></div>
 
 Ever wanted the ability to implement common developer use cases regardless of the language or trying to remember language features, then this is the library for you.
 
