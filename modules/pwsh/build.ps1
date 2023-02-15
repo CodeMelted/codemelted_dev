@@ -47,7 +47,7 @@ function build {
     [string]$PROJ_NAME = "melt_the_code - pwsh Module Publisher"
     [string]$SCRIPT_PATH = $PSScriptRoot
     [string]$SRC_PATH = "$SCRIPT_PATH/melt_the_code"
-    [string]$DIST_PATH = "$SRC_PATH/_dist/pwsh/melt_the_code"
+    [string]$DIST_PATH = "$SRC_PATH/dist/pwsh/melt_the_code"
 
     function test {
         Write-Host "MESSAGE: Now executing pester tests"

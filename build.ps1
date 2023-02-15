@@ -46,7 +46,7 @@ function build {
     # -------------------------------------------------------------------------
     [string]$PROJ_NAME = "codemelted.dev - Site Builder"
     [string]$SCRIPT_PATH = $PSScriptRoot
-    [string]$DIST_PATH = "$SCRIPT_PATH/_dist"
+    [string]$DIST_PATH = "$SCRIPT_PATH/dist"
     [string]$DISQUS_SRC_PATH = "$SCRIPT_PATH/disqus"
     [string]$DISQUS_DIST_PATH = "$DIST_PATH/disqus"
     [string]$MODULES_SRC_PATH = "$SCRIPT_PATH/modules"
@@ -56,7 +56,7 @@ function build {
     [string]$MODULES_DENO_SRC_PATH = "$MODULES_SRC_PATH/deno"
     [string]$MODULES_DENO_DIST_PATH = "$MODULES_SRC_PATH/deno/melt_the_code/dist"
     [string]$MODULES_PWSH_SRC_PATH = "$MODULES_SRC_PATH/pwsh"
-    [string]$MODULES_PWSH_DIST_PATH = "$MODULES_SRC_PATH/pwsh/melt_the_code/_dist"
+    [string]$MODULES_PWSH_DIST_PATH = "$MODULES_SRC_PATH/pwsh/melt_the_code/dist"
 
     # -------------------------------------------------------------------------
     # Print our header statement

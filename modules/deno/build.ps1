@@ -94,7 +94,7 @@ function build {
     Write-Host
 
     # -------------------------------------------------------------------------
-    # Setup our _dist directory
+    # Setup our dist directory
     # -------------------------------------------------------------------------
     Write-Host "MESSAGE: Now cleaning build outputs"
     Remove-Item -Path $DIST_PATH -Force -Recurse -ErrorAction Ignore
