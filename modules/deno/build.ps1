@@ -24,8 +24,8 @@
 # =============================================================================
 [string]$CSS_STYLE = @"
     <meta name="monetization" content="`$ilp.uphold.com/q94gJPq8PFF4">
-    <link rel="icon" type="image/x-icon" href="../../../../website-nav/favicon_io/favicon.ico">
-    <script src="../../../../website-nav/index.js" defer></script>
+    <link rel="icon" type="image/x-icon" href="https://codemelted.dev/website-nav/favicon_io/favicon.ico">
+    <script src="https://codemelted.dev/website-nav/index.js" defer></script>
     <style>
         body {
             background-color: #2F3033;
@@ -118,7 +118,6 @@ function build {
     # -------------------------------------------------------------------------
     Write-Host "MESSAGE: Now generating tsdoc"
     Write-Host
-    [string]$currentLocation = (Get-Location).ToString()
     Set-Location $SRC_PATH
     typedoc --name melt_the_code --readme none ./melt_the_code.ts
     Move-Item -Path docs $DIST_PATH -Force
@@ -129,7 +128,7 @@ function build {
     _formatHtml("$DOCS_PATH/functions")
     $mainJs = Get-Content -Path "$DOCS_PATH/assets/main.js" -Raw
     $mainJs.Replace('"os"', '"dark"') | Out-File -FilePath "$DOCS_PATH/assets/main.js" -Force
-    Set-Location $currentLocation
+    Set-Location $SCRIPT_PATH
     Write-Host
     Write-Host "MESSAGE: tsdoc generated"
 
@@ -139,7 +138,6 @@ function build {
     Write-Host "MESSAGE: Now executing deno tests"
     Write-Host
     New-Item -Path $COVERAGE_PATH -ItemType Directory -ErrorAction SilentlyContinue
-    [string]$currentLocation = (Get-Location).ToString()
     Set-Location $SRC_PATH
     deno test --coverage=$COVERAGE_PATH/cov_profile
     deno coverage $COVERAGE_PATH/cov_profile --lcov > $COVERAGE_PATH/lcov.info
@@ -148,7 +146,7 @@ function build {
     }
     _formatHtml($COVERAGE_PATH)
     _formatHtml("$COVERAGE_PATH/melt_the_code")
-    Set-Location $currentLocation
+    Set-Location $SCRIPT_PATH
     Write-Host
     Write-Host "MESSAGE: deno tests completed."
 

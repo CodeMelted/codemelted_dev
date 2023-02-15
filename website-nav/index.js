@@ -54,6 +54,10 @@ const HTML_TEMPLATE = `
         margin-bottom: 65px;
     }
 
+    header {
+        display: none;
+    }
+
     /* Header */
     .cm-fixed-header {
         display: grid;

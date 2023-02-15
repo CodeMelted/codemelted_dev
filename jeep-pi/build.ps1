@@ -32,9 +32,9 @@
     <meta name="author" content="Mark Shaffer">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="monetization" content="`$ilp.uphold.com/q94gJPq8PFF4">
-    <link rel="icon" type="image/x-icon" href="website-nav/favicon_io/favicon.ico">
-    <link rel="stylesheet" href="website-nav/css/hacker-theme.css">
-    <script src="website-nav/index.js" defer></script>
+    <link rel="icon" type="image/x-icon" href="../website-nav/favicon_io/favicon.ico">
+    <link rel="stylesheet" href="../website-nav/css/hacker-theme.css">
+    <script src="../website-nav/index.js" defer></script>
 </head><body><div class="content-main">
     CONTENT
 </div></body></html>
@@ -44,21 +44,9 @@ function build {
     # -------------------------------------------------------------------------
     # Constants
     # -------------------------------------------------------------------------
-    [string]$PROJ_NAME = "codemelted.dev - Site Builder"
+    [string]$PROJ_NAME = "jeep-pi Site Builder"
     [string]$SCRIPT_PATH = $PSScriptRoot
-    [string]$DIST_PATH = "$SCRIPT_PATH/dist"
-    [string]$DISQUS_SRC_PATH = "$SCRIPT_PATH/disqus"
-    [string]$DISQUS_DIST_PATH = "$DIST_PATH/disqus"
-    [string]$JEEP_PI_SRC_PATH = "$SCRIPT_PATH/jeep-pi"
-    [string]$JEEP_PI_DIST_PATH = "$JEEP_PI_SRC_PATH/dist"
-    [string]$MODULES_SRC_PATH = "$SCRIPT_PATH/modules"
-    [string]$MODULES_DIST_PATH = "$DIST_PATH/modules"
-    [string]$MODULES_DESIGN_SRC_PATH = "$MODULES_SRC_PATH/design/images"
-    [string]$MODULES_DESIGN_DIST_PATH = "$MODULES_DIST_PATH/design/images"
-    [string]$MODULES_DENO_SRC_PATH = "$MODULES_SRC_PATH/deno"
-    [string]$MODULES_DENO_DIST_PATH = "$MODULES_SRC_PATH/deno/melt_the_code/dist"
-    [string]$MODULES_PWSH_SRC_PATH = "$MODULES_SRC_PATH/pwsh"
-    [string]$MODULES_PWSH_DIST_PATH = "$MODULES_SRC_PATH/pwsh/melt_the_code/dist"
+    [string]$DIST_PATH = "$SCRIPT_PATH/dist/jeep-pi"
 
     # -------------------------------------------------------------------------
     # Print our header statement
@@ -73,42 +61,10 @@ function build {
     New-Item -Path $DIST_PATH -ItemType Directory
 
     # -------------------------------------------------------------------------
-    # Copy our disqus widget
-    # -------------------------------------------------------------------------
-    Copy-Item -Path $DISQUS_SRC_PATH $DISQUS_DIST_PATH -Recurse -Force
-
-    # -------------------------------------------------------------------------
-    # Build our jeep-pi page
-    # -------------------------------------------------------------------------
-    Set-Location $JEEP_PI_SRC_PATH
-    ./build.ps1
-    Set-Location $SCRIPT_PATH
-    Copy-Item -Path "$JEEP_PI_DIST_PATH/*" $DIST_PATH -Recurse -Force
-
-    # -------------------------------------------------------------------------
-    # Copy our module design artifacts
-    # -------------------------------------------------------------------------
-    Copy-Item -Path $MODULES_DESIGN_SRC_PATH $MODULES_DESIGN_DIST_PATH -Recurse -Force
-
-    # -------------------------------------------------------------------------
-    # Build our code modules
-    # -------------------------------------------------------------------------
-    Set-Location $MODULES_DENO_SRC_PATH
-    ./build.ps1
-    Set-Location $SCRIPT_PATH
-    Copy-Item -Path "$MODULES_DENO_DIST_PATH/*" $MODULES_DIST_PATH -Recurse -Force
-
-    Set-Location $MODULES_PWSH_SRC_PATH
-    ./build.ps1
-    Set-Location $SCRIPT_PATH
-    Copy-Item -Path "$MODULES_PWSH_DIST_PATH/*" $MODULES_DIST_PATH -Recurse -Force
-
-    # -------------------------------------------------------------------------
     # Generate our main site items
     # -------------------------------------------------------------------------
     $readmeData = ConvertFrom-Markdown -Path $SCRIPT_PATH/README.md
     $htmlData = $HTML_TEMPLATE.Replace("CONTENT", $readmeData.Html)
     $htmlData | Out-File -FilePath "$DIST_PATH/index.html" -Force
-    Copy-Item -Path "$SCRIPT_PATH/website-nav" $DIST_PATH -Recurse -Force
 }
 build
