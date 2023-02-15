@@ -22,7 +22,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-const PROTOCOL_HOST = location.protocol + '//' + location.host;
+const PROTOCOL_HOST = `${location.protocol}//${location.host}`;
 const TITLE = "Melt the Code - DEV";
 const HTML_TEMPLATE = `
 <style>
@@ -98,7 +98,7 @@ const HTML_TEMPLATE = `
         padding-bottom: 5px;
         z-index: 2147483648;
         display: grid;
-        grid-template-columns: auto auto auto;
+        grid-template-columns: auto auto;
         position: fixed;
         bottom: 0;
         left: 0;
@@ -146,7 +146,7 @@ const HTML_TEMPLATE = `
 <div id="divFixedFooter" class="cm-fixed-footer">
     <button id="btnPwsh"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/ps_black_64.png" /><br/>pwsh</button>
     <button id="btnDeno"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/icons8-deno-100x100.png" /><br />deno</button>
-    <button id="btnFlutter"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/icons8-flutter-48.png" /><br />Flutter</button>
+    <!-- <button id="btnFlutter"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/icons8-flutter-48.png" /><br />Flutter</button> -->
 </div>
 `;
 
@@ -192,7 +192,6 @@ const PORTAL_PAGE = "https://codemelted.com";
 const URL_PAGE = {
     "Pwsh"    : `${HOME_PAGE}/pwsh/melt_the_code/docs`,
     "Deno"    : `${HOME_PAGE}/deno/melt_the_code/docs`,
-    "Flutter" : ``,
 };
 
 /**
