@@ -53,6 +53,8 @@ function build {
     [string]$MODULES_DIST_PATH = "$DIST_PATH/modules"
     [string]$MODULES_DESIGN_SRC_PATH = "$MODULES_SRC_PATH/design/images"
     [string]$MODULES_DESIGN_DIST_PATH = "$MODULES_DIST_PATH/design/images"
+    [string]$MODULES_DENO_SRC_PATH = "$MODULES_SRC_PATH/deno"
+    [string]$MODULES_DENO_DIST_PATH = "$MODULES_SRC_PATH/deno/melt_the_code/dist"
     [string]$MODULES_PWSH_SRC_PATH = "$MODULES_SRC_PATH/pwsh"
     [string]$MODULES_PWSH_DIST_PATH = "$MODULES_SRC_PATH/pwsh/melt_the_code/_dist"
 
@@ -81,6 +83,11 @@ function build {
     # -------------------------------------------------------------------------
     # Build our code modules
     # -------------------------------------------------------------------------
+    Set-Location $MODULES_DENO_SRC_PATH
+    ./build.ps1
+    Set-Location $SCRIPT_PATH
+    Copy-Item -Path "$MODULES_DENO_DIST_PATH/*" $MODULES_DIST_PATH -Recurse -Force
+
     Set-Location $MODULES_PWSH_SRC_PATH
     ./build.ps1
     Set-Location $SCRIPT_PATH
