@@ -1,4 +1,4 @@
-<div style="text-align: center"><img src="../website-nav/icons/ThePlannedTrip.png"></div>
+<div style="text-align: center"><img style="width: 90%" src="../website-nav/icons/ThePlannedTrip.png" /></div>
 
 # Jeep Raspberry Pi Explorer
 
