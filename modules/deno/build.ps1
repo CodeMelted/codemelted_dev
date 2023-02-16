@@ -22,43 +22,17 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 # =============================================================================
-[string]$CSS_STYLE = @"
-    <meta name="monetization" content="`$ilp.uphold.com/q94gJPq8PFF4">
-    <link rel="icon" type="image/x-icon" href="https://codemelted.dev/website-nav/favicon_io/favicon.ico">
-    <script src="https://codemelted.dev/website-nav/index.js" defer></script>
-    <style>
-        body {
-            background-color: #2F3033;
-            color: white;
-        }
-
-        span.linenum {
-            background-color: #8B8000;
-        }
-
-        span.linecov {
-            background-color: darkblue;
-        }
-
-        span.linenocov {
-            background-color: darkred;
-        }
-
-        .settings {
-            display: none;
-        }
-    </style>
-</head>
+[string]$HTML_TEMPLATE = @"
+    <center><a href="https://codemelted.dev/modules/deno/melt_the_code/" ><img style="width: 60%;" src="https://codemelted.dev/website-nav/logos/logo-593x100.png" /></a></center>
 "@
 
 function build {
     # -------------------------------------------------------------------------
     # Constants:
-    [string]$PROJ_NAME = "melt_the_code JavaScript Module"
+    [string]$PROJ_NAME = "melt_the_code Deno Module Builder"
     [string]$SCRIPT_PATH = $PSScriptRoot
     [string]$SRC_PATH = "$SCRIPT_PATH/melt_the_code"
     [string]$DIST_PATH = "$SRC_PATH/dist/deno/melt_the_code"
-    [string]$DOCS_PATH = "$DIST_PATH/docs"
     [string]$COVERAGE_PATH = "$DIST_PATH/coverage"
 
     # -------------------------------------------------------------------------
@@ -70,13 +44,9 @@ function build {
             [string]$newFile = $file.Directory.FullName + [IO.Path]::DirectorySeparatorChar +
                 "new" + $file.Name
             foreach ($line in Get-Content $file) {
-                if ($line.Contains("<head>") -and $line.Contains("</head>")) {
+                if ($line.Contains("<body>")) {
+                    "<body>'`n $HTML_TEMPLATE" | Out-File -FilePath $newFile -Append
                     $line.Replace("</head>", $CSS_STYLE) | Out-File -FilePath $newFile -Append
-                } elseif ($line.Contains("<head>")) {
-                    $line | Out-File -FilePath $newFile -Append
-                    "<meta name='viewport' content='width=device-width, initial-scale=1'>" | Out-File -FilePath $newFile -Append
-                } elseif ($line.Contains("</head>")) {
-                    $CSS_STYLE | Out-File -FilePath $newFile -Append
                 } else {
                     $line | Out-File -FilePath $newFile -Append
                 }
@@ -86,7 +56,6 @@ function build {
             Write-Host $file created.
         }
     }
-
     # -------------------------------------------------------------------------
     # Write the main header
     # -------------------------------------------------------------------------
@@ -119,15 +88,8 @@ function build {
     Write-Host "MESSAGE: Now generating tsdoc"
     Write-Host
     Set-Location $SRC_PATH
-    typedoc --name melt_the_code --readme none ./melt_the_code.ts
+    typedoc --name melt_the_code --readme ./README.md ./melt_the_code.ts
     Move-Item -Path docs $DIST_PATH -Force
-    _formatHtml($DOCS_PATH)
-    _formatHtml("$DOCS_PATH/assets")
-    _formatHtml("$DOCS_PATH/classes")
-    _formatHtml("$DOCS_PATH/enums")
-    _formatHtml("$DOCS_PATH/functions")
-    $mainJs = Get-Content -Path "$DOCS_PATH/assets/main.js" -Raw
-    $mainJs.Replace('"os"', '"dark"') | Out-File -FilePath "$DOCS_PATH/assets/main.js" -Force
     Set-Location $SCRIPT_PATH
     Write-Host
     Write-Host "MESSAGE: tsdoc generated"
@@ -149,6 +111,11 @@ function build {
     Set-Location $SCRIPT_PATH
     Write-Host
     Write-Host "MESSAGE: deno tests completed."
+
+    # -------------------------------------------------------------------------
+    # Copy our index.html
+    # -------------------------------------------------------------------------
+    Copy-Item -Path $SCRIPT_PATH/index.html $DIST_PATH -Force
 
     # -------------------------------------------------------------------------
     # Publish the deno module

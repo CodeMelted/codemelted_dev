@@ -24,7 +24,6 @@
 # =============================================================================
 [string]$CSS_STYLE = @"
 <meta name="monetization" content="`$ilp.uphold.com/q94gJPq8PFF4">
-<link rel="icon" type="image/x-icon" href="https://codemelted.dev/favicon.ico">
 <script src="https://codemelted.dev/website-nav/index.js" defer></script>
 <style>
     body {

@@ -23,7 +23,6 @@
  */
 
 const PROTOCOL_HOST = `${location.protocol}//${location.host}`;
-const TITLE = "Melt the Code - DEV";
 const HTML_TEMPLATE = `
 <style>
     /*
@@ -144,6 +143,7 @@ const HTML_TEMPLATE = `
 </div>
 
 <div id="divFixedFooter" class="cm-fixed-footer">
+    <!-- <button id="btnCpp"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/icons8-c++-48.png" /><br/>C++</button> -->
     <button id="btnPwsh"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/ps_black_64.png" /><br/>pwsh</button>
     <button id="btnDeno"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/icons8-deno-100x100.png" /><br />deno</button>
     <!-- <button id="btnFlutter"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/icons8-flutter-48.png" /><br />Flutter</button> -->
@@ -181,8 +181,6 @@ const PAGE_OPTIONS_TEMPLATE = `
 <div class="cm-page-options">
     <button id="btnSupport"><img src="${PROTOCOL_HOST}/website-nav/icons/bmc-button.png" /></button>
     <button id="btnPrint"><img src="${PROTOCOL_HOST}/website-nav/icons/icons8-print-96.png" /></button>
-    <button id="btnDocs"><img src="${PROTOCOL_HOST}/website-nav/icons/icons8-code-48.png" /></button>
-    <button id="btnCoverage"><img src="${PROTOCOL_HOST}/website-nav/icons/icons8-test-64.png" /></button>
 </div>
 `;
 
@@ -190,8 +188,10 @@ const PAGE_OPTIONS_TEMPLATE = `
 const HOME_PAGE = "/modules";
 const PORTAL_PAGE = "https://codemelted.com";
 const URL_PAGE = {
-    "Pwsh"    : `${HOME_PAGE}/pwsh/melt_the_code/docs`,
-    "Deno"    : `${HOME_PAGE}/deno/melt_the_code/docs`,
+    // "Cpp"     : `${HOME_PAGE}/cpp/melt_the_code`,
+    "Pwsh"    : `${HOME_PAGE}/pwsh/melt_the_code`,
+    "Deno"    : `${HOME_PAGE}/deno/melt_the_code`,
+    // "Flutter" : `${HOME_PAGE}/flutter/melt_the_code`,
 };
 
 /**
@@ -229,13 +229,9 @@ function popupWindow(url, windowName, w, h, action = undefined) {
  */
 function main() {
     // Overlay our template
-    document.title = TITLE;
     document.body.innerHTML = PAGE_OPTIONS_TEMPLATE +
         document.body.innerHTML + HTML_TEMPLATE;
-    let docsHRef = "";
-    let coverageHRef = "";
     const href = window.location.href;
-    let isSubPageActive = false;
 
     // Go get our options to determine how we are to render
     const queryString = window.location.search;
@@ -315,27 +311,11 @@ function main() {
         });
 
         document.getElementById("btnPrint").addEventListener("click", () => {
-            popupWindow(href.split("?")[0], TITLE, 800, 500, "print");
-        });
-
-        document.getElementById("btnDocs").addEventListener("click", () => {
-            window.location.href = isEmbedded
-                ? `${docsHRef}/?isEmbedded=true`
-                : `${docsHRef}/`;
-        });
-
-        document.getElementById("btnCoverage").addEventListener("click", () => {
-            window.location.href = isEmbedded
-                ? `${coverageHRef}/?isEmbedded=true`
-                : `${coverageHRef}/`;
+            popupWindow(href.split("?")[0], document.title, 800, 500, "print");
         });
 
         // On our main page or the jeep page hide the docs and coverage button.
         // It will not have that as it is documenting the page
-        if (!isSubPageActive) {
-            document.getElementById("btnDocs").style.display = "none";
-            document.getElementById("btnCoverage").style.display = "none";
-        }
         if (href.includes("jeep-pi")) {
             document.getElementById("divFixedHeader").style.display = "none";
             document.getElementById("divFixedFooter").style.display = "none";

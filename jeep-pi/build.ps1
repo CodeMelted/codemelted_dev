@@ -32,7 +32,6 @@
     <meta name="author" content="Mark Shaffer">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="monetization" content="`$ilp.uphold.com/q94gJPq8PFF4">
-    <link rel="icon" type="image/x-icon" href="../website-nav/favicon_io/favicon.ico">
     <link rel="stylesheet" href="../website-nav/css/hacker-theme.css">
     <script src="../website-nav/index.js" defer></script>
 </head><body><div class="content-main">

@@ -1,47 +1,30 @@
 // deno-lint-ignore-file no-explicit-any
+/*
+===============================================================================
+MIT License
+
+© 2023 Mark Shaffer. All Rights Reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+===============================================================================
+*/
 /**
- * <a href="https://codemelted.dev"><img src="https://codemelted.dev/website-nav/logos/logo-593x100.png" /></a>
- * <br /> <br />
- * <h1><img style="height: 30px;" src="https://codemelted.dev/website-nav/icons/icons8-deno-100x100.png" /> melt_the_code Deno Module </h1>
- * Something cool.
- * <h2> Quick Start </h2>
- * The following represents the minimum to setup and call
- * <code>meltTheCode().aboutModule()</code> to get started. Remember for Deno
- * you can use either the bundled JavaScript or the TypeScript.
- * For the web browser you will use the bundled JavaScript. The
- * remainder of this document explains the other objects you may import. See
- * the <code>melt_the_code_test.ts</code> for examples of using this module.
- * <h3> Objects to Import</h3>
- * <ul>
- * <li>meltTheCode</li>
- * <li>CodeMeltedError</li>
- * </ul>
- * <h3> Imports </h3>
- * <ul>
- * <li style="font-size:x-small">https://codemelted.dev/deno/melt_the_code/dist/melt_the_code.bundle.js</li>
- * <li style="font-size:x-small">https://codemelted.dev/deno/melt_the_code/melt_the_code.ts</li>
- * </ul>
- * <h2>MIT License</h2>
- * © 2022 Mark Shaffer. All Rights Reserved. <br />
- * <br />
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files
- * (the "Software"), to deal in the Software without restriction,
- * including without limitation the rights to use, copy, modify, merge,
- * publish, distribute, sublicense, and/or sell copies of the Software,
- * and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- * <br /><br />
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- * <br /> <br />
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
- * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
- * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * @module melt_the_code
  */
 const _aboutModule = `

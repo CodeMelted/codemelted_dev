@@ -1,4 +1,4 @@
-<div style="text-align: center"><a href="/"><img style="width: 60%" src="website-nav/logos/logo-593x100.png"></a></div>
+<center><a href="/"><img style="width: 60%" src="website-nav/logos/logo-593x100.png"></a></center>
 
 <h1><img style="height: 30px;" src="website-nav/icons/icons8-design-48.png" /> Cross Platform Modules - Design </h1>
 
