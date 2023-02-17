@@ -25,7 +25,7 @@
 [string]$HTML_TEMPLATE = @"
 <!DOCTYPE html>
 <html><head>
-    <title>Melt the Code -- DEV</title>
+    <title>Melt the Code - DEV</title>
     <meta charset="UTF-8">
     <meta name="description" content="The cross platform code module project.">
     <meta name="keywords" content="melt_the_code, Melt the Code, Cross Platform Modules, xplat-modules">

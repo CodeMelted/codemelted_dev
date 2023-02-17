@@ -9,5 +9,14 @@
     <link rel="stylesheet" href="../../../website-nav/css/hacker-theme.css">
     <script type="text/javascript" src="../../../website-nav/index.js" defer></script>
 </head><body>
-    <iframe id="frmModuleContent" style="border: 0; height: 400px; width: 100%" src="docs"></iframe>
+    <center><iframe id="frmModuleContent" frameBorder="0" style="width: 98%" src="docs"></iframe></center>
+    <script>
+        const HEIGHT_OFFSET = 130;
+        const height = window.innerHeight - HEIGHT_OFFSET;
+        document.getElementById("frmModuleContent").height = `${height}`;
+        window.addEventListener("resize", (evt) => {
+            const height = window.innerHeight - HEIGHT_OFFSET;
+            document.getElementById("frmModuleContent").height = `${height}`;
+        });
+    </script>
 </body></html>

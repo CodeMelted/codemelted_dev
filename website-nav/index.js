@@ -252,6 +252,7 @@ function main() {
         // If one of our sub pages are active, hide our header image.
         if (isSubPageActive) {
             document.getElementById("imgHeader").style.display = "none";
+            document.getElementById("btnPrint").style.display = "none";
         } else {
             // If our main page, hide the code / coverage buttons
             document.getElementById("btnDesign").style.display = "none";
