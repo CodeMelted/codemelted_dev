@@ -1,10 +1,8 @@
-<center><a href="https://codemelted.dev/modules/deno/melt_the_code/" ><img style="width: 60%;" src="https://codemelted.dev/website-nav/logos/logo-593x100.png" /></a></center>
+<center><img style="max-width: 593px; width: 80%;" src="https://codemelted.dev/website-nav/logos/logo-593x100.png" /></center>
 
 <h1><img style="height: 30px;" src="https://codemelted.dev/website-nav/icons/icons8-deno-100x100.png" /> melt_the_code Deno Module </h1>
 
 TBD - Intro
-
-<center><a href="https://buymeacoffee.com/codemelted" target="_blank"><img style="height: 50px;" src="https://codemelted.dev/website-nav/icons/bmc-button.png" /></a></center>
 
 
 ## Getting Started

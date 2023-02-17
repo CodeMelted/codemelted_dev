@@ -49,46 +49,7 @@ const HTML_TEMPLATE = `
     }
 
     body {
-        margin-top: 60px;
         margin-bottom: 65px;
-    }
-
-    header {
-        display: none;
-    }
-
-    /* Header */
-    .cm-fixed-header {
-        display: grid;
-        grid-template-columns: 1fr auto auto;
-        border: 1px solid black;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 55px;
-        background-color: black;
-        color: white;
-        font-family: sans-serif;
-        font-size: 12px;
-        z-index: 2147483648;
-    }
-    .cm-fixed-header button {
-        background-color: black;
-        color: white;
-        outline: none;
-        border: none;
-        cursor: pointer;
-        font-size: 12px;
-    }
-    .cm-logo {
-        display: block;
-        height: 35px;
-        margin-top: 12px;
-        margin-left: 23px;
-    }
-    .cm-logo:hover {
-        cursor: pointer;
     }
 
     /* Footer */
@@ -137,11 +98,6 @@ const HTML_TEMPLATE = `
     }
 </style>
 
-<div id="divFixedHeader" class="cm-fixed-header">
-    <img id="imgLogo" alt="logo" class="cm-logo" src="${PROTOCOL_HOST}/website-nav/logos/logo-593x100.png" />
-    <button id="btnWeb"><img style="height: 35px;" src="${PROTOCOL_HOST}/website-nav/icons/icons8-website-48.png" /></button>
-</div>
-
 <div id="divFixedFooter" class="cm-fixed-footer">
     <!-- <button id="btnCpp"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/icons8-c++-48.png" /><br/>C++</button> -->
     <button id="btnPwsh"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/ps_black_64.png" /><br/>pwsh</button>
@@ -178,9 +134,13 @@ const PAGE_OPTIONS_TEMPLATE = `
         }
     }
 </style>
+<center><a href="/" ><img id="imgHeader" style="margin-top: 25px; max-width: 593px; width: 80%;" src="${PROTOCOL_HOST}/website-nav/logos/logo-593x100.png" /></a></center>
 <div class="cm-page-options">
+    <button id="btnDesign"><img src="${PROTOCOL_HOST}/website-nav/icons/icons8-design-48.png" /></button>
     <button id="btnSupport"><img src="${PROTOCOL_HOST}/website-nav/icons/bmc-button.png" /></button>
     <button id="btnPrint"><img src="${PROTOCOL_HOST}/website-nav/icons/icons8-print-96.png" /></button>
+    <button id="btnDocs"><img src="${PROTOCOL_HOST}/website-nav/icons/icons8-code-48.png" /></button>
+    <button id="btnCoverage"><img src="${PROTOCOL_HOST}/website-nav/icons/icons8-test-64.png" /></button>
 </div>
 `;
 
@@ -234,6 +194,7 @@ function main() {
     const href = window.location.href;
 
     // Go get our options to determine how we are to render
+    let isSubPageActive = false;
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const isEmbedded = urlParams.has("isEmbedded")
@@ -251,7 +212,6 @@ function main() {
         // If print action, go setup our print process
         // Anything else simply just popups the window
         if (popupAction === "print") {
-            document.getElementById("divFixedHeader").style.display = "none";
             document.getElementById("divFixedFooter").style.display = "none";
             document.getElementsByClassName("cm-page-options")[0]
                 .style.display = "none";
@@ -264,12 +224,6 @@ function main() {
           }, 500);
         }
     } else {
-        // Hide some controls based on if we are embedded
-        if (isEmbedded) {
-            document.getElementById("divFixedHeader").style.display = "none";
-            document.body.style.marginTop = "5px";
-        }
-
         // Create the button actions to navigate to the appropriate page.
         // and set the if it is active or not depending on the page
         // navigated to.
@@ -295,14 +249,29 @@ function main() {
             }
         }
 
-        // Now assign our button actions, states from above will affect
-        // how some of those action are performed.
-        document.getElementById("imgLogo").addEventListener("click", () => {
-            window.location.href = "/";
+        // If one of our sub pages are active, hide our header image.
+        if (isSubPageActive) {
+            document.getElementById("imgHeader").style.display = "none";
+        } else {
+            // If our main page, hide the code / coverage buttons
+            document.getElementById("btnDesign").style.display = "none";
+            document.getElementById("btnDocs").style.display = "none";
+            document.getElementById("btnCoverage").style.display = "none";
+        }
+
+        // Assign our button actions on the display.
+        document.getElementById("btnDesign").addEventListener("click", () => {
+            window.location.href = isEmbedded
+                ? `/?isEmbedded=true`
+                : "/";
         });
 
-        document.getElementById("btnWeb").addEventListener("click", () => {
-            window.location.href = `${PORTAL_PAGE}?iframe=${href}`;
+        document.getElementById("btnDocs").addEventListener("click", () => {
+            document.getElementById("frmModuleContent").src = "docs";
+        });
+
+        document.getElementById("btnCoverage").addEventListener("click", () => {
+            document.getElementById("frmModuleContent").src = "coverage";
         });
 
         document.getElementById("btnSupport").addEventListener("click", () => {
@@ -317,8 +286,9 @@ function main() {
         // On our main page or the jeep page hide the docs and coverage button.
         // It will not have that as it is documenting the page
         if (href.includes("jeep-pi")) {
-            document.getElementById("divFixedHeader").style.display = "none";
             document.getElementById("divFixedFooter").style.display = "none";
+            document.getElementsByClassName("cm-page-options")[0]
+                .style.display = "none";
         }
     }
 }

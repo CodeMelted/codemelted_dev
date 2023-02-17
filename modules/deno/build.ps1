@@ -23,7 +23,7 @@
 # IN THE SOFTWARE.
 # =============================================================================
 [string]$HTML_TEMPLATE = @"
-    <center><a href="https://codemelted.dev/modules/deno/melt_the_code/" ><img style="width: 60%;" src="https://codemelted.dev/website-nav/logos/logo-593x100.png" /></a></center>
+    <center><img style="max-width: 593px; width: 80%;" src="https://codemelted.dev/website-nav/logos/logo-593x100.png" /></center>
 "@
 
 function build {
