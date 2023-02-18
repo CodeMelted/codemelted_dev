@@ -24,50 +24,17 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 ===============================================================================
 */
-#ifndef MELT_THE_CODE_H
-#define MELT_THE_CODE_H
 
+// #include "gtest/gtest.h"
+// #include "melt_the_code.h"
 
-/**
- * @brief helloclear
- *
- *
- */
-namespace melt_the_code {
+// TEST(CodeMeltedAPI, testApiAccess) {
+//     using namespace melt_the_code;
+//     auto v = meltTheCode().aboutModule();
+//     ASSERT_TRUE(strlen(v) > 0);
+// }
 
-/**
- * @brief hello
- *
- */
-class CodeMeltedAPI {
-public:
-    /**
-     * @brief
-     *
-     * @return const char*
-     */
-    const char* aboutModule();
-
-
-
-private:
-    CodeMeltedAPI(CodeMeltedAPI const&) = delete;
-    CodeMeltedAPI(CodeMeltedAPI&&) = delete;
-    CodeMeltedAPI& operator=(CodeMeltedAPI const&) = delete;
-    CodeMeltedAPI& operator=(CodeMeltedAPI &&) = delete;
-    CodeMeltedAPI();
-    ~CodeMeltedAPI();
-    static CodeMeltedAPI& instance();
-    friend CodeMeltedAPI& meltTheCode();
-};
-
-/**
- * @brief Provides the access point into the melt_the_code module.
- * @return CodeMeltedAPI&
- */
-CodeMeltedAPI& meltTheCode();
-
-} // END NAMESPACE
-
-
-#endif // MELT_THE_CODE_H
+// int main(int argc, char **argv) {
+//     ::testing::InitGoogleTest(&argc, argv);
+//     return RUN_ALL_TESTS();
+// }

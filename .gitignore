@@ -1,5 +1,6 @@
 dist
 doc
+docs
 .DS_Store
 .flutter-plugins-dependencies
 lcov.info

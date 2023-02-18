@@ -1,17 +1,14 @@
-<h1> <img style="height: 35px;" src="https://codemelted.dev/website-nav/icons/icons8-c++-48.png" /> Cross Platform Module - C/C++ </h1>
-
-UNDER DEVELOPMENT
-
-<h1>TABLE OF CONTENTS</h1>
-
-- [License](#license)
+<h1> <img style="height: 35px;" src="https://codemelted.dev/website-nav/icons/icons8-c++-48.png" /> melt_the_code C++ Module </h1>
 
 
-# License
+
+## License
+
+<img style="width: 250px;" src="https://codemelted.dev/website-nav/logos/logo-593x100.png" />
 
 MIT License
 
-Copyright (c) 2022 Mark Shaffer
+© 2023 Mark Shaffer
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -29,5 +26,3 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-<script src="../website-nav/index.js"></script>
