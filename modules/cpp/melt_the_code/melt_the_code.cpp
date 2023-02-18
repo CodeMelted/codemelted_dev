@@ -27,6 +27,17 @@ DEALINGS IN THE SOFTWARE.
 #include "melt_the_code.h"
 
 namespace melt_the_code {
+// ----------------------------------------------------------------------------
+// Global Definitions
+// ----------------------------------------------------------------------------
+
+static const char* ABOUT_MODULE = R""""(
+    TITLE:    melt_the_code C++ Module
+    VERSION:  v0.1.0 (Released on 18 Feb 2023)
+    WEBSITE:  https://codemeled.dev/modules/cpp/melt_the_code
+    LICENSE:  MIT / © 2023 Mark Shaffer. All Rights Reserved.
+    )"""";
+
 
 // ----------------------------------------------------------------------------
 // Public API Implementation
@@ -36,8 +47,8 @@ CodeMeltedAPI::CodeMeltedAPI() { }
 
 CodeMeltedAPI::~CodeMeltedAPI() { }
 
-const char* CodeMeltedAPI::aboutModule() {
-    return "hello";
+const char* CodeMeltedAPI::aboutModule() const {
+    return ABOUT_MODULE;
 }
 
 CodeMeltedAPI& CodeMeltedAPI::instance() {

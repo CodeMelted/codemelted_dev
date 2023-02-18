@@ -27,30 +27,24 @@ DEALINGS IN THE SOFTWARE.
 #ifndef MELT_THE_CODE_H
 #define MELT_THE_CODE_H
 
-
 /**
- * @brief helloclear
- *
- *
+ * @brief Namespace wrapper for the melt_the_code module.
  */
 namespace melt_the_code {
 
 /**
- * @brief hello
- *
+ * @brief The main API wrapper providing access to the implemented use cases.
  */
 class CodeMeltedAPI {
 public:
     /**
-     * @brief
-     *
+     * @brief You just want to know what it is you are using.
      * @return const char*
      */
-    const char* aboutModule();
-
-
+    const char* aboutModule() const;
 
 private:
+    // Setup for the module to be accessed via the function.
     CodeMeltedAPI(CodeMeltedAPI const&) = delete;
     CodeMeltedAPI(CodeMeltedAPI&&) = delete;
     CodeMeltedAPI& operator=(CodeMeltedAPI const&) = delete;
@@ -68,6 +62,5 @@ private:
 CodeMeltedAPI& meltTheCode();
 
 } // END NAMESPACE
-
 
 #endif // MELT_THE_CODE_H

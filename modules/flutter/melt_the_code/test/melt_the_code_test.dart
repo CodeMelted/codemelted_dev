@@ -23,7 +23,6 @@ DEALINGS IN THE SOFTWARE.
 ===============================================================================
 */
 
-import 'package:flutter/physics.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:melt_the_code/melt_the_code.dart';
@@ -31,7 +30,14 @@ import 'package:melt_the_code/melt_the_code.dart';
 void main() {
   group("Global Function Tests", () {
     test("meltTheCode().aboutModule() Validation", () {
-      expect(meltTheCode().aboutModule().isNotEmpty, true);
+      var v = meltTheCode().aboutModule();
+      expect(v.contains("TITLE:"), true);
+      expect(v.contains("VERSION:"), true);
+      expect(
+          v.contains(
+              "WEBSITE:  https://codemelted.dev/modules/flutter/melt_the_code"),
+          true);
+      expect(v.contains("LICENSE:"), true);
     });
   });
 

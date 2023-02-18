@@ -3,7 +3,7 @@
     RootModule = 'melt_the_code.psm1'
 
     # Version number of this module.
-    ModuleVersion = '0.0.0'
+    ModuleVersion = '0.1.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -18,10 +18,10 @@
     # CompanyName = ''
 
     # Copyright statement for this module
-    Copyright = '(c) 2022 Mark Shaffer. All rights reserved.'
+    Copyright = '© 2023 Mark Shaffer. All Rights Reserved.'
 
     # Description of the functionality provided by this module
-    Description = 'TBD'
+    Description = 'An implementation of common developer use cases in one reusable module.'
 
     # Minimum version of the PowerShell engine required by this module
     PowerShellVersion = '7.0'
@@ -118,7 +118,7 @@
     } # End of PrivateData hashtable
 
     # HelpInfo URI of this module
-    HelpInfoURI = 'hhttps://xplat-modules.codemelted.com/pwsh/docs'
+    HelpInfoURI = 'hhttps://codemelted.dev/modules/pwsh/melt_the_code'
 
     # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
     # DefaultCommandPrefix = ''

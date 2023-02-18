@@ -27,12 +27,21 @@ DEALINGS IN THE SOFTWARE.
 */
 
 #include <gtest/gtest.h>
+#include <string>
+
 #include "melt_the_code.h"
 
-TEST(CodeMeltedAPI, testApiAccess) {
+TEST(CodeMeltedAPI, aboutModule) {
     using namespace melt_the_code;
-    auto v = meltTheCode().aboutModule();
-    ASSERT_TRUE(strlen(v) > 0);
+    std::string v = meltTheCode().aboutModule();
+
+    ASSERT_TRUE(v.find("TITLE:") != std::string::npos);
+    ASSERT_TRUE(v.find("VERSION:") != std::string::npos);
+    ASSERT_TRUE(v.find(
+        "WEBSITE:  https://codemeled.dev/modules/cpp/melt_the_code")
+        != std::string::npos
+    );
+    ASSERT_TRUE(v.find("LICENSE:") != std::string::npos);
 }
 
 int main(int argc, char **argv) {
