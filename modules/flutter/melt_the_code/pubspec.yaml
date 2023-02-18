@@ -1,7 +1,7 @@
 name: melt_the_code
 description: A new Flutter package.
 version: 0.0.1
-homepage: https://codemelted.dev
+# homepage: https://codemelted.dev
 
 environment:
   sdk: ">=2.16.2 <3.0.0"

@@ -1,4 +1,6 @@
-<div style="text-align: center;"><img style="width: 100%;" src="https://codemelted.dev/website-nav/logos/logo-593x100.png" /></div>
+
+<h1><img style="height: 30px;" src="https://codemelted.dev/website-nav/icons/icons8-flutter-48.png" /> melt_the_code Flutter Module </h1>
+
 
 Ever wanted the ability to implement common developer use cases regardless of the language or trying to remember language features, then this is the library for you.
 
@@ -14,9 +16,11 @@ import 'package:melt_the_code/melt_the_code.dart';
 
 ## License
 
+<img style="width: 250px;" src="https://codemelted.dev/website-nav/logos/logo-593x100.png" />
+
 MIT License
 
-© 2022 Mark Shaffer. All Rights Reserved.
+© 2023 Mark Shaffer
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the "Software"),

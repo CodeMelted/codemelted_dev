@@ -23,7 +23,7 @@
 # IN THE SOFTWARE.
 # =============================================================================
 [string]$HTML_TEMPLATE = @"
-    <img style="width: 250px;" src="https://codemelted.dev/website-nav/logos/logo-593x100.png" />
+<img style="width: 250px;" src="https://codemelted.dev/website-nav/logos/logo-593x100.png" />
 "@
 
 function build {
@@ -45,7 +45,7 @@ function build {
                 "new" + $file.Name
             foreach ($line in Get-Content $file) {
                 if ($line.Contains("<body>")) {
-                    "<body>'`n $HTML_TEMPLATE" | Out-File -FilePath $newFile -Append
+                    "<body> $HTML_TEMPLATE" | Out-File -FilePath $newFile -Append
                     $line.Replace("</head>", $CSS_STYLE) | Out-File -FilePath $newFile -Append
                 } else {
                     $line | Out-File -FilePath $newFile -Append
@@ -56,6 +56,7 @@ function build {
             Write-Host $file created.
         }
     }
+
     # -------------------------------------------------------------------------
     # Write the main header
     # -------------------------------------------------------------------------
@@ -104,7 +105,7 @@ function build {
     deno test --coverage=$COVERAGE_PATH/cov_profile
     deno coverage $COVERAGE_PATH/cov_profile --lcov > $COVERAGE_PATH/lcov.info
     if ($IsLinux -or $IsMacOS) {
-        genhtml -o $COVERAGE_PATH $COVERAGE_PATH/lcov.info
+        genhtml -o $COVERAGE_PATH --dark-mode $COVERAGE_PATH/lcov.info
     }
     _formatHtml($COVERAGE_PATH)
     _formatHtml("$COVERAGE_PATH/melt_the_code")

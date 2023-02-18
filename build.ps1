@@ -58,6 +58,8 @@ function build {
     [string]$MODULES_DENO_DIST_PATH = "$MODULES_SRC_PATH/deno/melt_the_code/dist"
     [string]$MODULES_PWSH_SRC_PATH = "$MODULES_SRC_PATH/pwsh"
     [string]$MODULES_PWSH_DIST_PATH = "$MODULES_SRC_PATH/pwsh/melt_the_code/dist"
+    [string]$MODULES_FLUTTER_SRC_PATH = "$MODULES_SRC_PATH/flutter"
+    [string]$MODULES_FLUTTER_DIST_PATH = "$MODULES_SRC_PATH/flutter/melt_the_code/dist"
 
     # -------------------------------------------------------------------------
     # Print our header statement
@@ -101,6 +103,11 @@ function build {
     ./build.ps1
     Set-Location $SCRIPT_PATH
     Copy-Item -Path "$MODULES_PWSH_DIST_PATH/*" $MODULES_DIST_PATH -Recurse -Force
+
+    Set-Location $MODULES_FLUTTER_SRC_PATH
+    ./build.ps1
+    Set-Location $SCRIPT_PATH
+    Copy-Item -Path "$MODULES_FLUTTER_DIST_PATH/*" $MODULES_DIST_PATH -Recurse -Force
 
     # -------------------------------------------------------------------------
     # Generate our main site items

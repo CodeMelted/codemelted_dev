@@ -22,32 +22,8 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 # =============================================================================
-[string]$CSS_STYLE = @"
-<meta name="monetization" content="`$ilp.uphold.com/q94gJPq8PFF4">
-<script src="https://codemelted.dev/website-nav/index.js" defer></script>
-<style>
-    body {
-        background-color: #2B2E33;
-        color: white;
-    }
-
-    h1, h2, h3, h4, h5, h6, dd {
-        color: white;
-    }
-
-    span.linenum {
-        background-color: #8B8000;
-    }
-
-    span.linecov {
-        background-color: darkblue;
-    }
-
-    span.linenocov {
-        background-color: darkred;
-    }
-</style>
-</head>
+[string]$HTML_TEMPLATE = @"
+<img style="width: 250px;" src="https://codemelted.dev/website-nav/logos/logo-593x100.png" />
 "@
 
 function build {
@@ -57,23 +33,21 @@ function build {
     [string]$PROJ_NAME = "melt_the_code Flutter Module"
     [string]$SCRIPT_PATH = $PSScriptRoot
     [string]$SRC_PATH = $SCRIPT_PATH + "/melt_the_code"
-    [string]$DOCS_PATH = $SRC_PATH + "/docs"
-    [string]$COVERAGE_PATH = $SRC_PATH + "/coverage"
+    [string]$DIST_PATH = "$SRC_PATH/dist/flutter/melt_the_code"
+    [string]$COVERAGE_PATH = "$DIST_PATH/coverage"
 
     # -------------------------------------------------------------------------
     # Helper Functions
-    # -------------------------------------------------------------------------
     function _formatHtml([string] $path) {
+        Write-Host $path
         $htmlFiles = Get-ChildItem -Path $path -Filter *.html
         foreach ($file in $htmlFiles) {
             [string]$newFile = $file.Directory.FullName + [IO.Path]::DirectorySeparatorChar +
                 "new" + $file.Name
             foreach ($line in Get-Content $file) {
-                if ($line.Contains("<head>")) {
-                    $line | Out-File -FilePath $newFile -Append
-                    "<meta name='viewport' content='width=device-width, initial-scale=1'>" | Out-File -FilePath $newFile -Append
-                } elseif ($line.Contains("</head>")) {
-                    $CSS_STYLE | Out-File -FilePath $newFile -Append
+                if ($line.Contains("<body>")) {
+                    "<body> $HTML_TEMPLATE" | Out-File -FilePath $newFile -Append
+                    $line.Replace("</head>", $CSS_STYLE) | Out-File -FilePath $newFile -Append
                 } else {
                     $line | Out-File -FilePath $newFile -Append
                 }
@@ -84,68 +58,57 @@ function build {
         }
     }
 
-    function clean {
-        Write-Host "MESSAGE: Now cleaning build outputs"
-        Remove-Item -Path $DOCS_PATH -Force -Recurse -ErrorAction SilentlyContinue
-        Remove-Item -Path $COVERAGE_PATH -Force -Recurse -ErrorAction SilentlyContinue
-        New-Item -Path $DOCS_PATH -ItemType Directory
-        New-Item -Path $COVERAGE_PATH -ItemType Directory
-        Write-Host "MESSAGE: build outputs cleaned"
-    }
-
-    function docs {
-        Write-Host "MESSAGE: Now generating dartdoc"
-        Write-Host
-
-        [string]$currentLocation = (Get-Location).ToString()
-        Set-Location $SRC_PATH
-        dartdoc --output $DOCS_PATH
-        $docDirs = Get-ChildItem -Path $DOCS_PATH -Recurse -Directory -Force `
-            -ErrorAction SilentlyContinue | Select-Object FullName
-
-        _formatHtml($DOCS_PATH)
-        foreach ($element in $docDirs) {
-            _formatHtml($element.FullName)
-        }
-        Set-Location $currentLocation
-
-        Write-Host
-        Write-Host "MESSAGE: dartdoc generated"
-    }
-
-    function test {
-        Write-Host "MESSAGE: Now executing flutter test"
-        Write-Host
-
-        [string]$currentLocation = (Get-Location).ToString()
-        Set-Location $SRC_PATH
-        flutter test --coverage
-        if ($IsLinux -or $IsMacOS) {
-            genhtml -o $COVERAGE_PATH $COVERAGE_PATH/lcov.info
-        }
-        _formatHtml($COVERAGE_PATH)
-        _formatHtml("$COVERAGE_PATH/lib")
-        _formatHtml("$COVERAGE_PATH/lib/use_cases/asyncio")
-        _formatHtml("$COVERAGE_PATH/lib/use_cases/math")
-        Set-Location $currentLocation
-
-        Write-Host
-        Write-Host "MESSAGE: flutter test completed."
-    }
-
-    function publish() {
-        Write-Host "MESSAGE: UNDER DEVELOPMENT"
-    }
-
     # -------------------------------------------------------------------------
-    # Main Entry of script
+    # Write the main header
     # -------------------------------------------------------------------------
-    Write-Host "----------------------------"
     Write-Host $PROJ_NAME
-    Write-Host "----------------------------"
     Write-Host
-    clean
-    docs
-    test
+
+    # -------------------------------------------------------------------------
+    # Setup our dist directory
+    # -------------------------------------------------------------------------
+    Write-Host "MESSAGE: Now cleaning build outputs"
+    Remove-Item -Path $DIST_PATH -Force -Recurse -ErrorAction Ignore
+    New-Item -Path $DIST_PATH -ItemType Directory
+    Write-Host "MESSAGE: build outputs cleaned"
+
+    # -------------------------------------------------------------------------
+    # Generate our documentation
+    # -------------------------------------------------------------------------
+    Write-Host "MESSAGE: Now generating dartdoc"
+    Write-Host
+    Set-Location $SRC_PATH
+    dartdoc --output "$DIST_PATH/docs"
+    Set-Location $SCRIPT_PATH
+    Write-Host
+    Write-Host "MESSAGE: dartdoc generated"
+
+    # -------------------------------------------------------------------------
+    # Run our tests
+    # -------------------------------------------------------------------------
+    Write-Host "MESSAGE: Now executing flutter test"
+    Write-Host
+    Set-Location $SRC_PATH
+    flutter test --coverage
+    if ($IsLinux -or $IsMacOS) {
+        genhtml -o $COVERAGE_PATH --dark-mode coverage/lcov.info
+    }
+    Remove-Item -Path coverage -Force -Recurse
+    _formatHtml($COVERAGE_PATH)
+    _formatHtml("$COVERAGE_PATH/lib")
+    Set-Location $SCRIPT_PATH
+
+    Write-Host
+    Write-Host "MESSAGE: flutter test completed."
+
+    # -------------------------------------------------------------------------
+    # Copy our index.html
+    # -------------------------------------------------------------------------
+    Copy-Item -Path $SCRIPT_PATH/index.html $DIST_PATH -Force
+
+    # -------------------------------------------------------------------------
+    # Publish the flutter module
+    # -------------------------------------------------------------------------
+    # TBD
 }
 build $args[0]
