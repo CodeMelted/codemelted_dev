@@ -2,7 +2,7 @@
 # =============================================================================
 # MIT License
 #
-# © 2022 Mark Shaffer. All Rights Reserved.
+# © 2023 Mark Shaffer. All Rights Reserved.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to
@@ -22,7 +22,9 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 # =============================================================================
-
+[string]$HTML_TEMPLATE = @"
+<img style="width: 250px;" src="https://codemelted.dev/website-nav/logos/logo-593x100.png" />
+"@
 
 function build {
     # -------------------------------------------------------------------------
@@ -32,31 +34,30 @@ function build {
     [string]$SCRIPT_PATH = $PSScriptRoot
     [string]$SRC_PATH = $SCRIPT_PATH + "/melt_the_code"
     [string]$DIST_PATH = "$SRC_PATH/dist/cpp/melt_the_code"
-    # [string]$COVERAGE_PATH = $SRC_PATH + "/coverage"
+    [string]$COVERAGE_PATH = $DIST_PATH + "/coverage"
 
-    # # -------------------------------------------------------------------------
-    # # Helper Functions
-    # # -------------------------------------------------------------------------
-    # function _formatHtml([string] $path) {
-    #     $htmlFiles = Get-ChildItem -Path $path -Filter *.html
-    #     foreach ($file in $htmlFiles) {
-    #         [string]$newFile = $file.Directory.FullName + [IO.Path]::DirectorySeparatorChar +
-    #             "new" + $file.Name
-    #         foreach ($line in Get-Content $file) {
-    #             if ($line.Contains("<head>")) {
-    #                 $line | Out-File -FilePath $newFile -Append
-    #                 "<meta name='viewport' content='width=device-width, initial-scale=1'>" | Out-File -FilePath $newFile -Append
-    #             } elseif ($line.Contains("</head>")) {
-    #                 $CSS_STYLE | Out-File -FilePath $newFile -Append
-    #             } else {
-    #                 $line | Out-File -FilePath $newFile -Append
-    #             }
-    #         }
-    #         Remove-Item -Path $file -Force
-    #         Rename-Item -Path $newFile -NewName $file -Force
-    #         Write-Host $file created.
-    #     }
-    # }
+    # -------------------------------------------------------------------------
+    # Helper Functions
+    # -------------------------------------------------------------------------
+    function _formatHtml([string] $path) {
+        Write-Host $path
+        $htmlFiles = Get-ChildItem -Path $path -Filter *.html
+        foreach ($file in $htmlFiles) {
+            [string]$newFile = $file.Directory.FullName + [IO.Path]::DirectorySeparatorChar +
+                "new" + $file.Name
+            foreach ($line in Get-Content $file) {
+                if ($line.Contains("<body>")) {
+                    "<body> $HTML_TEMPLATE" | Out-File -FilePath $newFile -Append
+                    $line.Replace("</head>", $CSS_STYLE) | Out-File -FilePath $newFile -Append
+                } else {
+                    $line | Out-File -FilePath $newFile -Append
+                }
+            }
+            Remove-Item -Path $file -Force
+            Rename-Item -Path $newFile -NewName $file -Force
+            Write-Host $file created.
+        }
+    }
 
     # -------------------------------------------------------------------------
     # Write the main header
@@ -85,13 +86,40 @@ function build {
     Write-Host "MESSAGE: doxygen generated"
 
     # -------------------------------------------------------------------------
+    # Building and Getting our Test Coverage
+    # -------------------------------------------------------------------------
+    Write-Host "MESSAGE: Now running google test"
+    Write-Host
+    Set-Location $SRC_PATH
+    g++ -std=c++17 -fprofile-arcs -ftest-coverage melt_the_code.cpp `
+        melt_the_code_test.cpp -lgtest `
+        -lgtest_main -pthread -o test.exe
+    ./test.exe
+    gcov -r . melt_the_code.cpp
+    lcov -d . -c -o melt_the_code_coverage.info
+    lcov --remove melt_the_code_coverage.info -o melt_the_code_coverage_filtered.info `
+        '/usr/local/include/*' '*v1*'
+
+    if ($IsLinux -or $IsMacOS) {
+        genhtml -o $COVERAGE_PATH --dark-mode melt_the_code_coverage_filtered.info
+    }
+    Remove-Item -Path test.exe -Force
+    Remove-Item -Path melt_the_code_coverage.info -Force
+    Remove-Item -Path melt_the_code_coverage_filtered.info -Force
+    Remove-Item -Path melt_the_code_test.gcda -Force
+    Remove-Item -Path melt_the_code_test.gcno -Force
+    Remove-Item -Path melt_the_code.cpp.gcov -Force
+    Remove-Item -Path melt_the_code.gcda -Force
+    Remove-Item -Path melt_the_code.gcno -Force
+    _formatHtml($COVERAGE_PATH)
+    _formatHtml("$COVERAGE_PATH/melt_the_code")
+    Set-Location $SCRIPT_PATH
+    Write-Host
+    Write-Host "MESSAGE: google test completed."
+
+    # -------------------------------------------------------------------------
     # Copy our index.html
     # -------------------------------------------------------------------------
     Copy-Item -Path $SCRIPT_PATH/index.html $DIST_PATH -Force
-
-    # -------------------------------------------------------------------------
-    # Publish the flutter module
-    # -------------------------------------------------------------------------
-    # TBD
 }
 build $args[0]

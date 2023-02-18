@@ -40,6 +40,11 @@ const char* CodeMeltedAPI::aboutModule() {
     return "hello";
 }
 
+CodeMeltedAPI& CodeMeltedAPI::instance() {
+    static CodeMeltedAPI _instance;
+    return _instance;
+}
+
 CodeMeltedAPI& meltTheCode() {
     return CodeMeltedAPI::instance();
 }

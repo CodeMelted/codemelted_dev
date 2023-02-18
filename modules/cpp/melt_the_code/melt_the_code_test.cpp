@@ -1,4 +1,5 @@
 
+//LCOV_EXCL_START
 /*
 ===============================================================================
 MIT License
@@ -25,16 +26,17 @@ DEALINGS IN THE SOFTWARE.
 ===============================================================================
 */
 
-// #include "gtest/gtest.h"
-// #include "melt_the_code.h"
+#include <gtest/gtest.h>
+#include "melt_the_code.h"
 
-// TEST(CodeMeltedAPI, testApiAccess) {
-//     using namespace melt_the_code;
-//     auto v = meltTheCode().aboutModule();
-//     ASSERT_TRUE(strlen(v) > 0);
-// }
+TEST(CodeMeltedAPI, testApiAccess) {
+    using namespace melt_the_code;
+    auto v = meltTheCode().aboutModule();
+    ASSERT_TRUE(strlen(v) > 0);
+}
 
-// int main(int argc, char **argv) {
-//     ::testing::InitGoogleTest(&argc, argv);
-//     return RUN_ALL_TESTS();
-// }
+int main(int argc, char **argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
+//LCOV_EXCL_END

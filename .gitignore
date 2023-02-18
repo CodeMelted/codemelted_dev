@@ -5,3 +5,11 @@ docs
 .flutter-plugins-dependencies
 lcov.info
 modules/flutter/melt_the_code/.flutter-plugins
+modules/cpp/melt_the_code/melt_the_code_test.gcno
+modules/cpp/melt_the_code/melt_the_code_test.gcda
+modules/cpp/melt_the_code/melt_the_code_coverage.info
+modules/cpp/melt_the_code/melt_the_code.cpp.gcov
+modules/cpp/melt_the_code/melt_the_code.gcda
+modules/cpp/melt_the_code/melt_the_code.gcno
+modules/cpp/melt_the_code/test.exe
+modules/cpp/melt_the_code/melt_the_code_coverage_filtered.info
