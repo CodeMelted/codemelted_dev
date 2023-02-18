@@ -184,7 +184,7 @@ const PAGE_OPTIONS_TEMPLATE = `
 `;
 
 // Page navigation
-const HOME_PAGE = "/modules";
+const HOME_PAGE = "/";
 const PORTAL_PAGE = "https://codemelted.com";
 const URL_PAGE = {
     // "Cpp"     : `${HOME_PAGE}/cpp/melt_the_code`,
@@ -236,8 +236,7 @@ function main() {
     let isSubPageActive = false;
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    const embedSrc = urlParams.has("embedSrc") ? urlParams.get("embedSrc") : ""
-    const isEmbedded = embedSrc.length > 0;
+    const isEmbedded = urlParams.has("isEmbedded") ? urlParams.get("isEmbedded")  === "true" : false;
 
     const popupAction = urlParams.has("action")
         ? urlParams.get("action")
@@ -270,7 +269,7 @@ function main() {
             // Assign the button action
             btn.addEventListener("click", () => {
                 window.location.href = isEmbedded
-                    ? `${value}?embedSrc=${embedSrc}`
+                    ? `${value}?isEmbedded=true`
                     : value;
             });
 
@@ -312,7 +311,7 @@ function main() {
 
         document.getElementById("btnDesign").addEventListener("click", () => {
             window.location.href = isEmbedded
-                ? `/?embedSrc=${embedSrc}`
+                ? `/?isEmbedded=true`
                 : "/";
         });
 
@@ -336,6 +335,7 @@ function main() {
         // On our main page or the jeep page hide the docs and coverage button.
         // It will not have that as it is documenting the page
         if (href.includes("jeep-pi")) {
+            document.getElementById("divFixedHeader").style.display = "none";
             document.getElementById("divFixedFooter").style.display = "none";
             document.getElementsByClassName("cm-page-options")[0]
                 .style.display = "none";

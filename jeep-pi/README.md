@@ -12,9 +12,11 @@ UNDER DEVELOPMENT
 
 ## License
 
+<img style="width: 250px;" src="../website-nav/logos/logo-593x100.png" />
+
 MIT License
 
-Copyright (c) 2022 Mark Shaffer
+© 2023 Mark Shaffer
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
