@@ -3,3 +3,4 @@ doc
 .DS_Store
 .flutter-plugins-dependencies
 lcov.info
+modules/flutter/melt_the_code/.flutter-plugins

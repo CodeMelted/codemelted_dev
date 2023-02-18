@@ -70,6 +70,8 @@ function build {
     Write-Host "MESSAGE: Now cleaning build outputs"
     Remove-Item -Path $DIST_PATH -Force -Recurse -ErrorAction Ignore
     New-Item -Path $DIST_PATH -ItemType Directory
+    flutter clean
+    flutter pub get
     Write-Host "MESSAGE: build outputs cleaned"
 
     # -------------------------------------------------------------------------
