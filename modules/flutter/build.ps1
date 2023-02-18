@@ -70,9 +70,19 @@ function build {
     Write-Host "MESSAGE: Now cleaning build outputs"
     Remove-Item -Path $DIST_PATH -Force -Recurse -ErrorAction Ignore
     New-Item -Path $DIST_PATH -ItemType Directory
+    Write-Host "MESSAGE: build outputs cleaned"
+
+    # -------------------------------------------------------------------------
+    # Go build flutter
+    # -------------------------------------------------------------------------
+    Write-Host "MESSAGE: Now building with flutter"
+    Write-Host
+    Set-Location $SRC_PATH
     flutter clean
     flutter pub get
-    Write-Host "MESSAGE: build outputs cleaned"
+    Set-Location $SCRIPT_PATH
+    Write-Host
+    Write-Host "MESSAGE: flutter build completed."
 
     # -------------------------------------------------------------------------
     # Generate our documentation
@@ -80,7 +90,7 @@ function build {
     Write-Host "MESSAGE: Now generating dartdoc"
     Write-Host
     Set-Location $SRC_PATH
-    dartdoc --output "$DIST_PATH/docs"
+    dart doc --output "$DIST_PATH/docs"
     Set-Location $SCRIPT_PATH
     Write-Host
     Write-Host "MESSAGE: dartdoc generated"

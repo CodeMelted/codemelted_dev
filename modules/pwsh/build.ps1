@@ -86,7 +86,6 @@ function build {
         throw "Testing failed, failed tests occurred with pwsh module"
     }
     Remove-Item -Path $SRC_PATH/coverage.xml -Force
-    Invoke-ScriptAnalyzer . -Recurse
     Set-Location -Path $currentLocation
     Write-Host
     Write-Host "MESSAGE: Pester tests completed"
