@@ -1,3 +1,4 @@
-## 0.0.1
+## 0.1.0
 
-* TODO: Describe initial release.
+* Initial generation of the module only to my site.
+* Implements the About Module use case.
