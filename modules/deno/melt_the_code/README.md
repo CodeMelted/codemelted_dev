@@ -1,5 +1,3 @@
-<center><img style="max-width: 593px; width: 80%;" src="https://codemelted.dev/website-nav/logos/logo-593x100.png" /></center>
-
 <h1><img style="height: 30px;" src="https://codemelted.dev/website-nav/icons/icons8-deno-100x100.png" /> melt_the_code Deno Module </h1>
 
 TBD - Intro
@@ -13,9 +11,11 @@ TBD
 
 ## License
 
+<img style="width: 250px;" src="https://codemelted.dev/website-nav/logos/logo-593x100.png" />
+
 MIT License
 
-© 2023 Mark Shaffer. All Rights Reserved.
+© 2023 Mark Shaffer
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the "Software"),

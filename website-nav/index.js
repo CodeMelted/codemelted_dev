@@ -49,7 +49,42 @@ const HTML_TEMPLATE = `
     }
 
     body {
-        margin-bottom: 65px;
+        margin-top: 55px;
+        margin-bottom: 55px;
+    }
+
+    /* Header */
+    .cm-fixed-header {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        border: 1px solid black;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 55px;
+        background-color: black;
+        color: white;
+        font-family: sans-serif;
+        font-size: 12px;
+        z-index: 2147483648;
+    }
+    .cm-fixed-header button {
+        background-color: black;
+        color: white;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        font-size: 12px;
+    }
+    .cm-logo {
+        display: block;
+        height: 35px;
+        margin-top: 12px;
+        margin-left: 23px;
+    }
+    .cm-logo:hover {
+        cursor: pointer;
     }
 
     /* Footer */
@@ -98,6 +133,11 @@ const HTML_TEMPLATE = `
     }
 </style>
 
+<div class='cm-fixed-header' id='divFixedHeader'>
+    <img alt='logo' class='cm-logo' id='imgLogo' src='https://codemelted.dev/website-nav/logos/logo-593x100.png'/>
+    <button id='btnWeb'><img src='https://codemelted.dev/website-nav/icons/icons8-website-48.png' style='height: 35px;'/></button>
+</div>
+
 <div id="divFixedFooter" class="cm-fixed-footer">
     <!-- <button id="btnCpp"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/icons8-c++-48.png" /><br/>C++</button> -->
     <button id="btnPwsh"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/ps_black_64.png" /><br/>pwsh</button>
@@ -134,7 +174,6 @@ const PAGE_OPTIONS_TEMPLATE = `
         }
     }
 </style>
-<center><a href="/" ><img id="imgHeader" style="margin-top: 25px; max-width: 593px; width: 80%;" src="${PROTOCOL_HOST}/website-nav/logos/logo-593x100.png" /></a></center>
 <div class="cm-page-options">
     <button id="btnDesign"><img src="${PROTOCOL_HOST}/website-nav/icons/icons8-design-48.png" /></button>
     <button id="btnSupport"><img src="${PROTOCOL_HOST}/website-nav/icons/bmc-button.png" /></button>
@@ -197,11 +236,8 @@ function main() {
     let isSubPageActive = false;
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    const isEmbedded = urlParams.has("isEmbedded")
-        ? urlParams.get("isEmbedded") === "true" ? true : false
-        : window.location !== window.parent.location
-            ? true
-            : false;
+    const embedSrc = urlParams.has("embedSrc") ? urlParams.get("embedSrc") : ""
+    const isEmbedded = embedSrc.length > 0;
 
     const popupAction = urlParams.has("action")
         ? urlParams.get("action")
@@ -212,6 +248,7 @@ function main() {
         // If print action, go setup our print process
         // Anything else simply just popups the window
         if (popupAction === "print") {
+            document.getElementById("divFixedHeader").style.display = "none";
             document.getElementById("divFixedFooter").style.display = "none";
             document.getElementsByClassName("cm-page-options")[0]
                 .style.display = "none";
@@ -219,7 +256,7 @@ function main() {
             setTimeout(() => {
                 window.print();
                 if (!isMobile()) {
-                window.close();
+                    window.close();
                 }
           }, 500);
         }
@@ -233,7 +270,7 @@ function main() {
             // Assign the button action
             btn.addEventListener("click", () => {
                 window.location.href = isEmbedded
-                    ? `${value}?isEmbedded=true`
+                    ? `${value}?embedSrc=${embedSrc}`
                     : value;
             });
 
@@ -250,8 +287,12 @@ function main() {
         }
 
         // If one of our sub pages are active, hide our header image.
+        if (isEmbedded) {
+            document.getElementById("divFixedHeader").style.display = "none";
+            document.body.style.marginTop = "5px";
+        }
+
         if (isSubPageActive) {
-            document.getElementById("imgHeader").style.display = "none";
             document.getElementById("btnPrint").style.display = "none";
         } else {
             // If our main page, hide the code / coverage buttons
@@ -261,9 +302,17 @@ function main() {
         }
 
         // Assign our button actions on the display.
+        document.getElementById("imgLogo").addEventListener("click", () => {
+            window.location.href = HOME_PAGE;
+        });
+
+        document.getElementById("btnWeb").addEventListener("click", () => {
+            window.location.href = `${PORTAL_PAGE}`;
+        });
+
         document.getElementById("btnDesign").addEventListener("click", () => {
             window.location.href = isEmbedded
-                ? `/?isEmbedded=true`
+                ? `/?embedSrc=${embedSrc}`
                 : "/";
         });
 

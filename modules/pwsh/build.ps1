@@ -33,9 +33,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="monetization" content="`$ilp.uphold.com/q94gJPq8PFF4">
     <link rel="stylesheet" href="https://codemelted.dev/website-nav/css/hacker-theme.css">
-</head><body><div class="content-main">
+</head><body>
     CONTENT
-</div></body></html>
+</body></html>
 "@
 
 function build {

@@ -11,11 +11,12 @@
 </head><body>
     <center><iframe id="frmModuleContent" frameBorder="0" style="width: 98%" src="docs"></iframe></center>
     <script>
-        const HEIGHT_OFFSET = 130;
-        const height = window.innerHeight - HEIGHT_OFFSET;
+        const isEmbedded = window.location.href.includes("embedSrc");
+        const heightOffset = !isEmbedded ? 173 : 125;
+        const height = window.innerHeight - heightOffset;
         document.getElementById("frmModuleContent").height = `${height}`;
         window.addEventListener("resize", (evt) => {
-            const height = window.innerHeight - HEIGHT_OFFSET;
+            const height = window.innerHeight - heightOffset;
             document.getElementById("frmModuleContent").height = `${height}`;
         });
     </script>

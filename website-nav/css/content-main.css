@@ -1,0 +1,10 @@
+/*
+@file Sets up the content sizing properly.
+@license MIT / © 2023 Mark Shaffer. All Rights Reserved
+*/
+.content-main {
+    max-width: 50em;
+    margin: auto;
+    padding: 0.6250em;
+}
+

@@ -23,7 +23,7 @@
 # IN THE SOFTWARE.
 # =============================================================================
 [string]$HTML_TEMPLATE = @"
-    <center><img style="max-width: 593px; width: 80%;" src="https://codemelted.dev/website-nav/logos/logo-593x100.png" /></center>
+    <img style="width: 250px;" src="https://codemelted.dev/website-nav/logos/logo-593x100.png" />
 "@
 
 function build {
