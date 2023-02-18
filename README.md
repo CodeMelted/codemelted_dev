@@ -9,9 +9,6 @@
   - [2.1 About Module](#21-about-module)
 - [3.0 Design Notes](#30-design-notes)
 - [4.0 License](#40-license)
-  - [Functional Decomposition](#functional-decomposition)
-    - [About Module](#about-module)
-  - [License](#license)
 
 # 1.0 Introduction
 
@@ -96,18 +93,3 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
-## Functional Decomposition
-
-
-
-
-
-### About Module
-
-
-
-
-## License
-
