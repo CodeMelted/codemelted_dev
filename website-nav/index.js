@@ -236,7 +236,8 @@ function main() {
     let isSubPageActive = false;
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    const isEmbedded = urlParams.has("isEmbedded") ? urlParams.get("isEmbedded")  === "true" : false;
+    const isEmbedded = urlParams.has("isEmbedded")
+        ? parseInt(urlParams.get("isEmbedded")) : 0;
 
     const popupAction = urlParams.has("action")
         ? urlParams.get("action")
@@ -268,8 +269,8 @@ function main() {
 
             // Assign the button action
             btn.addEventListener("click", () => {
-                window.location.href = isEmbedded
-                    ? `${value}?isEmbedded=true`
+                window.location.href = isEmbedded > 0
+                    ? `${value}?isEmbedded=${isEmbedded}`
                     : value;
             });
 
@@ -286,13 +287,19 @@ function main() {
         }
 
         // If one of our sub pages are active, hide our header image.
-        if (isEmbedded) {
+        if (isEmbedded > 0) {
             document.getElementById("divFixedHeader").style.display = "none";
             document.body.style.marginTop = "5px";
+            if (isEmbedded > 1) {
+                document.getElementById("divFixedFooter").style.display = "none";
+            }
         }
 
         if (isSubPageActive) {
             document.getElementById("btnPrint").style.display = "none";
+            if (isEmbedded == 2) {
+                document.getElementById("btnDesign").style.display = "none";
+            }
         } else {
             // If our main page, hide the code / coverage buttons
             document.getElementById("btnDesign").style.display = "none";
@@ -310,8 +317,8 @@ function main() {
         });
 
         document.getElementById("btnDesign").addEventListener("click", () => {
-            window.location.href = isEmbedded
-                ? `/?isEmbedded=true`
+            window.location.href = isEmbedded > 0
+                ? `/?isEmbedded=${isEmbedded}`
                 : "/";
         });
 
