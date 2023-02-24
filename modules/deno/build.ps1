@@ -26,6 +26,14 @@
 <img style="width: 250px;" src="https://codemelted.dev/website-nav/logos/logo-593x100.png" />
 "@
 
+[string]$HTML_LOCAL_STORAGE_FIX = @"
+<script>document.documentElement.dataset.theme = "dark"</script>
+"@
+
+[string]$THEME_FIX = @"
+<option value="dark" selected>Dark</option>
+"@
+
 function build {
     # -------------------------------------------------------------------------
     # Constants:
@@ -44,9 +52,13 @@ function build {
             [string]$newFile = $file.Directory.FullName + [IO.Path]::DirectorySeparatorChar +
                 "new" + $file.Name
             foreach ($line in Get-Content $file) {
-                if ($line.Contains("<body>")) {
+                if ($line.Contains("<body>") -and -not $path.Contains("docs")) {
                     "<body> $HTML_TEMPLATE" | Out-File -FilePath $newFile -Append
                     $line.Replace("</head>", $CSS_STYLE) | Out-File -FilePath $newFile -Append
+                } elseif ($path.Contains("docs") -and $line.Contains("<script>document.documentElement.dataset.theme = localStorage.getItem(""tsd-theme"") || ""os""</script>")) {
+                    $line.Replace("<script>document.documentElement.dataset.theme = localStorage.getItem(""tsd-theme"") || ""os""</script>", $HTML_LOCAL_STORAGE_FIX) | Out-File -FilePath $newFile -Append
+                } elseif ($path.Contains("docs") -and $line.Contains("<option value=""dark"">Dark</option>")) {
+                    $line.Replace("<option value=""dark"">Dark</option>", $THEME_FIX) | Out-File -FilePath $newFile -Append
                 } else {
                     $line | Out-File -FilePath $newFile -Append
                 }
@@ -89,7 +101,12 @@ function build {
     Write-Host "MESSAGE: Now generating tsdoc"
     Write-Host
     Set-Location $SRC_PATH
-    typedoc --name melt_the_code --readme ./README.md ./melt_the_code.ts
+    typedoc --darkHighlightTheme dark-plus --name melt_the_code --readme ./README.md ./melt_the_code.ts
+    _formatHtml("$SRC_PATH/docs")
+    _formatHtml("$SRC_PATH/docs/functions")
+    _formatHtml("$SRC_PATH/docs/classes")
+    $mainJs = Get-Content -Path "$SRC_PATH/docs/assets/main.js" -Raw
+    $mainJs.Replace('"os"', '"dark"') | Out-File -FilePath "$SRC_PATH/docs/assets/main.js" -Force
     Move-Item -Path docs $DIST_PATH -Force
     Set-Location $SCRIPT_PATH
     Write-Host
