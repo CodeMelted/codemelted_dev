@@ -68,8 +68,6 @@ The following procedure represent the steps to confirm your setup of the previou
 Path | Description
 --- | ---
 .firebase | This is the cache that tracks the deployments of this repo to the [Melt the Code - DEV](https://codemelted.dev) web domain
-disqus | Represents an embed `disqus` widget to support the main [Melt the Code](https://www.codemelted.com) web domain
-jeep-pi | A raspberry pi 4 project for an infotainment system for a jeep wrangler to support taking pictures while driving. Also provides other entertainment items
 modules | The core of what this repo is about.  Contains all the source code and tooling for the Melt the Code Cross Platform modules.  This includes the documenting, testing, and deployment of each module type
 website-nav | Provides the infrastructure to navigate the [Melt the Code - DEV](https://codemelte.dev) website
 

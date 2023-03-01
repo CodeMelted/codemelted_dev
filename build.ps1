@@ -46,8 +46,6 @@ function build {
     [string]$PROJ_NAME = "codemelted.dev - Site Builder"
     [string]$SCRIPT_PATH = $PSScriptRoot
     [string]$DIST_PATH = "$SCRIPT_PATH/dist"
-    [string]$JEEP_PI_SRC_PATH = "$SCRIPT_PATH/jeep-pi"
-    [string]$JEEP_PI_DIST_PATH = "$JEEP_PI_SRC_PATH/dist"
     [string]$MODULES_SRC_PATH = "$SCRIPT_PATH/modules"
     [string]$MODULES_DIST_PATH = "$DIST_PATH/modules"
     [string]$MODULES_DESIGN_SRC_PATH = "$MODULES_SRC_PATH/design/images"
@@ -60,9 +58,6 @@ function build {
     [string]$MODULES_PWSH_DIST_PATH = "$MODULES_SRC_PATH/pwsh/melt_the_code/dist"
     [string]$MODULES_FLUTTER_SRC_PATH = "$MODULES_SRC_PATH/flutter"
     [string]$MODULES_FLUTTER_DIST_PATH = "$MODULES_SRC_PATH/flutter/melt_the_code/dist"
-    [string]$WIDGETS_SRC_PATH = "$SCRIPT_PATH/widgets"
-    [string]$WIDGETS_DIST_PATH = "$DIST_PATH/widgets"
-
 
     # -------------------------------------------------------------------------
     # Print our header statement
@@ -75,19 +70,6 @@ function build {
     # -------------------------------------------------------------------------
     Remove-Item -Path $DIST_PATH -Force -Recurse -ErrorAction Ignore
     New-Item -Path $DIST_PATH -ItemType Directory
-
-    # -------------------------------------------------------------------------
-    # Copy our widgets
-    # -------------------------------------------------------------------------
-    Copy-Item -Path $WIDGETS_SRC_PATH $WIDGETS_DIST_PATH -Recurse -Force
-
-    # -------------------------------------------------------------------------
-    # Build our jeep-pi page
-    # -------------------------------------------------------------------------
-    Set-Location $JEEP_PI_SRC_PATH
-    ./build.ps1
-    Set-Location $SCRIPT_PATH
-    Copy-Item -Path "$JEEP_PI_DIST_PATH/*" $DIST_PATH -Recurse -Force
 
     # -------------------------------------------------------------------------
     # Copy our module design artifacts

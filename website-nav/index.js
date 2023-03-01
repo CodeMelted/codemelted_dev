@@ -98,15 +98,15 @@ const HTML_TEMPLATE = `
         bottom: 0;
         left: 0;
         width: 100%;
-        background-color: rgb(96, 125, 139);
+        background-color: rgb(225, 223, 219);
         color: white;
         text-align: center;
         font-size: 12px;
     }
 
     .cm-fixed-footer button {
-        background-color: rgb(96, 125, 139);
-        color: white;
+        background-color: rgb(225, 223, 219);
+        color: black;
         outline: none;
         border: none;
         cursor: pointer;
@@ -115,8 +115,8 @@ const HTML_TEMPLATE = `
 
     .active, .cm-fixed-footer button:hover {
         font-weight: bold;
-        color: black;
-        background-color: rgb(189, 189, 189);
+        color: white;
+        background-color: black;
     }
 
     /* Handle nice printing on the page */
@@ -276,8 +276,8 @@ function main() {
 
             // Determine and set the active tab if found
             if (href.toLowerCase().includes(key.toLowerCase())) {
-                btn.style.backgroundColor = "rgb(189, 189, 189)";
-                btn.style.color = "black";
+                btn.style.backgroundColor = "black";
+                btn.style.color = "white";
                 btn.style.fontWeight = "bold";
                 btn.classList.add("active");
                 isSubPageActive = true;
@@ -338,15 +338,6 @@ function main() {
         document.getElementById("btnPrint").addEventListener("click", () => {
             popupWindow(href.split("?")[0], document.title, 800, 500, "print");
         });
-
-        // On our main page or the jeep page hide the docs and coverage button.
-        // It will not have that as it is documenting the page
-        if (href.includes("jeep-pi")) {
-            document.getElementById("divFixedHeader").style.display = "none";
-            document.getElementById("divFixedFooter").style.display = "none";
-            document.getElementsByClassName("cm-page-options")[0]
-                .style.display = "none";
-        }
     }
 }
 main();
