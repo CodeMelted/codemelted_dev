@@ -27,6 +27,10 @@ DEALINGS IN THE SOFTWARE.
 /// An implementation of common developer use cases in one reusable module.
 library melt_the_code;
 
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
+
 // import 'dart:async';
 // import 'dart:convert';
 
@@ -54,6 +58,14 @@ const String _aboutModule = '''
 /// to access a use case via an unsupported target platform.
 class ModuleViolationError extends UnsupportedError {
   ModuleViolationError(String message) : super(message);
+
+  /// Performs a check to ensure a use case is not executed on the web
+  /// platform.
+  static void _checkNotWeb() {
+    if (kIsWeb) {
+      throw ModuleViolationError("Use case feature is not available on web");
+    }
+  }
 }
 
 /// Exception thrown when attempting execute a use case transaction and that
@@ -68,6 +80,70 @@ class UseCaseFailure implements Exception {
 // ----------------------------------------------------------------------------
 // Flutter Extensions
 // ----------------------------------------------------------------------------
+
+// ----------------------------------------------------------------------------
+// Use Console Use Case Implementation
+// ----------------------------------------------------------------------------
+
+class UseConsole {
+  // Member Fields:
+  static UseConsole? _instance;
+  var _stdin = !kIsWeb ? stdin : null;
+  var _stdout = !kIsWeb ? stdout : null;
+
+  /// Provides a private constructor to initialize the API singleton.
+  UseConsole._() {
+    _instance = this;
+  }
+
+  /// Gets an instance for the [CodeMelted] API.
+  static UseConsole _getInstance() {
+    _instance ??= UseConsole._();
+    return _instance!;
+  }
+
+  String input(String label, [bool isPassword = false]) {
+    ModuleViolationError._checkNotWeb();
+    try {
+      _stdin!.echoMode = !isPassword;
+      _stdout!.write("$label: ");
+      var rtnval = _stdin!.readLineSync();
+      return rtnval ?? "";
+    } catch (err) {
+      throw UseCaseFailure(err.toString());
+    }
+  }
+
+  int options(String label, List<String> options) {
+    ModuleViolationError._checkNotWeb();
+    try {
+      writeln(label);
+      var x = 0;
+      for (var element in options) {
+        writeln("$x. $element");
+      }
+      writeln();
+      return int.parse(input("Make a Selection"));
+    } catch (err) {
+      throw UseCaseFailure(err.toString());
+    }
+  }
+
+  void writeln([String message = ""]) {
+    ModuleViolationError._checkNotWeb();
+    try {
+      _stdout!.writeln(message);
+    } catch (err) {
+      throw UseCaseFailure(err.toString());
+    }
+  }
+
+  @visibleForTesting
+  void setMock(Stdin? stdinMock, Stdout? stdoutMock) {
+    _stdin = stdinMock;
+    _stdout = stdoutMock;
+  }
+}
 
 // /// Represents the task to be kicked off via the [UseAsyncIO] interface.
 // typedef TaskFunction = FutureOr<dynamic> Function(dynamic data);
@@ -554,6 +630,8 @@ class CodeMelted {
   /// Gets access to the [UseStorage] collection of functions to store and
   /// access key/value pairs.
   // UseStorage useStorage() => UseStorage._getInstance();
+
+  UseConsole useConsole() => UseConsole._getInstance();
 }
 
 /// Main entry point to the [CodeMelted] API.

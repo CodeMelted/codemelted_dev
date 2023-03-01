@@ -42,6 +42,28 @@ void main() {
     });
   });
 
+  group("meltTheCode().useConsole() Functional Tests", () {
+    test("Non-Console Environment Failures", () {
+      // Set the items to null to force the UseCaseFailure
+      meltTheCode().useConsole().setMock(null, null);
+
+      expect(
+        () => meltTheCode().useConsole().input("Enter Data"),
+        throwsA(isA<UseCaseFailure>()),
+      );
+
+      expect(
+        () => meltTheCode().useConsole().options("Enter Data", []),
+        throwsA(isA<UseCaseFailure>()),
+      );
+
+      expect(
+        () => meltTheCode().useConsole().writeln("Enter Data"),
+        throwsA(isA<UseCaseFailure>()),
+      );
+    });
+  });
+
   // group("useMath() Tests", () {
   //   test("Temperature Conversion Validation", () {
   //     nearEqual(32.0, meltTheCode().useMath().celsiusToFahrenheit(0.0), 0.1);

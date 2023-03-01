@@ -42,13 +42,13 @@ The sub-sections below are a use case breakdown for each of the identified use c
 
 ## 2.1 About Module
 
-**Who:** As a software developer
+**`WHO:`** As a software developer
 
-**What:** I want to be able to identify the version of the melt_the_code module
+**`WHAT:`** I want to be able to identify the version of the melt_the_code module
 
-**Why:** So that I have a capability to version control the module to my deployed software.
+**`WHY:`** So that I have a capability to version control the module to my deployed software.
 
-**Acceptance Criteria:**
+**`ACCEPTANCE CRITERIA:`**
 
 You just want to know what it is you are using.
 
@@ -60,9 +60,9 @@ LICENSE:  MIT / © yyyy Mark Shaffer. All Rights Reserved.
 
 Where VERSION is defined as:
 v0.0.0
- ^ Full implementation of the Module versioned design
-   ^ Full implementation of a Use Case
-     ^ Partial implementation of a Use Case / bug fix
+^ Full implementation of the Module versioned design
+  ^ Full implementation of a Use Case
+    ^ Partial implementation of a Use Case / bug fix
 ```
 
 # 3.0 Design Notes
