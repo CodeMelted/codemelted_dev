@@ -13,4 +13,5 @@ modules/cpp/melt_the_code/melt_the_code.gcda
 modules/cpp/melt_the_code/melt_the_code.gcno
 modules/cpp/melt_the_code/test.exe
 modules/cpp/melt_the_code/melt_the_code_coverage_filtered.info
-modules/design/.$design-notes.drawio.bkp
+*.drawio.bkp
+*.drawio.png.bkp

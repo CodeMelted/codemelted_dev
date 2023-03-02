@@ -7,6 +7,7 @@
   - [1.2 Scope](#12-scope)
 - [2.0 Functional Decomposition](#20-functional-decomposition)
   - [2.1 About Module](#21-about-module)
+  - [2.2 Use Environment](#22-use-environment)
 - [3.0 Design Notes](#30-design-notes)
 - [4.0 License](#40-license)
 
@@ -34,7 +35,7 @@ Raspberry Pi | Raspberry Pi is a low level single board computer that can be uti
 
 # 2.0 Functional Decomposition
 
-<img style="width: 100%;" src="modules/design/images/use-case-model.png" />
+<img style="width: 100%;" src="modules/design/use-case-model.drawio.png" />
 
 The **Use Case Model** depicted above shows `melt_the_code Module` use cases to be implemented.  The identified use cases reflect common domains for solving typical software engineering tasks.  Each use case will implement a set of functions common to those domains providing a consistent and similar API regardless of the chosen SDK.
 
@@ -64,6 +65,35 @@ v0.0.0
   ^ Full implementation of a Use Case
     ^ Partial implementation of a Use Case / bug fix
 ```
+
+## 2.2 Use Environment
+
+**`WHO:`** As a software developer
+
+**`WHAT:`** I want to be able to interact with the runtime environment
+
+**`WHY:`** So that I have the ability to gather necessary information from that environment and utilize desktop services.
+
+**`ACCEPTANCE CRITERIA:`**
+
+1. When you have the ability to manage environment variables as follows:
+   1. Get an environment variable as string or null if not found
+   2. Set an environment variable
+   3. Remove an environment variable
+2. When you have the ability to open links via the URL link protocol service.  These link protocols include `file://`, `http(s)://`, and `mailto://` protocols
+3. When you have the ability to query aspects about the given environment.  This information includes:
+   1. `eol` - The end of line character for new lines on the operating system
+   2. `hostname` - The hostname of the given platform
+   3. `numberOfProcessors` - How many threads could this thing spin up
+   4. `osName` - The name of the operating system
+   5. `osVersion` - The version number of the operating system
+   6. `pathSeparator` - The file separator used on disk
+4. When you have the ability to gather metrics about the given environment to include (NOTE: Only available on some SDKs):
+   1. `availableMemory` - The currently available memory
+   2. `usedMemory` - The currently consumed memory
+   3. `totalMemory` - The total memory of available to the environment
+   4. `usedCPU` - The currently utilized CPU
+5. When you have the ability to use the metrics gathered and monitor the environment by collecting the stats to stdout and CSV if specified.
 
 # 3.0 Design Notes
 
