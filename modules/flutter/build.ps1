@@ -108,6 +108,7 @@ function build {
     Remove-Item -Path coverage -Force -Recurse
     _formatHtml($COVERAGE_PATH)
     _formatHtml("$COVERAGE_PATH/lib")
+    _formatHtml("$COVERAGE_PATH/lib/src")
     Set-Location $SCRIPT_PATH
 
     Write-Host

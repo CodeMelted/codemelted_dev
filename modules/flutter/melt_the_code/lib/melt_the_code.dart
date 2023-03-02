@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_web_libraries_in_flutter
-
 /*
 ===============================================================================
 MIT License
@@ -31,9 +29,8 @@ library melt_the_code;
 
 import "dart:io";
 
-import "dart:html" as html;
-
 import "package:flutter/foundation.dart";
+import "package:melt_the_code/src/runtime.dart";
 import "package:url_launcher/url_launcher_string.dart";
 
 // ----------------------------------------------------------------------------
@@ -79,6 +76,10 @@ class UseCaseFailure implements Exception {
 // Use Environment Use Case Implementation
 // ----------------------------------------------------------------------------
 
+/// Implements the Use Environment use case per the design. This implements
+/// all elements minus the metrics / monitor capabilities. Those are not easily
+/// available on dart without bringing in a bunch of plugins. That utility is
+/// better suited for pwsh and deno environments.
 class UseEnvironment {
   // Member Fields:
   static UseEnvironment? _instance;
@@ -91,29 +92,13 @@ class UseEnvironment {
 
   /// Private Constructor to the API.
   UseEnvironment._() {
+    _hostname = Runtime.instance.hostname();
+    _numberOfProcessors = Runtime.instance.numberOfProcessors();
+    _osName = Runtime.instance.osName();
     if (kIsWeb) {
-      _hostname = html.window.location.hostname ?? "";
-      _numberOfProcessors = html.window.navigator.hardwareConcurrency ?? -1;
       _pathSeparator = "/";
-      _osName = html.window.navigator.userAgent.toLowerCase();
-      if (_osName.contains("android")) {
-        _osName = "android";
-      } else if (_osName.contains("ios")) {
-        _osName = "ios";
-      } else if (_osName.contains("mac")) {
-        _osName = "macos";
-      } else if (_osName.contains("linux") || _osName.contains("unix")) {
-        _osName = "linux";
-      } else if (_osName.contains("win")) {
-        _osName = "windows";
-      } else {
-        _osName = "";
-      }
     } else {
-      _hostname = Platform.localHostname;
-      _numberOfProcessors = Platform.numberOfProcessors;
       _pathSeparator = Platform.pathSeparator;
-      _osName = Platform.operatingSystem;
       _osVersion = Platform.operatingSystemVersion;
     }
 
@@ -126,8 +111,11 @@ class UseEnvironment {
     return _instance!;
   }
 
+  /// Retrieves the end line character utilized for the operating system.
   String eol() => _eol;
 
+  /// Gets an operating system environment variable.
+  /// Will throw [ModuleViolationError] if you use this method on web target.
   String? get(String key) {
     ModuleViolationError._checkNotWeb();
     try {
@@ -139,23 +127,35 @@ class UseEnvironment {
     }
   }
 
+  /// Gets the hostname of the operating system environment running the app.
   String hostname() => _hostname;
 
+  /// Determines if the current runtime is web or not.
   bool isBrowser() => kIsWeb;
 
+  /// Determines if the runtime is running on desktop/server or not.
   bool isDesktop() =>
       _osName == "linux" || _osName == "macos" || _osName == "windows";
 
+  /// Determines if the runtime is running on mobile or not.
   bool isMobile() => _osName == "android" || _osName == "ios";
 
+  /// Retrieves the number of processors available to the operating system.
+  /// The more the better :)
   int numberOfProcessors() => _numberOfProcessors;
 
+  /// Retrieves the name of the operating system as "android", "ios", "macos",
+  /// "linux", or "windows".
   String osName() => _osName;
 
+  /// Retrieves the operating system version number.
   String osVersion() => _osVersion;
 
+  /// Retrieves the path separator utilized for directories on disk.
   String pathSeparator() => _pathSeparator;
 
+  /// Sets an operating system environment variable.
+  /// Will throw [ModuleViolationError] if you use this method on web target.
   void set(String key, String value) {
     ModuleViolationError._checkNotWeb();
     try {
@@ -167,6 +167,8 @@ class UseEnvironment {
     }
   }
 
+  /// Removes an operating system environment variable.
+  /// Will throw [ModuleViolationError] if you use this method on web target.
   void remove(String key) {
     ModuleViolationError._checkNotWeb();
     try {
@@ -178,6 +180,11 @@ class UseEnvironment {
     }
   }
 
+  /// Utilizes the environments desktop service to open URL protocols by opening
+  /// the associated desktop program for the protocol.  The protocols are:
+  /// - file:// for files on the disk
+  /// - http(s):// for links on the Internet
+  /// - mailto:// for email generation
   Future<void> open(String url, [String? webOnlyWindowName]) async {
     try {
       if (!kIsWeb) {
