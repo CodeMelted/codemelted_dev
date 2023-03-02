@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_web_libraries_in_flutter
+
 /*
 ===============================================================================
 MIT License
@@ -27,20 +29,12 @@ DEALINGS IN THE SOFTWARE.
 /// An implementation of common developer use cases in one reusable module.
 library melt_the_code;
 
-import 'dart:io';
+import "dart:io";
 
-import 'package:flutter/foundation.dart';
+import "dart:html" as html;
 
-// import 'dart:async';
-// import 'dart:convert';
-
-// import 'package:geolocator/geolocator.dart';
-// import 'package:sensors_plus/sensors_plus.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-
-// import 'dart:isolate';
-// import 'dart:async';
-// import 'package:flutter/foundation.dart';
+import "package:flutter/foundation.dart";
+import "package:url_launcher/url_launcher_string.dart";
 
 // ----------------------------------------------------------------------------
 // Common Module Definitions
@@ -82,68 +76,216 @@ class UseCaseFailure implements Exception {
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
-// Use Console Use Case Implementation
+// Use Environment Use Case Implementation
 // ----------------------------------------------------------------------------
 
-class UseConsole {
+class UseEnvironment {
   // Member Fields:
-  static UseConsole? _instance;
-  var _stdin = !kIsWeb ? stdin : null;
-  var _stdout = !kIsWeb ? stdout : null;
+  static UseEnvironment? _instance;
+  var _eol = "";
+  var _hostname = "";
+  var _numberOfProcessors = -1;
+  var _osName = "";
+  var _osVersion = "";
+  var _pathSeparator = "";
 
-  /// Provides a private constructor to initialize the API singleton.
-  UseConsole._() {
-    _instance = this;
+  /// Private Constructor to the API.
+  UseEnvironment._() {
+    if (kIsWeb) {
+      _hostname = html.window.location.hostname ?? "";
+      _numberOfProcessors = html.window.navigator.hardwareConcurrency ?? -1;
+      _pathSeparator = "/";
+      _osName = html.window.navigator.userAgent.toLowerCase();
+      if (_osName.contains("android")) {
+        _osName = "android";
+      } else if (_osName.contains("ios")) {
+        _osName = "ios";
+      } else if (_osName.contains("mac")) {
+        _osName = "macos";
+      } else if (_osName.contains("linux") || _osName.contains("unix")) {
+        _osName = "linux";
+      } else if (_osName.contains("win")) {
+        _osName = "windows";
+      } else {
+        _osName = "";
+      }
+    } else {
+      _hostname = Platform.localHostname;
+      _numberOfProcessors = Platform.numberOfProcessors;
+      _pathSeparator = Platform.pathSeparator;
+      _osName = Platform.operatingSystem;
+      _osVersion = Platform.operatingSystemVersion;
+    }
+
+    _eol = _osName == "windows" ? "\r\n" : "\n";
   }
 
-  /// Gets an instance for the [CodeMelted] API.
-  static UseConsole _getInstance() {
-    _instance ??= UseConsole._();
+  /// Provides access to the [CodeMelted] API via the [meltTheCode] function.
+  static UseEnvironment _getInstance() {
+    _instance ??= UseEnvironment._();
     return _instance!;
   }
 
-  String input(String label, [bool isPassword = false]) {
+  String eol() => _eol;
+
+  String? get(String key) {
     ModuleViolationError._checkNotWeb();
     try {
-      _stdin!.echoMode = !isPassword;
-      _stdout!.write("$label: ");
-      var rtnval = _stdin!.readLineSync();
-      return rtnval ?? "";
+      return Platform.environment[key];
     } catch (err) {
-      throw UseCaseFailure(err.toString());
+      throw UseCaseFailure(
+        "Failed to retrieve environment variable $key. ${err.toString()}",
+      );
     }
   }
 
-  int options(String label, List<String> options) {
+  String hostname() => _hostname;
+
+  bool isBrowser() => kIsWeb;
+
+  bool isDesktop() =>
+      _osName == "linux" || _osName == "macos" || _osName == "windows";
+
+  bool isMobile() => _osName == "android" || _osName == "ios";
+
+  int numberOfProcessors() => _numberOfProcessors;
+
+  String osName() => _osName;
+
+  String osVersion() => _osVersion;
+
+  String pathSeparator() => _pathSeparator;
+
+  void set(String key, String value) {
     ModuleViolationError._checkNotWeb();
     try {
-      writeln(label);
-      var x = 0;
-      for (var element in options) {
-        writeln("$x. $element");
+      Platform.environment[key] = value;
+    } catch (err) {
+      throw UseCaseFailure(
+        "Failed to set environment variable $key. ${err.toString()}",
+      );
+    }
+  }
+
+  void remove(String key) {
+    ModuleViolationError._checkNotWeb();
+    try {
+      Platform.environment.remove(key);
+    } catch (err) {
+      throw UseCaseFailure(
+        "Failed to remove environment variable $key. ${err.toString()}",
+      );
+    }
+  }
+
+  Future<void> open(String url, [String? webOnlyWindowName]) async {
+    try {
+      if (!kIsWeb) {
+        await launchUrlString(url);
+      } else {
+        await launchUrlString(url, webOnlyWindowName: webOnlyWindowName);
       }
-      writeln();
-      return int.parse(input("Make a Selection"));
     } catch (err) {
-      throw UseCaseFailure(err.toString());
+      throw UseCaseFailure("Failed to open $url. ${err.toString()}");
     }
-  }
-
-  void writeln([String message = ""]) {
-    ModuleViolationError._checkNotWeb();
-    try {
-      _stdout!.writeln(message);
-    } catch (err) {
-      throw UseCaseFailure(err.toString());
-    }
-  }
-
-  @visibleForTesting
-  void setMock(Stdin? stdinMock, Stdout? stdoutMock) {
-    _stdin = stdinMock;
-    _stdout = stdoutMock;
   }
 }
+
+// ----------------------------------------------------------------------------
+// Public Facing API
+// ----------------------------------------------------------------------------
+
+/// Collection of use cases covering common developer actions.
+class CodeMelted {
+  // Member Fields:
+  static CodeMelted? _instance;
+
+  /// Private Constructor to the API.
+  CodeMelted._();
+
+  /// Provides access to the [CodeMelted] API via the [meltTheCode] function.
+  static CodeMelted _getInstance() {
+    _instance ??= CodeMelted._();
+    return _instance!;
+  }
+
+  /// You just want to know what it is you are using.
+  String aboutModule() => _aboutModule;
+
+  /// Accesses the [UseEnvironment] use case implementation.
+  UseEnvironment useEnvironment() => UseEnvironment._getInstance();
+}
+
+/// Main entry point to the [CodeMelted] API.
+CodeMelted meltTheCode() {
+  return CodeMelted._getInstance();
+}
+
+// ========================== [ Refactor Work ] ===============================
+
+// ----------------------------------------------------------------------------
+// Use Console Use Case Implementation
+// ----------------------------------------------------------------------------
+
+// class UseConsole {
+//   // Member Fields:
+//   static UseConsole? _instance;
+//   var _stdin = !kIsWeb ? stdin : null;
+//   var _stdout = !kIsWeb ? stdout : null;
+
+//   /// Provides a private constructor to initialize the API singleton.
+//   UseConsole._() {
+//     _instance = this;
+//   }
+
+//   /// Gets an instance for the [CodeMelted] API.
+//   static UseConsole _getInstance() {
+//     _instance ??= UseConsole._();
+//     return _instance!;
+//   }
+
+//   String input(String label, [bool isPassword = false]) {
+//     ModuleViolationError._checkNotWeb();
+//     try {
+//       _stdin!.echoMode = !isPassword;
+//       _stdout!.write("$label: ");
+//       var rtnval = _stdin!.readLineSync();
+//       return rtnval ?? "";
+//     } catch (err) {
+//       throw UseCaseFailure(err.toString());
+//     }
+//   }
+
+//   int options(String label, List<String> options) {
+//     ModuleViolationError._checkNotWeb();
+//     try {
+//       writeln(label);
+//       var x = 0;
+//       for (var element in options) {
+//         writeln("$x. $element");
+//       }
+//       writeln();
+//       return int.parse(input("Make a Selection"));
+//     } catch (err) {
+//       throw UseCaseFailure(err.toString());
+//     }
+//   }
+
+//   void writeln([String message = ""]) {
+//     ModuleViolationError._checkNotWeb();
+//     try {
+//       _stdout!.writeln(message);
+//     } catch (err) {
+//       throw UseCaseFailure(err.toString());
+//     }
+//   }
+
+//   @visibleForTesting
+//   void setMock(Stdin? stdinMock, Stdout? stdoutMock) {
+//     _stdin = stdinMock;
+//     _stdout = stdoutMock;
+//   }
+// }
 
 // /// Represents the task to be kicked off via the [UseAsyncIO] interface.
 // typedef TaskFunction = FutureOr<dynamic> Function(dynamic data);
@@ -601,40 +743,3 @@ class UseConsole {
 //     }
 //   }
 // }
-
-// ----------------------------------------------------------------------------
-// Public Facing API
-// ----------------------------------------------------------------------------
-
-/// Collection of use cases covering common developer actions.
-class CodeMelted {
-  // Member Fields:
-  static CodeMelted? _instance;
-
-  /// Private Constructor to the API.
-  CodeMelted._();
-
-  /// Provides access to the [CodeMelted] API via the [meltTheCode] function.
-  static CodeMelted _getInstance() {
-    _instance ??= CodeMelted._();
-    return _instance!;
-  }
-
-  /// You just want to know what it is you are using.
-  String aboutModule() => _aboutModule;
-
-  /// Gets access to the [UseAsyncIO] collection of async utility
-  /// functions.
-  // UseAsyncIO useAsyncIO() => UseAsyncIO();
-
-  /// Gets access to the [UseStorage] collection of functions to store and
-  /// access key/value pairs.
-  // UseStorage useStorage() => UseStorage._getInstance();
-
-  UseConsole useConsole() => UseConsole._getInstance();
-}
-
-/// Main entry point to the [CodeMelted] API.
-CodeMelted meltTheCode() {
-  return CodeMelted._getInstance();
-}
