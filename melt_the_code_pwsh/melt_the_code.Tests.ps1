@@ -25,9 +25,9 @@ BeforeAll {
     Import-Module $PSScriptRoot/melt_the_code.psm1
 }
 
-Describe "melt_the_code -Use Help" {
+Describe "melt_the_code --about-module" {
     It "Not Empty" {
-        [string] $a = melt-the-code -Use Help ""
+        [string] $a = melt-the-code --about-module
         $a.Length | Should -BeGreaterThan 0
     }
 }

@@ -44,7 +44,7 @@ function Invoke-MeltTheCode {
         [parameter(mandatory=$true, position=0)][validateSet(
             "--about-module"
         )][string]$useCase,
-        [parameter(mandatory=$false, position=2)][string[]]$args
+        [parameter(mandatory=$false, position=2)][array]$params
     )
 
     # Determine which use case we are kicking off.
@@ -61,11 +61,11 @@ function Invoke-MeltTheCode {
         programs that just need a CLI.
 
     .DESCRIPTION
-        melt-the-code [useCase] [args[]]
+        melt-the-code [useCase] [params[]]
 
         WHERE
             [useCase] A set of supported use cases one can choose from
-            [args] The arguments array for the given use case
+            [params] The arguments array for the given use case
 
         USAGE:
             melt-the-code --about-module

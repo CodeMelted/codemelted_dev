@@ -141,7 +141,7 @@ const HTML_TEMPLATE = `
 <div id="divFixedFooter" class="cm-fixed-footer">
     <button id="btnCpp"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/icons8-c++-48.png" /><br/>C++</button>
     <button id="btnPwsh"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/ps_black_64.png" /><br/>pwsh</button>
-    <button id="btnDeno"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/icons8-deno-100x100.png" /><br />deno</button>
+    <button id="btnDart"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/icons8-dart-96.png" /><br />Dart</button>
     <button id="btnFlutter"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/icons8-flutter-48.png" /><br />Flutter</button>
 </div>
 `;
@@ -184,13 +184,13 @@ const PAGE_OPTIONS_TEMPLATE = `
 `;
 
 // Page navigation
-const HOME_PAGE = "/modules";
+const HOME_PAGE = "/melt_the_code_";
 const PORTAL_PAGE = "https://codemelted.com";
 const URL_PAGE = {
-    "Cpp"     : `${HOME_PAGE}/cpp/melt_the_code`,
-    "Pwsh"    : `${HOME_PAGE}/pwsh/melt_the_code`,
-    "Deno"    : `${HOME_PAGE}/deno/melt_the_code`,
-    "Flutter" : `${HOME_PAGE}/flutter/melt_the_code`,
+    "Cpp"     : `${HOME_PAGE}cpp`,
+    "Pwsh"    : `${HOME_PAGE}pwsh`,
+    "Dart"    : `${HOME_PAGE}dart`,
+    "Flutter" : `${HOME_PAGE}flutter`,
 };
 
 /**
