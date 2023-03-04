@@ -1,0 +1,22 @@
+name: melt_the_code_flutter
+description: A new Flutter package project.
+version: 0.0.1
+# homepage:
+publish_to: none
+
+environment:
+  sdk: '>=2.19.2 <3.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  melt_the_code_dart:
+    path: ../melt_the_code_dart
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
