@@ -24,18 +24,15 @@ DEALINGS IN THE SOFTWARE.
 ===============================================================================
 */
 
-import 'package:melt_the_code_dart/melt_the_code_dart.dart';
-import 'package:test/test.dart';
+// ignore: avoid_web_libraries_in_flutter
+import "dart:html" as html;
 
-void main() {
-  group("Global Module Tests", () {
-    test("meltTheCode().aboutModule() Validation", () {
-      var v = meltTheCode().aboutModule();
-      expect(v.contains("TITLE:"), true);
-      expect(v.contains("VERSION:"), true);
-      expect(v.contains("WEBSITE:  https://codemelted.dev/melt_the_code_dart"),
-          true);
-      expect(v.contains("LICENSE:"), true);
-    });
-  });
+import 'package:melt_the_code_dart/src/runtime.dart';
+
+/// Creates the runtime for IO.
+Runtime getRuntime() => RuntimeWeb();
+
+/// Represents the web runtime.
+class RuntimeWeb extends Runtime {
+  // TBD
 }

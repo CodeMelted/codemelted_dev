@@ -24,9 +24,8 @@ DEALINGS IN THE SOFTWARE.
 ===============================================================================
 */
 
+/// An implementation of common developer use cases in one reusable module.
 library melt_the_code_dart;
-
-import 'package:logging/logging.dart';
 
 // ----------------------------------------------------------------------------
 // Definitions
@@ -36,7 +35,7 @@ import 'package:logging/logging.dart';
 const String _aboutModule = '''
   TITLE:    melt_the_code_dart Module
   VERSION:  v0.1.0 (Released on 18 Feb 2023)
-  WEBSITE:  https://codemelted.dev/modules/flutter/melt_the_code
+  WEBSITE:  https://codemelted.dev/melt_the_code_dart
   LICENSE:  MIT / (c) 2023 Mark Shaffer. All Rights Reserved.
   ''';
 
@@ -55,51 +54,30 @@ class UseCaseFailure implements Exception {
   UseCaseFailure(this.message);
 }
 
-typedef LogHandlerCB = Future<void> Function(LogRecord);
+// typedef LogHandlerCB = Future<void> Function(LogRecord);
 
 // ----------------------------------------------------------------------------
 // Enumerations
 // ----------------------------------------------------------------------------
 
-enum LogLevel { off, info, warning, error, debug }
+// enum LogLevel { off, info, warning, error, debug }
 
 // ----------------------------------------------------------------------------
 // Extensions
 // ----------------------------------------------------------------------------
 
-extension LogLevelExtension on LogLevel {
-  static final _data = {
-    LogLevel.off: Level.OFF,
-    LogLevel.info: Level.INFO,
-    LogLevel.warning: Level.WARNING,
-    LogLevel.error: Level.SEVERE,
-    LogLevel.debug: Level.FINE,
-  };
-
-  Level get level => _data[this] as Level;
-}
-
 // ----------------------------------------------------------------------------
 // Public Facing API
 // ----------------------------------------------------------------------------
 
+/// Collection of use cases covering common developer actions wrapped in
+/// simple using functions.
 class CodeMeltedAPI {
   // Member Fields:
   static CodeMeltedAPI? _instance;
-  Logger? _logger;
-  LogHandlerCB? _onLoggedEvent;
 
   /// Private Constructor to the API.
-  CodeMeltedAPI._() {
-    // Setup our logger
-    _logger = Logger("melt_the_code_logger");
-    Logger.root.onRecord.listen((record) {
-      print('${record.level.name}: ${record.time}: ${record.message}');
-      if (_onLoggedEvent != null) {
-        _onLoggedEvent!(record);
-      }
-    });
-  }
+  CodeMeltedAPI._();
 
   /// Provides access to the [CodeMelted] API via the [meltTheCode] function.
   static CodeMeltedAPI _getInstance() {
@@ -109,61 +87,6 @@ class CodeMeltedAPI {
 
   /// You just want to know what it is you are using.
   String aboutModule() => _aboutModule;
-
-  // == Use Logger Use Case==
-
-  configureLogger(LogLevel v, [LogHandlerCB? handler]) {
-    Logger.root.level = v.level;
-    _onLoggedEvent = handler;
-  }
-
-  void logInfo(
-    Object? message, [
-    Object? error,
-    StackTrace? stackTrace,
-  ]) {
-    try {
-      _logger!.info(message, error, stackTrace);
-    } catch (err) {
-      throw UseCaseFailure("Failed to log debug. ${err.toString()}");
-    }
-  }
-
-  void logWarning(
-    Object? message, [
-    Object? error,
-    StackTrace? stackTrace,
-  ]) {
-    try {
-      _logger!.warning(message, error, stackTrace);
-    } catch (err) {
-      throw UseCaseFailure("Failed to log debug. ${err.toString()}");
-    }
-  }
-
-  void logError(
-    Object? message, [
-    Object? error,
-    StackTrace? stackTrace,
-  ]) {
-    try {
-      _logger!.severe(message, error, stackTrace);
-    } catch (err) {
-      throw UseCaseFailure("Failed to log debug. ${err.toString()}");
-    }
-  }
-
-  void logDebug(
-    Object? message, [
-    Object? error,
-    StackTrace? stackTrace,
-  ]) {
-    try {
-      _logger!.fine(message, error, stackTrace);
-    } catch (err) {
-      throw UseCaseFailure("Failed to log debug. ${err.toString()}");
-    }
-  }
 }
 
 /// Main entry point to the [CodeMeltedAPI] API.

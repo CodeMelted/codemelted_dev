@@ -24,18 +24,19 @@ DEALINGS IN THE SOFTWARE.
 ===============================================================================
 */
 
-import 'package:melt_the_code_dart/melt_the_code_dart.dart';
-import 'package:test/test.dart';
+import "package:melt_the_code_dart/src/runtime_stub.dart"
+    if (dart.library.io) 'package:melt_the_code_dart/src/runtime_io.dart'
+    if (dart.library.js) 'package:melt_the_code_dart/src/runtime_web.dart';
 
-void main() {
-  group("Global Module Tests", () {
-    test("meltTheCode().aboutModule() Validation", () {
-      var v = meltTheCode().aboutModule();
-      expect(v.contains("TITLE:"), true);
-      expect(v.contains("VERSION:"), true);
-      expect(v.contains("WEBSITE:  https://codemelted.dev/melt_the_code_dart"),
-          true);
-      expect(v.contains("LICENSE:"), true);
-    });
-  });
+/// Provides a wrapper class to the runtime to access IO or Web based runtimes
+/// to allow the module to test / run properly.
+abstract class Runtime {
+  // Member Fields:
+  static Runtime? _instance;
+
+  /// Gain access to the runtime instance
+  static Runtime get instance {
+    _instance = getRuntime();
+    return _instance!;
+  }
 }

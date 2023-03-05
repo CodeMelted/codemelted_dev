@@ -11,3 +11,4 @@ docs
 test.exe
 *.drawio.bkp
 *.drawio.png.bkp
+build/

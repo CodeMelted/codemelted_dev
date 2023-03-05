@@ -24,18 +24,6 @@ DEALINGS IN THE SOFTWARE.
 ===============================================================================
 */
 
-import 'package:melt_the_code_dart/melt_the_code_dart.dart';
-import 'package:test/test.dart';
+import 'package:melt_the_code_dart/src/runtime.dart';
 
-void main() {
-  group("Global Module Tests", () {
-    test("meltTheCode().aboutModule() Validation", () {
-      var v = meltTheCode().aboutModule();
-      expect(v.contains("TITLE:"), true);
-      expect(v.contains("VERSION:"), true);
-      expect(v.contains("WEBSITE:  https://codemelted.dev/melt_the_code_dart"),
-          true);
-      expect(v.contains("LICENSE:"), true);
-    });
-  });
-}
+Runtime getRuntime() => throw UnsupportedError('Cannot create an auth manager');

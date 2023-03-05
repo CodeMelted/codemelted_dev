@@ -63,7 +63,7 @@ function build([string[]]$params) {
         Write-Host
     }
 
-    function cppFormatHtml([string]$path) {
+    function coverageFormatHtml([string]$path) {
         Write-Host $path
         $htmlFiles = Get-ChildItem -Path $path -Filter *.html
         foreach ($file in $htmlFiles) {
@@ -86,7 +86,7 @@ function build([string[]]$params) {
     # -------------------------------------------------------------------------
     # Build Scripts
     # -------------------------------------------------------------------------
-    function cpp() {
+    function buildCpp() {
         message "Now building melt_the_code_cpp module"
 
         message "Setting up the dist directory"
@@ -119,15 +119,42 @@ function build([string[]]$params) {
         Remove-Item -Path melt_the_code.cpp.gcov -Force
         Remove-Item -Path melt_the_code.gcda -Force
         Remove-Item -Path melt_the_code.gcno -Force
-        cppFormatHtml("dist/melt_the_code_cpp/coverage")
-        cppFormatHtml("dist/melt_the_code_cpp/coverage/melt_the_code_cpp")
+        coverageFormatHtml("dist/melt_the_code_cpp/coverage")
+        coverageFormatHtml("dist/melt_the_code_cpp/coverage/melt_the_code_cpp")
 
         Copy-Item -Path "index.html" "dist/melt_the_code_cpp" -Force
         message "melt_the_code_cpp module built"
         Set-Location $SCRIPT_PATH
     }
 
-    function pwsh() {
+    function buildDart() {
+        message "Now building melt_the_code_dart module"
+
+        message "Setting up the dist directory"
+        Set-Location "$SCRIPT_PATH/melt_the_code_dart"
+        Remove-Item -Path "dist" -Force -Recurse -ErrorAction Ignore
+        New-Item -path "dist/melt_the_code_dart" -ItemType Directory
+
+        message "Now generating dart doc"
+        Set-Location "$SCRIPT_PATH/melt_the_code_dart"
+        dart doc --output "dist/melt_the_code_dart/docs"
+
+        message "Running dart test framework"
+        flutter test --coverage
+        if ($IsLinux -or $IsMacOS) {
+            genhtml -o "dist/melt_the_code_dart/coverage" --dark-mode coverage/lcov.info
+        }
+        Remove-Item -Path coverage -Force -Recurse
+        coverageFormatHtml("dist/melt_the_code_dart/coverage")
+        # coverageFormatHtml("dist/melt_the_code_dart/coverage/lib")
+        # coverageFormatHtml("dist/melt_the_code_dart/coverage/lib/src")
+
+        Copy-Item -Path "index.html" "dist/melt_the_code_dart" -Force
+        message "melt_the_code_dart module built"
+        Set-Location $SCRIPT_PATH
+    }
+
+    function buildPwsh() {
         message "Now building melt_the_code_pwsh module"
 
         message "Setting up the dist directory"
@@ -161,9 +188,11 @@ function build([string[]]$params) {
     message $PROJ_NAME
     [string]$action = if ($params.Count -gt 0) {$params[0]} Else {""}
     if ($action -eq "--cpp") {
-        cpp
+        buildCpp
+    } elseif ($action -eq "--dart") {
+        buildDart
     } elseif ($action -eq "--pwsh") {
-        pwsh
+        buildPwsh
     } else {
         Write-Host "ERROR: [action] was not specified or not a valid parameter"
     }
