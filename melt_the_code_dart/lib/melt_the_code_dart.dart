@@ -86,7 +86,7 @@ class CodeMeltedAPI {
   }
 
   /// You just want to know what it is you are using.
-  String aboutModule() => _aboutModule;
+  String aboutDartModule() => _aboutModule;
 }
 
 /// Main entry point to the [CodeMeltedAPI] API.

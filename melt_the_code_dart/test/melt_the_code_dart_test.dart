@@ -29,8 +29,8 @@ import 'package:test/test.dart';
 
 void main() {
   group("Global Module Tests", () {
-    test("meltTheCode().aboutModule() Validation", () {
-      var v = meltTheCode().aboutModule();
+    test("meltTheCode().aboutDartModule() Validation", () {
+      var v = meltTheCode().aboutDartModule();
       expect(v.contains("TITLE:"), true);
       expect(v.contains("VERSION:"), true);
       expect(v.contains("WEBSITE:  https://codemelted.dev/melt_the_code_dart"),

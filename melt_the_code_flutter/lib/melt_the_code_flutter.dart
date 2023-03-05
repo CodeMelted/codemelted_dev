@@ -24,9 +24,10 @@ DEALINGS IN THE SOFTWARE.
 ===============================================================================
 */
 
+/// An extension of use cases to the melt_the_code_dart module bringing a
+/// complete array of use cases using functions to the flutter environment.
 library melt_the_code_flutter;
 
-import 'package:flutter/foundation.dart';
 import 'package:melt_the_code_dart/melt_the_code_dart.dart' as melt_dart;
 
 // ----------------------------------------------------------------------------
@@ -37,14 +38,9 @@ import 'package:melt_the_code_dart/melt_the_code_dart.dart' as melt_dart;
 const String _aboutModule = '''
   TITLE:    melt_the_code_flutter Module
   VERSION:  v0.1.0 (Released on 18 Feb 2023)
-  WEBSITE:  https://codemelted.dev/modules/flutter/melt_the_code
+  WEBSITE:  https://codemelted.dev/melt_the_code_flutter
   LICENSE:  MIT / (c) 2023 Mark Shaffer. All Rights Reserved.
   ''';
-
-@visibleForTesting
-void setFlutterModuleMock() {
-  //
-}
 
 // ----------------------------------------------------------------------------
 // Enumerations
@@ -58,10 +54,14 @@ void setFlutterModuleMock() {
 // Public Facing API
 // ----------------------------------------------------------------------------
 
+/// Implements the extensions to the melt_the_code_dart module that are
+/// are specific to flutter and not a dart environment.
 extension CodeMeltedAPIExtension on melt_dart.CodeMeltedAPI {
   String aboutFlutterModule() => _aboutModule;
 }
 
+/// Collection of use cases covering common developer actions wrapped in
+/// simple using functions.
 melt_dart.CodeMeltedAPI meltTheCode() {
   return melt_dart.meltTheCode();
 }

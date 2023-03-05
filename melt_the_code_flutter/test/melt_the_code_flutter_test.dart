@@ -29,7 +29,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:melt_the_code_flutter/melt_the_code_flutter.dart';
 
 void main() {
-  test('adds one to input values', () {
-    // meltTheCode().logInfo(meltTheCode().aboutFlutterModule());
+  group("Global Module Tests", () {
+    test("meltTheCode().aboutFlutterModule() Validation", () {
+      var v = meltTheCode().aboutFlutterModule();
+      expect(v.contains("TITLE:"), true);
+      expect(v.contains("VERSION:"), true);
+      expect(
+          v.contains("WEBSITE:  https://codemelted.dev/melt_the_code_flutter"),
+          true);
+      expect(v.contains("LICENSE:"), true);
+    });
   });
 }

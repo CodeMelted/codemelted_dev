@@ -154,6 +154,33 @@ function build([string[]]$params) {
         Set-Location $SCRIPT_PATH
     }
 
+    function buildFlutter() {
+        message "Now building melt_the_code_flutter module"
+
+        message "Setting up the dist directory"
+        Set-Location "$SCRIPT_PATH/melt_the_code_flutter"
+        Remove-Item -Path "dist" -Force -Recurse -ErrorAction Ignore
+        New-Item -path "dist/melt_the_code_flutter" -ItemType Directory
+
+        message "Now generating dart doc"
+        Set-Location "$SCRIPT_PATH/melt_the_code_flutter"
+        dart doc --output "dist/melt_the_code_flutter/docs"
+
+        message "Running flutter test framework"
+        flutter test --coverage
+        if ($IsLinux -or $IsMacOS) {
+            genhtml -o "dist/melt_the_code_flutter/coverage" --dark-mode coverage/lcov.info
+        }
+        Remove-Item -Path coverage -Force -Recurse
+        coverageFormatHtml("dist/melt_the_code_flutter/coverage")
+        # coverageFormatHtml("dist/melt_the_code_dart/coverage/lib")
+        # coverageFormatHtml("dist/melt_the_code_dart/coverage/lib/src")
+
+        Copy-Item -Path "index.html" "dist/melt_the_code_flutter" -Force
+        message "melt_the_code_flutter module built"
+        Set-Location $SCRIPT_PATH
+    }
+
     function buildPwsh() {
         message "Now building melt_the_code_pwsh module"
 
@@ -191,6 +218,8 @@ function build([string[]]$params) {
         buildCpp
     } elseif ($action -eq "--dart") {
         buildDart
+    } elseif ($action -eq "--flutter") {
+        buildFlutter
     } elseif ($action -eq "--pwsh") {
         buildPwsh
     } else {
