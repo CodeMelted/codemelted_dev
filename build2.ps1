@@ -48,6 +48,23 @@
 </div></body></html>
 "@
 
+[string]$devHtmlTemplate = @"
+<!DOCTYPE html>
+<html><head>
+    <title>Melt the Code - DEV</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="The cross platform code module project.">
+    <meta name="keywords" content="melt_the_code, Melt the Code, Cross Platform Modules, xplat-modules">
+    <meta name="author" content="Mark Shaffer">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="monetization" content="`$ilp.uphold.com/q94gJPq8PFF4">
+    <link rel="stylesheet" href="website-nav/css/hacker-theme.css">
+    <script src="website-nav/index.js" defer></script>
+</head><body><div class="content-main">
+    CONTENT
+</div></body></html>
+"@
+
 function build([string[]]$params) {
     # -------------------------------------------------------------------------
     # Constants
@@ -59,6 +76,7 @@ function build([string[]]$params) {
     # Support Functions
     # -------------------------------------------------------------------------
     function message([string]$msg) {
+        Write-Host
         Write-Host "MESSAGE: $msg"
         Write-Host
     }
@@ -209,6 +227,71 @@ function build([string[]]$params) {
         Set-Location $SCRIPT_PATH
     }
 
+    function buildWeb() {
+        message "Now building melt_the_code_web module"
+
+        message "Setting up the dist directory"
+        Set-Location "$SCRIPT_PATH/melt_the_code_web"
+        Remove-Item -Path "dist" -Force -Recurse -ErrorAction Ignore
+        New-Item -Path "dist" -ItemType Directory
+
+        message "Now generating the typedoc"
+        typedoc -out dist/melt_the_code_web/docs --name melt_the_code `
+            --readme ./README.md ./melt_the_code.ts
+
+        message "Now compiling the javascript module"
+        tsc melt_the_code.ts --target es6 --outDir dist/melt_the_code_web
+
+        Copy-Item -Path "index.html" "dist/melt_the_code_web" -Force
+        message "melt_the_code_web module built"
+        Set-Location $SCRIPT_PATH
+    }
+
+    function buildDevSite() {
+        message "Now building the melt-the-code web site"
+
+        message "Clear the dist directory"
+        Remove-Item -Path "dist" -Force -Recurse -ErrorAction Ignore
+        New-Item -Path "dist" -ItemType Directory
+
+        message "Now building each of our module projects"
+        buildCpp
+        Copy-Item -Path "melt_the_code_cpp/dist/*" "dist" -Recurse -Force
+
+        buildDart
+        Copy-Item -Path "melt_the_code_dart/dist/*" "dist" -Recurse -Force
+
+        buildFlutter
+        Copy-Item -Path "melt_the_code_flutter/dist/*" "dist" -Recurse -Force
+
+        buildPwsh
+        Copy-Item -Path "melt_the_code_pwsh/dist/*" "dist" -Recurse -Force
+
+        buildWeb
+        Copy-Item -Path "melt_the_code_web/dist/*" "dist" -Recurse -Force
+
+        message "Now building the main dev site items"
+        $readmeData = ConvertFrom-Markdown -Path $SCRIPT_PATH/README.md
+        $htmlData = $devHtmlTemplate.Replace("CONTENT", $readmeData.Html)
+        $htmlData | Out-File -FilePath "dist/index.html" -Force
+        Copy-Item -Path "$SCRIPT_PATH/website-nav" "dist" -Recurse -Force
+        Copy-Item -Path "$SCRIPT_PATH/404.html" "dist" -Force
+        Copy-Item -Path "$SCRIPT_PATH/favicon.ico" "dist" -Force
+
+        message "main dev site built"
+    }
+
+    function deploy() {
+        message "Now deploying the Melt the Code - DEV site to firebase"
+        firebase deploy --only hosting:codemelted-dev
+        message "Deployment completed"
+    }
+
+    function publish() {
+        # TBD: Publishing each of the modules to their respective publishing
+        #      sites.
+    }
+
     # -------------------------------------------------------------------------
     # Main Execution Point
     # -------------------------------------------------------------------------
@@ -222,6 +305,10 @@ function build([string[]]$params) {
         buildFlutter
     } elseif ($action -eq "--pwsh") {
         buildPwsh
+    } elseif ($action -eq "--web") {
+        buildWeb
+    } elseif ($action -eq "--dev-site") {
+        buildDevSite
     } else {
         Write-Host "ERROR: [action] was not specified or not a valid parameter"
     }
