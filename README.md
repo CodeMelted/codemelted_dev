@@ -5,10 +5,18 @@
 - [1.0 Introduction](#10-introduction)
   - [1.1 Purpose](#11-purpose)
   - [1.2 Scope](#12-scope)
-- [2.0 Functional Decomposition](#20-functional-decomposition)
-  - [2.1 About Module](#21-about-module)
-  - [2.2 Use Environment](#22-use-environment)
-- [3.0 Design Notes](#30-design-notes)
+- [2.0 Module Architecture](#20-module-architecture)
+  - [2.1 Technology Stack](#21-technology-stack)
+  - [2.2 Functional Decomposition](#22-functional-decomposition)
+  - [2.3 Use Case Implementation Process](#23-use-case-implementation-process)
+- [3.0 Repo Setup](#30-repo-setup)
+  - [3.1 Installations](#31-installations)
+    - [3.1.1 Tools](#311-tools)
+    - [3.1.2 Visual Studio Code](#312-visual-studio-code)
+  - [3.2 Testing](#32-testing)
+    - [3.2.1 Dev Site Validation](#321-dev-site-validation)
+    - [3.2.2 Dev Site Deployment](#322-dev-site-deployment)
+    - [3.2.3 Publishing Modules](#323-publishing-modules)
 - [4.0 License](#40-license)
 
 # 1.0 Introduction
@@ -23,81 +31,91 @@ This project aims to simplify by developing a set of cross platform modules impl
 
 ## 1.2 Scope
 
-The scope of this project is to deliver a set of cross platform modules that allow a developer to tackle the following tech stacks.
+The scope of this project is to deliver a set of cross platform modules that allow a developer to tackle the different technology stacks.  The chosen language SDKs described in the table below.
 
-Stack | Description
+SDK | Description
 --- | ---
-Web | This provides the greatest access to people. If a platform has a web browser, then you have the ability to present information to them. Flutter provides the ability to target the web with a rich set of plugins and widgets. Deno provides you access to both Server / Cloud infrastructure along with wrapping the Web APIs in the browser.  Both these technologies offer the ability to build Progressive Web Applications.
-Mobile | Most people these days access information via a cell phone or tablet. They are prevalent in all aspects of life. A developer could utilize native programming languages to target Android or iOS mobile devices but this takes time. Utilizing Flutter you can easily target the Mobile and Desktop environments.
-Server / Cloud | Servers, custom built on premise or the cloud host providers, represents your backend data and services.  Flutter, Deno, and pwsh all offer the ability to `script` and or compile backend services.
-Desktop | People still access desktop applications.  Each of these technologies can easily target the desktop based on a user's needs.  pwsh can provide a powerful Command Line Interface (CLI).  Deno and Flutter can provide CLI or rich desktop Graphical User Interfaces (GUI).
-Raspberry Pi | Raspberry Pi is a low level single board computer that can be utilized for all sorts of use cases.  Each of these technologies have the ability to run on this platform but be advised, performance can vary.
+C++ | XXX
+pwsh | XXX
+dart | XXX
+flutter | XXX
+web | XXX
 
-# 2.0 Functional Decomposition
 
-<img style="width: 100%;" src="modules/design/use-case-model.drawio.png" />
+# 2.0 Module Architecture
 
-The **Use Case Model** depicted above shows `melt_the_code Module` use cases to be implemented.  The identified use cases reflect common domains for solving typical software engineering tasks.  Each use case will implement a set of functions common to those domains providing a consistent and similar API regardless of the chosen SDK.
+## 2.1 Technology Stack
 
-The sub-sections below are a use case breakdown for each of the identified use case domains.
+<img src="use_case_features/design/tech-stack.drawio.png" />
 
-## 2.1 About Module
+## 2.2 Functional Decomposition
 
-**`WHO:`** As a software developer
+<img src="use_case_features/design/use-case-model.drawio.png" />
 
-**`WHAT:`** I want to be able to identify the version of the melt_the_code module
+## 2.3 Use Case Implementation Process
 
-**`WHY:`** So that I have a capability to version control the module to my deployed software.
+TBD
 
-**`ACCEPTANCE CRITERIA:`**
+# 3.0 Repo Setup
 
-You just want to know what it is you are using.
+Path | Description
+--- | ---
+`.firebase` | XXX
+`dist` | XXX
+`melt_the_code_xxx` | XXX
+`use_case_features` | xxx
+`website-nav` | XXX
+`./*` | XXXX
 
-```
-TITLE:    melt_the_code [Technology] Module
-VERSION:  v0.0.0 (Released on dd mmm yyyy)
-WEBSITE:  https://codemeled.dev/modules/[sdk]/melt_the_code
-LICENSE:  MIT / © yyyy Mark Shaffer. All Rights Reserved.
+## 3.1 Installations
 
-Where VERSION is defined as:
-v0.0.0
-^ Full implementation of the Module versioned design
-  ^ Full implementation of a Use Case
-    ^ Partial implementation of a Use Case / bug fix
-```
+### 3.1.1 Tools
 
-## 2.2 Use Environment
+*NOTE: If installing on Mac OS, you may want to consider [Homebrew](https://brew.sh) to install some of the items below as they may not work as advertised on their websites.*
 
-**`WHO:`** As a software developer
+- [ ] [Git](https://git-scm.com/)
+  - [ ] [GitHub Desktop](https://desktop.github.com/) (not required just nice to have)
+- [ ] [C++](https://code.visualstudio.com/docs/languages/cpp)
+  - [ ] [doxygen](https://www.doxygen.nl)
+- [ ] [deno](https://deno.land/)
+  - [ ] [nodejs](https://nodejs.org/en/)
+  - [ ] [typescript](https://www.npmjs.com/package/typescript) (install globally)
+  - [ ] [typedoc](https://typedoc.org/guides/installation/) (install globally)
+- [ ] [flutter](https://flutter.dev/)
+  - [ ] [dartdoc](https://pub.dev/packages/dartdoc)
+- [ ] [pwsh](https://github.com/PowerShell/PowerShell#get-powershell)
+  - [ ] [Pester](https://www.powershellgallery.com/packages/Pester/5.1.1)
+- [ ] [Python3](https://www.python.org/)
 
-**`WHAT:`** I want to be able to interact with the runtime environment
+### 3.1.2 Visual Studio Code
 
-**`WHY:`** So that I have the ability to gather necessary information from that environment and utilize desktop services.
+- [ ] [VS Code](https://code.visualstudio.com/)
+- [ ] [C/C++ Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack)
+- [ ] [Code Spell Checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
+- [ ] [Deno](https://marketplace.visualstudio.com/items?itemName=denoland.vscode-deno)
+- [ ] [Flutter](https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter)
+- [ ] [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
+- [ ] [PowerShell](https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell)
 
-**`ACCEPTANCE CRITERIA:`**
+## 3.2 Testing
 
-1. When you have the ability to manage environment variables as follows:
-   1. Get an environment variable as string or null if not found
-   2. Set an environment variable
-   3. Remove an environment variable
-2. When you have the ability to open links via the URL link protocol service.  These link protocols include `file://`, `http(s)://`, and `mailto://` protocols
-3. When you have the ability to query aspects about the given environment.  This information includes:
-   1. `eol` - The end of line character for new lines on the operating system
-   2. `hostname` - The hostname of the given platform
-   3. `numberOfProcessors` - How many threads could this thing spin up
-   4. `osName` - The name of the operating system
-   5. `osVersion` - The version number of the operating system
-   6. `pathSeparator` - The file separator used on disk
-4. When you have the ability to gather metrics about the given environment to include (NOTE: Only available on some SDKs):
-   1. `availableMemory` - The currently available memory
-   2. `usedMemory` - The currently consumed memory
-   3. `totalMemory` - The total memory of available to the environment
-   4. `usedCPU` - The currently utilized CPU
-5. When you have the ability to use the metrics gathered and monitor the environment by collecting the stats to stdout and CSV if specified.
+The following procedure represent the steps to confirm your setup of the previous section tooling worked and would also be used for any validation of changes made to this repo via the
 
-# 3.0 Design Notes
+### 3.2.1 Dev Site Validation
 
-TBD.
+- [ ] Open a terminal to the repo
+- [ ] Execute the command `./build.ps1 --dev-site` in the terminal window.  View the output and confirm no errors in the execution.
+- [ ] Execute the command `cd dist` to bring you to the built output
+- [ ] Execute the command `python3 -m http.server` to start a web server
+- [ ] Open a web browser window and enter the address `http://[::]:8000/`.  You should see the DEV page rendered and all the links should work
+
+### 3.2.2 Dev Site Deployment
+
+TBD
+
+### 3.2.3 Publishing Modules
+
+TBD
 
 # 4.0 License
 
