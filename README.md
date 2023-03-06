@@ -15,8 +15,7 @@
     - [3.1.2 Visual Studio Code](#312-visual-studio-code)
   - [3.2 Testing](#32-testing)
     - [3.2.1 Dev Site Validation](#321-dev-site-validation)
-    - [3.2.2 Dev Site Deployment](#322-dev-site-deployment)
-    - [3.2.3 Publishing Modules](#323-publishing-modules)
+    - [3.2.2 Final Publishing](#322-final-publishing)
 - [4.0 License](#40-license)
 
 # 1.0 Introduction
@@ -35,56 +34,68 @@ The scope of this project is to deliver a set of cross platform modules that all
 
 SDK | Description
 --- | ---
-C++ | XXX
-pwsh | XXX
-dart | XXX
-flutter | XXX
-web | XXX
-
+`C++` | Will focus on squeezing every ounce of performance for lower level items.  This will not implement any User Interface use cases.  It will only implement the console based CLI use cases.
+`pwsh` | Will provides the use case features for automating dev ops tasks or supporting cloud systems via a CLI or a Textual User Interface (TUI).
+`dart` | The ideal solution for scripting cloud based services but can also be used same as `pwsh` to automate tasks via scripts.
+`flutter` | Builds upon the `dart` module but provides a cross platform ability to build desktop, mobile, and web based applications
+`web` | An implementation of the identified use cases for a pure web browser experience.
 
 # 2.0 Module Architecture
 
+This section breaks down the targeted technology stacks, the identified use case features to be designed and implemented, and the process that will be follows.
+
 ## 2.1 Technology Stack
+
+The following diagram identified the cross platform module ideal for the targeted technology stack and the definition of those stacks.
 
 <img src="use_case_features/design/tech-stack.drawio.png" />
 
 ## 2.2 Functional Decomposition
 
+The following use case model identifies the common use cases an application would need to target.  These will be derived into use case features that flesh out the design of the use case implementation into each appropriate module.  Those are linked in the list below the diagram.
+
 <img src="use_case_features/design/use-case-model.drawio.png" />
+
+**Use Case Features**
+
+- [About Module](use_case_features/about-module.md)
 
 ## 2.3 Use Case Implementation Process
 
-TBD
+The following is the design methodology for implementing each of the identified use case features and supports [3.2 Testing](#32-testing)
+
+<img src="use_case_features/design/dev-module-process.drawio.png" />
 
 # 3.0 Repo Setup
 
 Path | Description
 --- | ---
-`.firebase` | XXX
-`dist` | XXX
-`melt_the_code_xxx` | XXX
-`use_case_features` | xxx
-`website-nav` | XXX
-`./*` | XXXX
+`.firebase` | The cached dev website from the previous firebase deployment.
+`dist` | The Melt the Code - DEV website for testing and deployment.
+`melt_the_code_xxx` | Represents the source control for each of the `melt_the_code` modules.
+`use_case_features` | The collection of markdown documents fleshing out each of the identified use cases from the [2.2 Functional Decomposition](#22-functional-decomposition)
+`website-nav` | The developed JavaScript module that drives the https://codemelted.dev site
+`./*` | Remaining files that support the site.
 
 ## 3.1 Installations
+
+The following are the tools necessary to make changes to this repo.
 
 ### 3.1.1 Tools
 
 *NOTE: If installing on Mac OS, you may want to consider [Homebrew](https://brew.sh) to install some of the items below as they may not work as advertised on their websites.*
 
 - [ ] [Git](https://git-scm.com/)
-  - [ ] [GitHub Desktop](https://desktop.github.com/) (not required just nice to have)
+- [ ] [GitHub Desktop](https://desktop.github.com/) (not required just nice to have)
 - [ ] [C++](https://code.visualstudio.com/docs/languages/cpp)
-  - [ ] [doxygen](https://www.doxygen.nl)
-- [ ] [deno](https://deno.land/)
-  - [ ] [nodejs](https://nodejs.org/en/)
-  - [ ] [typescript](https://www.npmjs.com/package/typescript) (install globally)
-  - [ ] [typedoc](https://typedoc.org/guides/installation/) (install globally)
+- [ ] [doxygen](https://www.doxygen.nl)
+- [ ] [nodejs](https://nodejs.org/en/)
+- [ ] [typescript](https://www.npmjs.com/package/typescript) (install globally)
+- [ ] [typedoc](https://typedoc.org/guides/installation/) (install globally)
 - [ ] [flutter](https://flutter.dev/)
-  - [ ] [dartdoc](https://pub.dev/packages/dartdoc)
+- [ ] [dartdoc](https://pub.dev/packages/dartdoc)
 - [ ] [pwsh](https://github.com/PowerShell/PowerShell#get-powershell)
-  - [ ] [Pester](https://www.powershellgallery.com/packages/Pester/5.1.1)
+- [ ] [Pester](https://www.powershellgallery.com/packages/Pester/5.1.1)
 - [ ] [Python3](https://www.python.org/)
 
 ### 3.1.2 Visual Studio Code
@@ -109,13 +120,12 @@ The following procedure represent the steps to confirm your setup of the previou
 - [ ] Execute the command `python3 -m http.server` to start a web server
 - [ ] Open a web browser window and enter the address `http://[::]:8000/`.  You should see the DEV page rendered and all the links should work
 
-### 3.2.2 Dev Site Deployment
+### 3.2.2 Final Publishing
 
-TBD
-
-### 3.2.3 Publishing Modules
-
-TBD
+- [ ] Open a terminal window.
+- [ ] Change directories to the `codemelted_dev` repo
+- [ ] Run the command `./build.ps1 --deploy` to deploy the Melt the Code - DEV website.
+- [ ] Run the command `./build.ps1 --publish` to publish the modules to supporting distribution sites.
 
 # 4.0 License
 

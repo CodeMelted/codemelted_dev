@@ -5,7 +5,7 @@
 - [2.0 Design Notes](#20-design-notes)
 - [3.0 License](#30-license)
 
-## 1.0 User Story
+# 1.0 User Story
 
 **`WHO:`** As a software developer
 
@@ -30,12 +30,12 @@ v0.0.0
     ^ Partial implementation of a Use Case / bug fix
 ```
 
-## 2.0 Design Notes
+# 2.0 Design Notes
 
 - For Flutter / Dart, the method names will be `aboutFlutterModule()` and `aboutDartModule()` respectively as flutter cannot override dart via an extension.
 - All other module SDKs will implement `aboutModule()` in their respective syntax.
 
-## 3.0 License
+# 3.0 License
 
 <img style="width: 250px;" src="../website-nav/logos/logo-593x100.png" />
 
