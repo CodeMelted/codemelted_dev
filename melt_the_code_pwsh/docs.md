@@ -1,19 +1,18 @@
-<h1><img style="height: 30px;" src="https://codemelted.dev/website-nav/icons/ps_black_64.png" /> melt_the_code pwsh Module</h1>
+<h1><img style="height: 30px;" src="https://codemelted.dev/website-nav/icons/ps_black_64.png" /> melt_the_code_pwsh Module</h1>
 
-**Table of Contents**
+TODO: Put a short description of the package here that helps potential users
+know whether this package might be useful for them.
 
-- [Getting Started](#getting-started)
-- [SDK Help](#sdk-help)
-  - [Main API](#main-api)
-- [License](#license)
+## Features
 
-## Getting Started
+TODO: List what your package can do. Maybe include images, gifs, or videos.
 
-TBD
+## Getting started
 
-## SDK Help
+TODO: List prerequisites and provide or point to information on how to
+start using the package.
 
-### Main API
+## Usage
 
 ```
 NAME

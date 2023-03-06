@@ -1,4 +1,4 @@
-<h1><img style="height: 30px;" src="https://codemelted.dev/website-nav/icons/icons8-flutter-48.png" /> melt_the_code_dart Module </h1>
+<h1><img style="height: 30px;" src="https://codemelted.dev/website-nav/icons/icons8-dart-96.png" /> melt_the_code_dart Module </h1>
 
 TODO: Put a short description of the package here that helps potential users
 know whether this package might be useful for them.
@@ -15,11 +15,6 @@ start using the package.
 ## Usage
 
 TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
-```dart
-const like = 'sample';
-```
 
 ## License
 

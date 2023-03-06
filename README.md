@@ -2,25 +2,25 @@
 
 **Table of Contents**
 
-- [1.0 Introduction](#10-introduction)
-  - [1.1 Purpose](#11-purpose)
-  - [1.2 Scope](#12-scope)
-- [2.0 Module Architecture](#20-module-architecture)
-  - [2.1 Technology Stack](#21-technology-stack)
-  - [2.2 Functional Decomposition](#22-functional-decomposition)
-  - [2.3 Use Case Implementation Process](#23-use-case-implementation-process)
-- [3.0 Repo Setup](#30-repo-setup)
-  - [3.1 Installations](#31-installations)
-    - [3.1.1 Tools](#311-tools)
-    - [3.1.2 Visual Studio Code](#312-visual-studio-code)
-  - [3.2 Testing](#32-testing)
-    - [3.2.1 Dev Site Validation](#321-dev-site-validation)
-    - [3.2.2 Final Publishing](#322-final-publishing)
-- [4.0 License](#40-license)
+- [Introduction](#introduction)
+  - [Purpose](#purpose)
+  - [Scope](#scope)
+- [Module Architecture](#module-architecture)
+  - [Technology Stack](#technology-stack)
+  - [Functional Decomposition](#functional-decomposition)
+  - [Use Case Implementation Process](#use-case-implementation-process)
+- [Repo Setup](#repo-setup)
+  - [Installations](#installations)
+    - [Tools](#tools)
+    - [Visual Studio Code](#visual-studio-code)
+  - [Testing](#testing)
+    - [Dev Site Validation](#dev-site-validation)
+    - [Final Publishing](#final-publishing)
+- [License](#license)
 
-# 1.0 Introduction
+# Introduction
 
-## 1.1 Purpose
+## Purpose
 
 "Write once, run anywhere (WORA)" was the famous slogan made by Sun Microsystems in 1995.  At the time, this technology allowed for easy full stack engineering allowing you to target dedicated workstations and on premise servers. So long as a Java Runtime Environment existed, you could run your code.
 
@@ -28,7 +28,7 @@ Java was unable to keep to their slogan as web browsers became more advanced, mo
 
 This project aims to simplify by developing a set of cross platform modules implementing a similar / identical Application Program Interface (API) regardless of the chosen technology covered by this project.  This allows a developer to maximize their productivity because regardless of the technology, they are learning a similar module API for their solution.
 
-## 1.2 Scope
+## Scope
 
 The scope of this project is to deliver a set of cross platform modules that allow a developer to tackle the different technology stacks.  The chosen language SDKs described in the table below.
 
@@ -40,17 +40,17 @@ SDK | Description
 `flutter` | Builds upon the `dart` module but provides a cross platform ability to build desktop, mobile, and web based applications
 `web` | An implementation of the identified use cases for a pure web browser experience.
 
-# 2.0 Module Architecture
+# Module Architecture
 
 This section breaks down the targeted technology stacks, the identified use case features to be designed and implemented, and the process that will be follows.
 
-## 2.1 Technology Stack
+## Technology Stack
 
 The following diagram identified the cross platform module ideal for the targeted technology stack and the definition of those stacks.
 
 <img src="use_case_features/design/tech-stack.drawio.png" />
 
-## 2.2 Functional Decomposition
+## Functional Decomposition
 
 The following use case model identifies the common use cases an application would need to target.  These will be derived into use case features that flesh out the design of the use case implementation into each appropriate module.  Those are linked in the list below the diagram.
 
@@ -60,13 +60,13 @@ The following use case model identifies the common use cases an application woul
 
 - [About Module](use_case_features/about-module.md)
 
-## 2.3 Use Case Implementation Process
+## Use Case Implementation Process
 
 The following is the design methodology for implementing each of the identified use case features and supports [3.2 Testing](#32-testing)
 
 <img src="use_case_features/design/dev-module-process.drawio.png" />
 
-# 3.0 Repo Setup
+# Repo Setup
 
 Path | Description
 --- | ---
@@ -77,11 +77,11 @@ Path | Description
 `website-nav` | The developed JavaScript module that drives the https://codemelted.dev site
 `./*` | Remaining files that support the site.
 
-## 3.1 Installations
+## Installations
 
 The following are the tools necessary to make changes to this repo.
 
-### 3.1.1 Tools
+### Tools
 
 *NOTE: If installing on Mac OS, you may want to consider [Homebrew](https://brew.sh) to install some of the items below as they may not work as advertised on their websites.*
 
@@ -98,7 +98,7 @@ The following are the tools necessary to make changes to this repo.
 - [ ] [Pester](https://www.powershellgallery.com/packages/Pester/5.1.1)
 - [ ] [Python3](https://www.python.org/)
 
-### 3.1.2 Visual Studio Code
+### Visual Studio Code
 
 - [ ] [VS Code](https://code.visualstudio.com/)
 - [ ] [C/C++ Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack)
@@ -108,11 +108,11 @@ The following are the tools necessary to make changes to this repo.
 - [ ] [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
 - [ ] [PowerShell](https://marketplace.visualstudio.com/items?itemName=ms-vscode.PowerShell)
 
-## 3.2 Testing
+## Testing
 
 The following procedure represent the steps to confirm your setup of the previous section tooling worked and would also be used for any validation of changes made to this repo via the
 
-### 3.2.1 Dev Site Validation
+### Dev Site Validation
 
 - [ ] Open a terminal to the repo
 - [ ] Execute the command `./build.ps1 --dev-site` in the terminal window.  View the output and confirm no errors in the execution.
@@ -120,14 +120,14 @@ The following procedure represent the steps to confirm your setup of the previou
 - [ ] Execute the command `python3 -m http.server` to start a web server
 - [ ] Open a web browser window and enter the address `http://[::]:8000/`.  You should see the DEV page rendered and all the links should work
 
-### 3.2.2 Final Publishing
+### Final Publishing
 
 - [ ] Open a terminal window.
 - [ ] Change directories to the `codemelted_dev` repo
 - [ ] Run the command `./build.ps1 --deploy` to deploy the Melt the Code - DEV website.
 - [ ] Run the command `./build.ps1 --publish` to publish the modules to supporting distribution sites.
 
-# 4.0 License
+# License
 
 <img style="width: 250px;" src="website-nav/logos/logo-593x100.png" />
 

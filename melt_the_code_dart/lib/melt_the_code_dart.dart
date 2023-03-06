@@ -39,12 +39,6 @@ const String _aboutModule = '''
   LICENSE:  MIT / (c) 2023 Mark Shaffer. All Rights Reserved.
   ''';
 
-/// Error thrown when the melt_the_code module has been violated by attempting
-/// to access a use case via an unsupported target platform.
-class ModuleViolationError extends UnsupportedError {
-  ModuleViolationError(String message) : super(message);
-}
-
 /// Exception thrown when attempting execute a use case transaction and that
 /// transaction fails.
 class UseCaseFailure implements Exception {

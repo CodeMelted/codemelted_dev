@@ -40,9 +40,9 @@
     <link rel="stylesheet" href="https://codemelted.dev/website-nav/css/hacker-theme.css">
     <style>
         .main-content {
-            padding-top: 5px;
-            padding-right: 5px;
-            padding-left: 5px;
+            padding-top: 20px;
+            padding-right: 20px;
+            padding-left: 20px;
             background-color: #1C2834;
         }
     </style>

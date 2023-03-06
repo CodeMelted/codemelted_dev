@@ -1,4 +1,4 @@
-<h1><img style="height: 30px;" src="https://codemelted.dev/website-nav/icons/ps_black_64.png" /> melt_the_code pwsh Module</h1>
+<h1><img style="height: 30px;" src="https://codemelted.dev/website-nav/icons/ps_black_64.png" /> melt_the_code_pwsh Module</h1>
 
 ```
 MESSAGE: Now executing pester tests
