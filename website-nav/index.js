@@ -93,7 +93,7 @@ const HTML_TEMPLATE = `
         padding-bottom: 5px;
         z-index: 2147483648;
         display: grid;
-        grid-template-columns: auto auto auto auto;
+        grid-template-columns: auto auto auto auto auto;
         position: fixed;
         bottom: 0;
         left: 0;
@@ -135,7 +135,7 @@ const HTML_TEMPLATE = `
 
 <div class='cm-fixed-header' id='divFixedHeader'>
     <img alt='logo' class='cm-logo' id='imgLogo' src='https://codemelted.dev/website-nav/logos/logo-593x100.png'/>
-    <button id='btnWeb'><img src='https://codemelted.dev/website-nav/icons/icons8-website-48.png' style='height: 35px;'/></button>
+    <button id='btnPortal'><img src='https://codemelted.dev/website-nav/icons/icons8-website-48.png' style='height: 35px;'/></button>
 </div>
 
 <div id="divFixedFooter" class="cm-fixed-footer">
@@ -143,6 +143,7 @@ const HTML_TEMPLATE = `
     <button id="btnPwsh"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/ps_black_64.png" /><br/>pwsh</button>
     <button id="btnDart"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/icons8-dart-96.png" /><br />Dart</button>
     <button id="btnFlutter"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/icons8-flutter-48.png" /><br />Flutter</button>
+    <button id="btnWeb"><img style="height: 25px;" src="${PROTOCOL_HOST}/website-nav/icons/icons8-website-100.png" /><br />Web</button>
 </div>
 `;
 
@@ -191,6 +192,7 @@ const URL_PAGE = {
     "Pwsh"    : `${HOME_PAGE}pwsh`,
     "Dart"    : `${HOME_PAGE}dart`,
     "Flutter" : `${HOME_PAGE}flutter`,
+    "Web"     : `${HOME_PAGE}web`,
 };
 
 /**
@@ -302,7 +304,6 @@ function main() {
             }
         } else {
             // If our main page, hide the code / coverage buttons
-            document.getElementById("btnDesign").style.display = "none";
             document.getElementById("btnDocs").style.display = "none";
             document.getElementById("btnCoverage").style.display = "none";
         }
@@ -312,7 +313,7 @@ function main() {
             window.location.href = "/";
         });
 
-        document.getElementById("btnWeb").addEventListener("click", () => {
+        document.getElementById("btnPortal").addEventListener("click", () => {
             window.location.href = `${PORTAL_PAGE}`;
         });
 
