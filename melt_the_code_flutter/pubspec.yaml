@@ -1,6 +1,6 @@
 name: melt_the_code_flutter
 description: A new Flutter package project.
-version: 0.0.1
+version: 0.3.0
 # homepage:
 publish_to: none
 
@@ -13,11 +13,13 @@ dependencies:
     sdk: flutter
   melt_the_code_dart:
     path: ../melt_the_code_dart
+  shared_preferences: ^2.0.18
   url_launcher: ^6.1.10
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  mockito: ^5.3.2
 
 flutter:

@@ -28,8 +28,11 @@ DEALINGS IN THE SOFTWARE.
 /// specific to the flutter environment.
 library melt_the_code_flutter;
 
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:melt_the_code_dart/melt_the_code_dart.dart' as melt_dart;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 // ----------------------------------------------------------------------------
@@ -39,7 +42,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 // Tells us all about the module
 const String _aboutModule = '''
   TITLE:    melt_the_code_flutter Module
-  VERSION:  v0.2.0 (Released on 11 Mar 2023)
+  VERSION:  v0.3.0 (Released on 11 Mar 2023)
   WEBSITE:  https://codemelted.dev/melt_the_code_flutter
   LICENSE:  MIT / (c) 2023 Mark Shaffer. All Rights Reserved.
   ''';
@@ -57,6 +60,9 @@ class FlutterUseCaseFailure implements Exception {
   FlutterUseCaseFailure(this.message, StackTrace st) {
     _stackTrace = st;
   }
+
+  @override
+  String toString() => "FlutterUseCaseFailure: $message\n$_stackTrace";
 
   /// Helper method for handling the catch portion within this module.
   static void handle(dynamic ex, StackTrace st) {
@@ -79,6 +85,10 @@ typedef LaunchUrlStringFunction = Future<bool> Function(
 });
 LaunchUrlStringFunction? _launchUrlString = launchUrlString;
 
+SharedPreferences? _sharedPreferences;
+
+bool _hasEnvironmentBeenLoaded = false;
+
 // ----------------------------------------------------------------------------
 // Enumerations
 // ----------------------------------------------------------------------------
@@ -86,6 +96,10 @@ LaunchUrlStringFunction? _launchUrlString = launchUrlString;
 /// The supported link opener protocols to utilize with the
 /// useLinkOpener() use case.
 enum LinkOpenerAction { file, https, mailto, tel, sms }
+
+/// Defines the actions to interact with the useSystemEnvironment() use case
+/// function.
+enum StorageAction { set, get, remove, clear }
 
 // ----------------------------------------------------------------------------
 // Extensions
@@ -214,16 +228,54 @@ extension CodeMeltedAPIExtension on melt_dart.CodeMeltedAPI {
     }
   }
 
+  /// Provides the ability to configure key / value pairs accessible by the
+  /// application.  This is a transitory file that is managed by an application.
+  ///
+  /// This storage will also be initialized with the runtime environment
+  /// variables for native applications to query and or update if necessary.
+  Future<dynamic> useStorage(
+    StorageAction action, [
+    String? key,
+    String? value,
+  ]) async {
+    try {
+      _sharedPreferences ??= await SharedPreferences.getInstance();
+      if (!_hasEnvironmentBeenLoaded && !kIsWeb) {
+        final map = Platform.environment;
+        for (var element in map.entries) {
+          await _sharedPreferences!.setString(element.key, element.value);
+        }
+      }
+      switch (action) {
+        case StorageAction.set:
+          return await _sharedPreferences!.setString(key!, value!);
+        case StorageAction.get:
+          return _sharedPreferences!.getString(key!);
+        case StorageAction.remove:
+          return await _sharedPreferences!.remove(key!);
+        case StorageAction.clear:
+          return await _sharedPreferences!.clear();
+      }
+    } catch (ex, st) {
+      FlutterUseCaseFailure.handle(ex, st);
+    }
+  }
+
   /// @nodoc
   @visibleForTesting
   void setFlutterModuleMock({
     LaunchUrlStringFunction? launchUrlStringMock,
+    SharedPreferences? sharedPreferencesMock,
   }) {
-    _launchUrlString = launchUrlStringMock ?? _launchUrlString;
+    _launchUrlString = launchUrlStringMock;
+    _sharedPreferences = sharedPreferencesMock;
   }
 }
 
-/// Main entry point to the [melt_dart.CodeMeltedAPI] API.
+/// Main entry point to the [CodeMeltedAPIExtension] API.
+///
+/// See https://codemelted.dev/melt_the_code_dart for other available
+/// functions.
 melt_dart.CodeMeltedAPI meltTheCode() {
   return melt_dart.meltTheCode();
 }

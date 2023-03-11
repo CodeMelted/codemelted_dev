@@ -26,6 +26,8 @@ DEALINGS IN THE SOFTWARE.
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:melt_the_code_flutter/melt_the_code_flutter.dart';
+import 'package:mockito/mockito.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 // ----------------------------------------------------------------------------
@@ -59,11 +61,53 @@ LaunchUrlStringFunction mockLaunchUrlStringUrlValidation = (
   return Uri.tryParse(urlString) != null;
 };
 
+class MockSharedPreferences extends Mock implements SharedPreferences {
+  // Member Fields:
+  final _data = <String, dynamic>{};
+  final bool throwException;
+
+  MockSharedPreferences(this.throwException);
+
+  void _tryThrowException() {
+    if (throwException) {
+      throw "It failed";
+    }
+  }
+
+  @override
+  Future<bool> setString(String key, String value) async {
+    _tryThrowException();
+    _data[key] = value;
+    return true;
+  }
+
+  @override
+  String? getString(String key) {
+    _tryThrowException();
+    return _data[key] as String?;
+  }
+
+  @override
+  Future<bool> remove(String key) async {
+    _tryThrowException();
+    _data.remove(key);
+    return true;
+  }
+
+  @override
+  Future<bool> clear() async {
+    _tryThrowException();
+    _data.clear();
+    return true;
+  }
+}
+
 // ----------------------------------------------------------------------------
 // Tests
 // ----------------------------------------------------------------------------
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   group("Global Module Tests", () {
     test("meltTheCode().aboutFlutterModule() Validation", () {
       var v = meltTheCode().aboutFlutterModule();
@@ -173,6 +217,46 @@ void main() {
       }
 
       meltTheCode().setFlutterModuleMock();
+    });
+  });
+
+  group("meltTheCode().useStorage() Tests", () {
+    test("FlutterUseCaseFailure occurs", () async {
+      meltTheCode().setFlutterModuleMock(
+        sharedPreferencesMock: MockSharedPreferences(true),
+      );
+
+      try {
+        await meltTheCode().useStorage(StorageAction.clear);
+        fail("Should throw exception");
+      } catch (ex) {
+        expect(ex, isA<FlutterUseCaseFailure>());
+      }
+    });
+
+    test("CRUD operations work, no throw", () async {
+      meltTheCode().setFlutterModuleMock(
+        sharedPreferencesMock: MockSharedPreferences(false),
+      );
+
+      var v = await meltTheCode().useStorage(StorageAction.get, "testKey");
+      expect(v, isNull);
+
+      v = await meltTheCode()
+          .useStorage(StorageAction.set, "testKey", "test key value");
+      expect(v as bool, isTrue);
+
+      v = await meltTheCode().useStorage(StorageAction.get, "testKey");
+      expect(v.toString(), "test key value");
+
+      v = await meltTheCode().useStorage(StorageAction.remove, "testKey");
+      expect(v as bool, isTrue);
+
+      v = await meltTheCode().useStorage(StorageAction.get, "testKey");
+      expect(v, isNull);
+
+      v = await meltTheCode().useStorage(StorageAction.clear);
+      expect(v as bool, isTrue);
     });
   });
 }

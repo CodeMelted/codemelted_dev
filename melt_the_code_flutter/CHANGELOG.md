@@ -1,3 +1,7 @@
+## 0.3.0
+
+* Implemented the useStorage() use case function.
+
 ## 0.2.0
 
 * Implemented the useLinkOpener() use case function.

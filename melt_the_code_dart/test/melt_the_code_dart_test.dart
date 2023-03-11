@@ -44,8 +44,17 @@ void main() {
 
       var ex = DartUseCaseFailure("Custom creation", StackTrace.current);
       expect(ex.stackTrace, isA<StackTrace>());
+      expect(ex.toString(), isA<String>());
       expectLater(() => DartUseCaseFailure.handle(ex, StackTrace.current),
           throwsA(isA<DartUseCaseFailure>()));
+    });
+  });
+
+  group("meltTheCode().useRuntimeQuery() Tests", () {
+    test("Query works and does not throw", () {
+      for (var element in RuntimeQueryAction.values) {
+        expect(meltTheCode().useRuntimeQuery(element), isNotNull);
+      }
     });
   });
 }

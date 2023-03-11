@@ -27,6 +27,7 @@ DEALINGS IN THE SOFTWARE.
 // ignore: avoid_web_libraries_in_flutter
 import "dart:html" as html;
 
+import 'package:melt_the_code_dart/melt_the_code_dart.dart';
 import 'package:melt_the_code_dart/src/runtime.dart';
 
 /// Creates the runtime for IO.
@@ -34,5 +35,28 @@ Runtime getRuntime() => RuntimeWeb();
 
 /// Represents the web runtime.
 class RuntimeWeb extends Runtime {
-  // TBD
+  @override
+  dynamic useRuntimeQuery(RuntimeQueryAction action) {
+    final osName = html.window.navigator.userAgent.toLowerCase();
+    switch (action) {
+      case RuntimeQueryAction.eol:
+        return osName == "windows" ? "\r\n" : "\n";
+      case RuntimeQueryAction.hostname:
+        return html.window.location.hostname ?? "";
+      case RuntimeQueryAction.isBrowser:
+        return true;
+      case RuntimeQueryAction.isDesktop:
+        return osName == "linux" || osName == "macos" || osName == "windows";
+      case RuntimeQueryAction.isMobile:
+        return osName == "android" || osName == "ios";
+      case RuntimeQueryAction.numberOfProcessors:
+        return html.window.navigator.hardwareConcurrency ?? -1;
+      case RuntimeQueryAction.osName:
+        return osName;
+      case RuntimeQueryAction.osVersion:
+        return "";
+      case RuntimeQueryAction.pathSeparator:
+        return "/";
+    }
+  }
 }

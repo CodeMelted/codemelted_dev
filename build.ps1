@@ -184,8 +184,8 @@ function build([string[]]$params) {
         }
         Remove-Item -Path coverage -Force -Recurse
         coverageFormatHtml("dist/melt_the_code_dart/coverage")
-        # coverageFormatHtml("dist/melt_the_code_dart/coverage/lib")
-        # coverageFormatHtml("dist/melt_the_code_dart/coverage/lib/src")
+        coverageFormatHtml("dist/melt_the_code_dart/coverage/lib")
+        coverageFormatHtml("dist/melt_the_code_dart/coverage/lib/src")
 
         Copy-Item -Path "index.html" "dist/melt_the_code_dart" -Force
         message "melt_the_code_dart module built"

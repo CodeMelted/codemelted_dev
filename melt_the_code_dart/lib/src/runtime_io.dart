@@ -24,6 +24,9 @@ DEALINGS IN THE SOFTWARE.
 ===============================================================================
 */
 
+import 'dart:io';
+
+import 'package:melt_the_code_dart/melt_the_code_dart.dart';
 import 'package:melt_the_code_dart/src/runtime.dart';
 
 /// Creates the runtime for IO.
@@ -31,5 +34,28 @@ Runtime getRuntime() => RuntimeIO();
 
 /// Represents the mobile or desktop/server runtime.
 class RuntimeIO extends Runtime {
-  // TBD
+  @override
+  dynamic useRuntimeQuery(RuntimeQueryAction action) {
+    final osName = Platform.operatingSystem;
+    switch (action) {
+      case RuntimeQueryAction.eol:
+        return osName == "windows" ? "\r\n" : "\n";
+      case RuntimeQueryAction.hostname:
+        return Platform.localHostname;
+      case RuntimeQueryAction.isBrowser:
+        return false;
+      case RuntimeQueryAction.isDesktop:
+        return osName == "linux" || osName == "macos" || osName == "windows";
+      case RuntimeQueryAction.isMobile:
+        return osName == "android" || osName == "ios";
+      case RuntimeQueryAction.numberOfProcessors:
+        return Platform.numberOfProcessors;
+      case RuntimeQueryAction.osName:
+        return osName;
+      case RuntimeQueryAction.osVersion:
+        return Platform.operatingSystemVersion;
+      case RuntimeQueryAction.pathSeparator:
+        return Platform.pathSeparator;
+    }
+  }
 }

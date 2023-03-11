@@ -60,10 +60,12 @@ The following use case model identifies the common use cases an application woul
 
 - [About Module](use_case_features/about-module.md)
 - [Use Link Opener](use_case_features/use-link-opener.md)
+- [Use Runtime Query](use_case_features/use-runtime-query.md)
+- [Use Storage](use_case_features/use-storage.md)
 
 ## Use Case Implementation Process
 
-The following is the design methodology for implementing each of the identified use case features and supports [3.2 Testing](#32-testing)
+The following is the design methodology for implementing each of the identified use case features and supports [Testing](#testing)
 
 <img style="width: 100%;" src="use_case_features/design/dev-module-process.drawio.png" />
 

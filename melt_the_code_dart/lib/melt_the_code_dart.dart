@@ -24,8 +24,10 @@ DEALINGS IN THE SOFTWARE.
 ===============================================================================
 */
 
-/// An implementation of common developer use cases in one reusable module.
+/// An collection of common developer use case function in one reusable module.
 library melt_the_code_dart;
+
+import 'package:melt_the_code_dart/src/runtime.dart';
 
 // ----------------------------------------------------------------------------
 // Definitions
@@ -34,7 +36,7 @@ library melt_the_code_dart;
 // Tells us all about the module
 const String _aboutModule = '''
   TITLE:    melt_the_code_dart Module
-  VERSION:  v0.1.1 (Released on 11 Mar 2023)
+  VERSION:  v0.2.0 (Released on 11 Mar 2023)
   WEBSITE:  https://codemelted.dev/melt_the_code_dart
   LICENSE:  MIT / (c) 2023 Mark Shaffer. All Rights Reserved.
   ''';
@@ -53,6 +55,9 @@ class DartUseCaseFailure implements Exception {
     _stackTrace = st;
   }
 
+  @override
+  String toString() => "DartUseCaseFailure: $message\n$_stackTrace";
+
   /// Helper method for handling the catch portion within this module.
   static void handle(dynamic ex, StackTrace st) {
     if (ex is DartUseCaseFailure) {
@@ -69,6 +74,19 @@ class DartUseCaseFailure implements Exception {
 // ----------------------------------------------------------------------------
 // Enumerations
 // ----------------------------------------------------------------------------
+
+/// Defines the queryable information held by the runtime.
+enum RuntimeQueryAction {
+  eol,
+  hostname,
+  isBrowser,
+  isDesktop,
+  isMobile,
+  numberOfProcessors,
+  osName,
+  osVersion,
+  pathSeparator,
+}
 
 // enum LogLevel { off, info, warning, error, debug }
 
@@ -97,6 +115,19 @@ class CodeMeltedAPI {
 
   /// You just want to know what it is you are using.
   String aboutDartModule() => _aboutModule;
+
+  /// Provides the ability to query the runtime environment for information it
+  /// would know and return it as a dynamic value.  These queryable values are
+  /// based on the [RuntimeQueryAction] enumeration.
+  dynamic useRuntimeQuery(RuntimeQueryAction action) {
+    dynamic rtnval;
+    try {
+      rtnval = Runtime.instance.useRuntimeQuery(action);
+    } catch (ex, st) {
+      DartUseCaseFailure.handle(ex, st);
+    }
+    return rtnval;
+  }
 }
 
 /// Main entry point to the [CodeMeltedAPI] API.

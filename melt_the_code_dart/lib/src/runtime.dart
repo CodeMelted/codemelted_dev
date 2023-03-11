@@ -24,6 +24,7 @@ DEALINGS IN THE SOFTWARE.
 ===============================================================================
 */
 
+import "package:melt_the_code_dart/melt_the_code_dart.dart";
 import "package:melt_the_code_dart/src/runtime_stub.dart"
     if (dart.library.io) 'package:melt_the_code_dart/src/runtime_io.dart'
     if (dart.library.js) 'package:melt_the_code_dart/src/runtime_web.dart';
@@ -39,4 +40,7 @@ abstract class Runtime {
     _instance = getRuntime();
     return _instance!;
   }
+
+  /// Definition of the use query runtime use case function.
+  dynamic useRuntimeQuery(RuntimeQueryAction action);
 }
