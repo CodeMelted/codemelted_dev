@@ -13,6 +13,7 @@ dependencies:
     sdk: flutter
   melt_the_code_dart:
     path: ../melt_the_code_dart
+  url_launcher: ^6.1.10
 
 dev_dependencies:
   flutter_test:

@@ -37,5 +37,15 @@ void main() {
           true);
       expect(v.contains("LICENSE:"), true);
     });
+
+    test("DartUseCaseFailure Validation", () {
+      expectLater(() => DartUseCaseFailure.handle("duh", StackTrace.current),
+          throwsA(isA<DartUseCaseFailure>()));
+
+      var ex = DartUseCaseFailure("Custom creation", StackTrace.current);
+      expect(ex.stackTrace, isA<StackTrace>());
+      expectLater(() => DartUseCaseFailure.handle(ex, StackTrace.current),
+          throwsA(isA<DartUseCaseFailure>()));
+    });
   });
 }

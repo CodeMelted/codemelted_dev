@@ -25,8 +25,43 @@ DEALINGS IN THE SOFTWARE.
 */
 
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:melt_the_code_flutter/melt_the_code_flutter.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+
+// ----------------------------------------------------------------------------
+// Mocks
+// ----------------------------------------------------------------------------
+
+LaunchUrlStringFunction mockLaunchUrlStringSuccess = (
+  String urlString, {
+  LaunchMode mode = LaunchMode.platformDefault,
+  WebViewConfiguration webViewConfiguration = const WebViewConfiguration(),
+  String? webOnlyWindowName,
+}) async {
+  return true;
+};
+
+LaunchUrlStringFunction mockLaunchUrlStringFailure = (
+  String urlString, {
+  LaunchMode mode = LaunchMode.platformDefault,
+  WebViewConfiguration webViewConfiguration = const WebViewConfiguration(),
+  String? webOnlyWindowName,
+}) async {
+  return false;
+};
+
+LaunchUrlStringFunction mockLaunchUrlStringUrlValidation = (
+  String urlString, {
+  LaunchMode mode = LaunchMode.platformDefault,
+  WebViewConfiguration webViewConfiguration = const WebViewConfiguration(),
+  String? webOnlyWindowName,
+}) async {
+  return Uri.tryParse(urlString) != null;
+};
+
+// ----------------------------------------------------------------------------
+// Tests
+// ----------------------------------------------------------------------------
 
 void main() {
   group("Global Module Tests", () {
@@ -38,6 +73,106 @@ void main() {
           v.contains("WEBSITE:  https://codemelted.dev/melt_the_code_flutter"),
           true);
       expect(v.contains("LICENSE:"), true);
+    });
+
+    test("FlutterUseCaseFailure Validation", () {
+      expectLater(() => FlutterUseCaseFailure.handle("duh", StackTrace.current),
+          throwsA(isA<FlutterUseCaseFailure>()));
+
+      var ex = FlutterUseCaseFailure("Custom creation", StackTrace.current);
+      expect(ex.stackTrace, isA<StackTrace>());
+      expectLater(() => FlutterUseCaseFailure.handle(ex, StackTrace.current),
+          throwsA(isA<FlutterUseCaseFailure>()));
+    });
+  });
+
+  group("meltTheCode().useLinkOpener() Tests", () {
+    test("[action] specified, [url] not specified", () {
+      for (var element in LinkOpenerAction.values) {
+        expectLater(() => meltTheCode().useLinkOpener(element),
+            throwsA(isA<FlutterUseCaseFailure>()));
+      }
+    });
+
+    test("[action] specified, [url] is empty string", () {
+      for (var element in LinkOpenerAction.values) {
+        expectLater(() => meltTheCode().useLinkOpener(element, url: ""),
+            throwsA(isA<FlutterUseCaseFailure>()));
+      }
+    });
+
+    test("[action] specified, url specified, success", () async {
+      meltTheCode().setFlutterModuleMock(
+          launchUrlStringMock: mockLaunchUrlStringSuccess);
+      for (var element in LinkOpenerAction.values) {
+        try {
+          await meltTheCode().useLinkOpener(element, url: "a url");
+        } catch (ex) {
+          fail("should not throw an exception");
+        }
+      }
+    });
+
+    test("[action] specified, url specified, failure", () {
+      meltTheCode().setFlutterModuleMock(
+          launchUrlStringMock: mockLaunchUrlStringFailure);
+      for (var element in LinkOpenerAction.values) {
+        expectLater(
+            () => meltTheCode().useLinkOpener(element, url: "a url value"),
+            throwsA(isA<FlutterUseCaseFailure>()));
+      }
+    });
+
+    test("mailto Optional Parameter Validation", () async {
+      meltTheCode().setFlutterModuleMock(
+          launchUrlStringMock: mockLaunchUrlStringUrlValidation);
+
+      // First validate mailto throws on empty mailto array
+      try {
+        await meltTheCode().useLinkOpener(LinkOpenerAction.mailto, mailto: []);
+        fail("Should throw an exception because mailto was an empty array");
+      } catch (ex) {
+        expect(ex, isA<FlutterUseCaseFailure>());
+      }
+
+      // Now validate the URL is properly formatted with each new optional
+      // element added.
+      try {
+        await meltTheCode().useLinkOpener(
+          LinkOpenerAction.mailto,
+          mailto: ["test@google.com", "test2@google.com"],
+        );
+        await meltTheCode().useLinkOpener(
+          LinkOpenerAction.mailto,
+          mailto: ["test@google.com", "test2@google.com"],
+          cc: ["test3@google.com"],
+        );
+        await meltTheCode().useLinkOpener(
+          LinkOpenerAction.mailto,
+          mailto: ["test@google.com", "test2@google.com"],
+          cc: ["test3@google.com"],
+          bcc: ["test4@google.com"],
+        );
+        await meltTheCode().useLinkOpener(
+          LinkOpenerAction.mailto,
+          mailto: ["test@google.com", "test2@google.com"],
+          cc: ["test3@google.com"],
+          bcc: ["test4@google.com"],
+          subject: "subject",
+        );
+        await meltTheCode().useLinkOpener(
+          LinkOpenerAction.mailto,
+          mailto: ["test@google.com", "test2@google.com"],
+          cc: ["test3@google.com"],
+          bcc: ["test4@google.com"],
+          subject: "subject",
+          body: "body",
+        );
+      } catch (ex) {
+        fail("should not throw exception");
+      }
+
+      meltTheCode().setFlutterModuleMock();
     });
   });
 }

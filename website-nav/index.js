@@ -295,6 +295,12 @@ function main() {
             if (isEmbedded > 1) {
                 document.getElementById("divFixedFooter").style.display = "none";
             }
+
+            var a = document.getElementsByTagName('a');
+            for (var idx= 0; idx < a.length; ++idx) {
+              let href = a[idx].href;
+              a[idx].href = `${href}?isEmbedded=${isEmbedded}`;
+            }
         }
 
         if (isSubPageActive) {

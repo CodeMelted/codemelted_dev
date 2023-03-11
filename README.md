@@ -48,23 +48,24 @@ This section breaks down the targeted technology stacks, the identified use case
 
 The following diagram identified the cross platform module ideal for the targeted technology stack and the definition of those stacks.
 
-<img src="use_case_features/design/tech-stack.drawio.png" />
+<img style="width: 100%;" src="use_case_features/design/tech-stack.drawio.png" />
 
 ## Functional Decomposition
 
 The following use case model identifies the common use cases an application would need to target.  These will be derived into use case features that flesh out the design of the use case implementation into each appropriate module.  Those are linked in the list below the diagram.
 
-<img src="use_case_features/design/use-case-model.drawio.png" />
+<img style="width: 100%;" src="use_case_features/design/use-case-model.drawio.png" />
 
 **Use Case Features**
 
 - [About Module](use_case_features/about-module.md)
+- [Use Link Opener](use_case_features/use-link-opener.md)
 
 ## Use Case Implementation Process
 
 The following is the design methodology for implementing each of the identified use case features and supports [3.2 Testing](#32-testing)
 
-<img src="use_case_features/design/dev-module-process.drawio.png" />
+<img style="width: 100%;" src="use_case_features/design/dev-module-process.drawio.png" />
 
 # Repo Setup
 
@@ -73,7 +74,7 @@ Path | Description
 `.firebase` | The cached dev website from the previous firebase deployment.
 `dist` | The Melt the Code - DEV website for testing and deployment.
 `melt_the_code_xxx` | Represents the source control for each of the `melt_the_code` modules.
-`use_case_features` | The collection of markdown documents fleshing out each of the identified use cases from the [2.2 Functional Decomposition](#22-functional-decomposition)
+`use_case_features` | The collection of markdown documents fleshing out each of the identified use cases from the [Functional Decomposition](#functional-decomposition)
 `website-nav` | The developed JavaScript module that drives the https://codemelted.dev site
 `./*` | Remaining files that support the site.
 

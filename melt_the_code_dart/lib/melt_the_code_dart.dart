@@ -34,18 +34,34 @@ library melt_the_code_dart;
 // Tells us all about the module
 const String _aboutModule = '''
   TITLE:    melt_the_code_dart Module
-  VERSION:  v0.1.0 (Released on 18 Feb 2023)
+  VERSION:  v0.1.1 (Released on 11 Mar 2023)
   WEBSITE:  https://codemelted.dev/melt_the_code_dart
   LICENSE:  MIT / (c) 2023 Mark Shaffer. All Rights Reserved.
   ''';
 
-/// Exception thrown when attempting execute a use case transaction and that
-/// transaction fails.
-class UseCaseFailure implements Exception {
+/// Exception thrown when a use case function fails to be carried out.
+class DartUseCaseFailure implements Exception {
   // Member Fields:
-  String message;
+  final String message;
+  StackTrace? _stackTrace;
 
-  UseCaseFailure(this.message);
+  /// Gets the stack trace associated with this failure.
+  StackTrace get stackTrace => _stackTrace!;
+
+  /// Tell me why this use case failed.
+  DartUseCaseFailure(this.message, StackTrace st) {
+    _stackTrace = st;
+  }
+
+  /// Helper method for handling the catch portion within this module.
+  static void handle(dynamic ex, StackTrace st) {
+    if (ex is DartUseCaseFailure) {
+      ex._stackTrace = st;
+      throw ex;
+    } else {
+      throw DartUseCaseFailure(ex.toString(), st);
+    }
+  }
 }
 
 // typedef LogHandlerCB = Future<void> Function(LogRecord);
@@ -64,8 +80,8 @@ class UseCaseFailure implements Exception {
 // Public Facing API
 // ----------------------------------------------------------------------------
 
-/// Collection of use cases covering common developer actions wrapped in
-/// simple using functions.
+/// Implements the dart use case functions accessible in the dart or flutter
+/// environments.
 class CodeMeltedAPI {
   // Member Fields:
   static CodeMeltedAPI? _instance;
@@ -73,7 +89,7 @@ class CodeMeltedAPI {
   /// Private Constructor to the API.
   CodeMeltedAPI._();
 
-  /// Provides access to the [CodeMelted] API via the [meltTheCode] function.
+  /// Provides access to the [CodeMeltedAPI] via the [meltTheCode] function.
   static CodeMeltedAPI _getInstance() {
     _instance ??= CodeMeltedAPI._();
     return _instance!;
