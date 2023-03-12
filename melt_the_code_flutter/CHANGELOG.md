@@ -1,3 +1,8 @@
+## 0.3.1
+
+* Cleaned up the useStorage() to only return String?
+* Added exports from melt_the_code_dart.
+
 ## 0.3.0
 
 * Implemented the useStorage() use case function.

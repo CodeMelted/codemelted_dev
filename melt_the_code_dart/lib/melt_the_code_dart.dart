@@ -27,6 +27,8 @@ DEALINGS IN THE SOFTWARE.
 /// An collection of common developer use case function in one reusable module.
 library melt_the_code_dart;
 
+import 'dart:convert';
+
 import 'package:melt_the_code_dart/src/runtime.dart';
 
 // ----------------------------------------------------------------------------
@@ -36,13 +38,13 @@ import 'package:melt_the_code_dart/src/runtime.dart';
 // Tells us all about the module
 const String _aboutModule = '''
   TITLE:    melt_the_code_dart Module
-  VERSION:  v0.2.0 (Released on 11 Mar 2023)
+  VERSION:  v0.2.1 (Released on 11 Mar 2023)
   WEBSITE:  https://codemelted.dev/melt_the_code_dart
   LICENSE:  MIT / (c) 2023 Mark Shaffer. All Rights Reserved.
   ''';
 
 /// Exception thrown when a use case function fails to be carried out.
-class DartUseCaseFailure implements Exception {
+class UseCaseFailure implements Exception {
   // Member Fields:
   final String message;
   StackTrace? _stackTrace;
@@ -51,7 +53,7 @@ class DartUseCaseFailure implements Exception {
   StackTrace get stackTrace => _stackTrace!;
 
   /// Tell me why this use case failed.
-  DartUseCaseFailure(this.message, StackTrace st) {
+  UseCaseFailure(this.message, StackTrace st) {
     _stackTrace = st;
   }
 
@@ -60,11 +62,11 @@ class DartUseCaseFailure implements Exception {
 
   /// Helper method for handling the catch portion within this module.
   static void handle(dynamic ex, StackTrace st) {
-    if (ex is DartUseCaseFailure) {
+    if (ex is UseCaseFailure) {
       ex._stackTrace = st;
       throw ex;
     } else {
-      throw DartUseCaseFailure(ex.toString(), st);
+      throw UseCaseFailure(ex.toString(), st);
     }
   }
 }
@@ -93,6 +95,51 @@ enum RuntimeQueryAction {
 // ----------------------------------------------------------------------------
 // Extensions
 // ----------------------------------------------------------------------------
+
+/// Provides a series of cmXXX() conversion from a string data type.
+extension StringExtension on String {
+  /// Will attempt to convert to a bool from a series of strings that can
+  /// represent a true value.
+  bool cmBool() {
+    List<String> trueStrings = [
+      "true",
+      "1",
+      "t",
+      "y",
+      "yes",
+      "yeah",
+      "yup",
+      "certainly",
+      "uh-huh"
+    ];
+    return trueStrings.contains(toLowerCase());
+  }
+
+  /// Will attempt to return a int from the string value or null if it cannot.
+  int? cmInt() => int.tryParse(this);
+
+  /// Will attempt to return a double from the string value or null if it
+  /// cannot.
+  double? cmDouble() => double.tryParse(this);
+
+  /// Will attempt to return Map<String, dynamic> object or null if it cannot.
+  Map<String, dynamic>? cmJSON() {
+    try {
+      return jsonDecode(this) as Map<String, dynamic>?;
+    } on FormatException {
+      return null;
+    }
+  }
+
+  /// Will attempt to return an array object ir null if it cannot.
+  List<dynamic>? cmArray() {
+    try {
+      return json.decode(this) as List<dynamic>?;
+    } on FormatException {
+      return null;
+    }
+  }
+}
 
 // ----------------------------------------------------------------------------
 // Public Facing API
@@ -124,7 +171,7 @@ class CodeMeltedAPI {
     try {
       rtnval = Runtime.instance.useRuntimeQuery(action);
     } catch (ex, st) {
-      DartUseCaseFailure.handle(ex, st);
+      UseCaseFailure.handle(ex, st);
     }
     return rtnval;
   }

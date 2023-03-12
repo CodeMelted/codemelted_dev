@@ -24,6 +24,7 @@ DEALINGS IN THE SOFTWARE.
 ===============================================================================
 */
 
+import 'dart:convert';
 import 'package:melt_the_code_dart/melt_the_code_dart.dart';
 import 'package:test/test.dart';
 
@@ -38,15 +39,41 @@ void main() {
       expect(v.contains("LICENSE:"), true);
     });
 
-    test("DartUseCaseFailure Validation", () {
-      expectLater(() => DartUseCaseFailure.handle("duh", StackTrace.current),
-          throwsA(isA<DartUseCaseFailure>()));
+    test("UseCaseFailure Validation", () {
+      expectLater(() => UseCaseFailure.handle("duh", StackTrace.current),
+          throwsA(isA<UseCaseFailure>()));
 
-      var ex = DartUseCaseFailure("Custom creation", StackTrace.current);
+      var ex = UseCaseFailure("Custom creation", StackTrace.current);
       expect(ex.stackTrace, isA<StackTrace>());
       expect(ex.toString(), isA<String>());
-      expectLater(() => DartUseCaseFailure.handle(ex, StackTrace.current),
-          throwsA(isA<DartUseCaseFailure>()));
+      expectLater(() => UseCaseFailure.handle(ex, StackTrace.current),
+          throwsA(isA<UseCaseFailure>()));
+    });
+
+    test("StringExtension Conversions", () {
+      expect("duh".cmBool(), isFalse);
+      expect("y".cmBool(), isTrue);
+      expect("a".cmInt(), isNull);
+      expect("1".cmInt(), 1);
+      expect("1.0".cmInt(), isNull);
+      expect("b".cmDouble(), isNull);
+      expect("1.25".cmDouble(), 1.25);
+      expect("duh".cmArray(), isNull);
+      var json = [1, "a", 2];
+      expect(jsonEncode(json).cmArray(), isList);
+
+      var json2 = {
+        "a": "a",
+        "b": null,
+      };
+      expect("duh".cmJSON(), isNull);
+      expect(jsonEncode(json2).cmJSON(), isMap);
+
+      var json3 = {
+        "a": "a",
+        "b": "b",
+      };
+      expect(jsonEncode(json3).cmJSON(), isMap);
     });
   });
 

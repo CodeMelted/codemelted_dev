@@ -118,30 +118,20 @@ void main() {
           true);
       expect(v.contains("LICENSE:"), true);
     });
-
-    test("FlutterUseCaseFailure Validation", () {
-      expectLater(() => FlutterUseCaseFailure.handle("duh", StackTrace.current),
-          throwsA(isA<FlutterUseCaseFailure>()));
-
-      var ex = FlutterUseCaseFailure("Custom creation", StackTrace.current);
-      expect(ex.stackTrace, isA<StackTrace>());
-      expectLater(() => FlutterUseCaseFailure.handle(ex, StackTrace.current),
-          throwsA(isA<FlutterUseCaseFailure>()));
-    });
   });
 
   group("meltTheCode().useLinkOpener() Tests", () {
     test("[action] specified, [url] not specified", () {
       for (var element in LinkOpenerAction.values) {
         expectLater(() => meltTheCode().useLinkOpener(element),
-            throwsA(isA<FlutterUseCaseFailure>()));
+            throwsA(isA<UseCaseFailure>()));
       }
     });
 
     test("[action] specified, [url] is empty string", () {
       for (var element in LinkOpenerAction.values) {
         expectLater(() => meltTheCode().useLinkOpener(element, url: ""),
-            throwsA(isA<FlutterUseCaseFailure>()));
+            throwsA(isA<UseCaseFailure>()));
       }
     });
 
@@ -149,21 +139,23 @@ void main() {
       meltTheCode().setFlutterModuleMock(
           launchUrlStringMock: mockLaunchUrlStringSuccess);
       for (var element in LinkOpenerAction.values) {
-        try {
-          await meltTheCode().useLinkOpener(element, url: "a url");
-        } catch (ex) {
-          fail("should not throw an exception");
-        }
+        final success = await meltTheCode().useLinkOpener(
+          element,
+          url: "a url",
+        );
+        expect(success, isTrue);
       }
     });
 
-    test("[action] specified, url specified, failure", () {
+    test("[action] specified, url specified, no service", () async {
       meltTheCode().setFlutterModuleMock(
           launchUrlStringMock: mockLaunchUrlStringFailure);
       for (var element in LinkOpenerAction.values) {
-        expectLater(
-            () => meltTheCode().useLinkOpener(element, url: "a url value"),
-            throwsA(isA<FlutterUseCaseFailure>()));
+        final success = await meltTheCode().useLinkOpener(
+          element,
+          url: "a url value",
+        );
+        expect(success, isFalse);
       }
     });
 
@@ -176,7 +168,7 @@ void main() {
         await meltTheCode().useLinkOpener(LinkOpenerAction.mailto, mailto: []);
         fail("Should throw an exception because mailto was an empty array");
       } catch (ex) {
-        expect(ex, isA<FlutterUseCaseFailure>());
+        expect(ex, isA<UseCaseFailure>());
       }
 
       // Now validate the URL is properly formatted with each new optional
@@ -230,7 +222,7 @@ void main() {
         await meltTheCode().useStorage(StorageAction.clear);
         fail("Should throw exception");
       } catch (ex) {
-        expect(ex, isA<FlutterUseCaseFailure>());
+        expect(ex, isA<UseCaseFailure>());
       }
     });
 
@@ -242,21 +234,17 @@ void main() {
       var v = await meltTheCode().useStorage(StorageAction.get, "testKey");
       expect(v, isNull);
 
-      v = await meltTheCode()
+      await meltTheCode()
           .useStorage(StorageAction.set, "testKey", "test key value");
-      expect(v as bool, isTrue);
 
       v = await meltTheCode().useStorage(StorageAction.get, "testKey");
       expect(v.toString(), "test key value");
 
-      v = await meltTheCode().useStorage(StorageAction.remove, "testKey");
-      expect(v as bool, isTrue);
-
+      await meltTheCode().useStorage(StorageAction.remove, "testKey");
       v = await meltTheCode().useStorage(StorageAction.get, "testKey");
       expect(v, isNull);
 
-      v = await meltTheCode().useStorage(StorageAction.clear);
-      expect(v as bool, isTrue);
+      await meltTheCode().useStorage(StorageAction.clear);
     });
   });
 }

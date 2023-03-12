@@ -28,12 +28,13 @@ DEALINGS IN THE SOFTWARE.
 /// specific to the flutter environment.
 library melt_the_code_flutter;
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:melt_the_code_dart/melt_the_code_dart.dart' as melt_dart;
 export 'package:melt_the_code_dart/melt_the_code_dart.dart'
-    show RuntimeQueryAction;
+    show CodeMeltedAPI, StringExtension, RuntimeQueryAction, UseCaseFailure;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -44,38 +45,10 @@ import 'package:url_launcher/url_launcher_string.dart';
 // Tells us all about the module
 const String _aboutModule = '''
   TITLE:    melt_the_code_flutter Module
-  VERSION:  v0.3.0 (Released on 11 Mar 2023)
+  VERSION:  v0.3.1 (Released on 11 Mar 2023)
   WEBSITE:  https://codemelted.dev/melt_the_code_flutter
   LICENSE:  MIT / (c) 2023 Mark Shaffer. All Rights Reserved.
   ''';
-
-/// Exception thrown when a use case function fails to be carried out.
-class FlutterUseCaseFailure implements Exception {
-  // Member Fields:
-  final String message;
-  StackTrace? _stackTrace;
-
-  /// Gets the stack trace associated with this failure.
-  StackTrace get stackTrace => _stackTrace!;
-
-  /// Tell me why this use case failed.
-  FlutterUseCaseFailure(this.message, StackTrace st) {
-    _stackTrace = st;
-  }
-
-  @override
-  String toString() => "FlutterUseCaseFailure: $message\n$_stackTrace";
-
-  /// Helper method for handling the catch portion within this module.
-  static void handle(dynamic ex, StackTrace st) {
-    if (ex is FlutterUseCaseFailure) {
-      ex._stackTrace = st;
-      throw ex;
-    } else {
-      throw FlutterUseCaseFailure(ex.toString(), st);
-    }
-  }
-}
 
 /// Identifies the function definition for launching URLs from the
 /// useLinkOpener() use case.
@@ -153,7 +126,10 @@ extension CodeMeltedAPIExtension on melt_dart.CodeMeltedAPI {
   /// to <a target="_blank|_self|_parent|_top|framename">.  See
   /// https://www.w3schools.com/tags/att_a_target.asp for details of the target
   /// attribute meanings.
-  Future<void> useLinkOpener(
+  ///
+  /// Returns true if a native services was found to open the link, false
+  /// otherwise.
+  Future<bool> useLinkOpener(
     LinkOpenerAction action, {
     String? url,
     List<String>? mailto,
@@ -163,6 +139,7 @@ extension CodeMeltedAPIExtension on melt_dart.CodeMeltedAPI {
     String? body,
     String? webOnlyWindowName,
   }) async {
+    FutureOr<bool> success = false;
     try {
       String urlString = url ?? "";
       if (action == LinkOpenerAction.mailto) {
@@ -220,14 +197,15 @@ extension CodeMeltedAPIExtension on melt_dart.CodeMeltedAPI {
 
       // Go attempt to launch the url
       urlString = "${action.protocol}$urlString";
-      if (!await _launchUrlString!(urlString,
-          webOnlyWindowName: webOnlyWindowName)) {
-        throw FlutterUseCaseFailure(
-            "Failed to open $urlString link", StackTrace.current);
-      }
+      success = _launchUrlString!(
+        urlString,
+        webOnlyWindowName: webOnlyWindowName,
+      );
     } catch (ex, st) {
-      FlutterUseCaseFailure.handle(ex.toString(), st);
+      melt_dart.UseCaseFailure.handle(ex.toString(), st);
     }
+
+    return success;
   }
 
   /// Provides the ability to configure key / value pairs accessible by the
@@ -235,7 +213,7 @@ extension CodeMeltedAPIExtension on melt_dart.CodeMeltedAPI {
   ///
   /// This storage will also be initialized with the runtime environment
   /// variables for native applications to query and or update if necessary.
-  Future<dynamic> useStorage(
+  Future<String?> useStorage(
     StorageAction action, [
     String? key,
     String? value,
@@ -250,17 +228,22 @@ extension CodeMeltedAPIExtension on melt_dart.CodeMeltedAPI {
       }
       switch (action) {
         case StorageAction.set:
-          return await _sharedPreferences!.setString(key!, value!);
+          await _sharedPreferences!.setString(key!, value!);
+          break;
         case StorageAction.get:
           return _sharedPreferences!.getString(key!);
         case StorageAction.remove:
-          return await _sharedPreferences!.remove(key!);
+          await _sharedPreferences!.remove(key!);
+          break;
         case StorageAction.clear:
-          return await _sharedPreferences!.clear();
+          await _sharedPreferences!.clear();
+          break;
       }
     } catch (ex, st) {
-      FlutterUseCaseFailure.handle(ex, st);
+      melt_dart.UseCaseFailure.handle(ex, st);
     }
+
+    return null;
   }
 
   /// @nodoc
