@@ -46,9 +46,9 @@ class RuntimeWeb extends Runtime {
       case RuntimeQueryAction.isBrowser:
         return true;
       case RuntimeQueryAction.isDesktop:
-        return osName == "linux" || osName == "macos" || osName == "windows";
+        return !osName.contains("android") && !osName.contains("ios");
       case RuntimeQueryAction.isMobile:
-        return osName == "android" || osName == "ios";
+        return osName.contains("android") || osName.contains("ios");
       case RuntimeQueryAction.numberOfProcessors:
         return html.window.navigator.hardwareConcurrency ?? -1;
       case RuntimeQueryAction.osName:

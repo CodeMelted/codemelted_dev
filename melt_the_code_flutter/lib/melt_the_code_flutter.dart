@@ -32,6 +32,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:melt_the_code_dart/melt_the_code_dart.dart' as melt_dart;
+export 'package:melt_the_code_dart/melt_the_code_dart.dart'
+    show RuntimeQueryAction;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
