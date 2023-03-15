@@ -1,3 +1,7 @@
+## 0.3.2
+
+* Updated melt_the_code_flutter module to work with new design of the melt_the_code_dart module.
+
 ## 0.3.1
 
 * Cleaned up the useStorage() to only return String?

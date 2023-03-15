@@ -36,7 +36,12 @@ Runtime getRuntime() => RuntimeWeb();
 /// Represents the web runtime.
 class RuntimeWeb extends Runtime {
   @override
-  dynamic useRuntimeQuery(RuntimeQueryAction action) {
+  bool isUnitTestPlatform() {
+    return false;
+  }
+
+  @override
+  String useRuntimeQuery(RuntimeQueryAction action) {
     final osName = html.window.navigator.userAgent.toLowerCase();
     switch (action) {
       case RuntimeQueryAction.eol:
@@ -44,17 +49,31 @@ class RuntimeWeb extends Runtime {
       case RuntimeQueryAction.hostname:
         return html.window.location.hostname ?? "";
       case RuntimeQueryAction.isBrowser:
-        return true;
+        return "true";
       case RuntimeQueryAction.isDesktop:
-        return !osName.contains("android") && !osName.contains("ios");
+        return (!osName.contains("android") && !osName.contains("ios"))
+            .toString();
       case RuntimeQueryAction.isMobile:
-        return osName.contains("android") || osName.contains("ios");
+        return (osName.contains("android") || osName.contains("ios"))
+            .toString();
       case RuntimeQueryAction.numberOfProcessors:
-        return html.window.navigator.hardwareConcurrency ?? -1;
+        return (html.window.navigator.hardwareConcurrency ?? -1).toString();
       case RuntimeQueryAction.osName:
-        return osName;
+        if (osName.contains("android")) {
+          return "android";
+        } else if (osName.contains("ios")) {
+          return "ios";
+        } else if (osName.contains("linux")) {
+          return "linux";
+        } else if (osName.contains("mac")) {
+          return "macos";
+        } else if (osName.contains("windows")) {
+          return "windows";
+        } else {
+          return "unknown";
+        }
       case RuntimeQueryAction.osVersion:
-        return "";
+        return "unknown";
       case RuntimeQueryAction.pathSeparator:
         return "/";
     }

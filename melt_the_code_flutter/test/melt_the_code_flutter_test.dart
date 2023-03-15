@@ -109,8 +109,8 @@ class MockSharedPreferences extends Mock implements SharedPreferences {
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   group("Global Module Tests", () {
-    test("meltTheCode().aboutFlutterModule() Validation", () {
-      var v = meltTheCode().aboutFlutterModule();
+    test("aboutFlutterModule() Validation", () {
+      var v = aboutFlutterModule();
       expect(v.contains("TITLE:"), true);
       expect(v.contains("VERSION:"), true);
       expect(
@@ -120,26 +120,25 @@ void main() {
     });
   });
 
-  group("meltTheCode().useLinkOpener() Tests", () {
+  group("useLinkOpener() Tests", () {
     test("[action] specified, [url] not specified", () {
       for (var element in LinkOpenerAction.values) {
-        expectLater(() => meltTheCode().useLinkOpener(element),
-            throwsA(isA<UseCaseFailure>()));
+        expectLater(
+            () => useLinkOpener(element), throwsA(isA<UseCaseFailure>()));
       }
     });
 
     test("[action] specified, [url] is empty string", () {
       for (var element in LinkOpenerAction.values) {
-        expectLater(() => meltTheCode().useLinkOpener(element, url: ""),
+        expectLater(() => useLinkOpener(element, url: ""),
             throwsA(isA<UseCaseFailure>()));
       }
     });
 
     test("[action] specified, url specified, success", () async {
-      meltTheCode().setFlutterModuleMock(
-          launchUrlStringMock: mockLaunchUrlStringSuccess);
+      setFlutterModuleMock(launchUrlStringMock: mockLaunchUrlStringSuccess);
       for (var element in LinkOpenerAction.values) {
-        final success = await meltTheCode().useLinkOpener(
+        final success = await useLinkOpener(
           element,
           url: "a url",
         );
@@ -148,10 +147,9 @@ void main() {
     });
 
     test("[action] specified, url specified, no service", () async {
-      meltTheCode().setFlutterModuleMock(
-          launchUrlStringMock: mockLaunchUrlStringFailure);
+      setFlutterModuleMock(launchUrlStringMock: mockLaunchUrlStringFailure);
       for (var element in LinkOpenerAction.values) {
-        final success = await meltTheCode().useLinkOpener(
+        final success = await useLinkOpener(
           element,
           url: "a url value",
         );
@@ -160,12 +158,12 @@ void main() {
     });
 
     test("mailto Optional Parameter Validation", () async {
-      meltTheCode().setFlutterModuleMock(
+      setFlutterModuleMock(
           launchUrlStringMock: mockLaunchUrlStringUrlValidation);
 
       // First validate mailto throws on empty mailto array
       try {
-        await meltTheCode().useLinkOpener(LinkOpenerAction.mailto, mailto: []);
+        await useLinkOpener(LinkOpenerAction.mailto, mailto: []);
         fail("Should throw an exception because mailto was an empty array");
       } catch (ex) {
         expect(ex, isA<UseCaseFailure>());
@@ -174,29 +172,29 @@ void main() {
       // Now validate the URL is properly formatted with each new optional
       // element added.
       try {
-        await meltTheCode().useLinkOpener(
+        await useLinkOpener(
           LinkOpenerAction.mailto,
           mailto: ["test@google.com", "test2@google.com"],
         );
-        await meltTheCode().useLinkOpener(
+        await useLinkOpener(
           LinkOpenerAction.mailto,
           mailto: ["test@google.com", "test2@google.com"],
           cc: ["test3@google.com"],
         );
-        await meltTheCode().useLinkOpener(
+        await useLinkOpener(
           LinkOpenerAction.mailto,
           mailto: ["test@google.com", "test2@google.com"],
           cc: ["test3@google.com"],
           bcc: ["test4@google.com"],
         );
-        await meltTheCode().useLinkOpener(
+        await useLinkOpener(
           LinkOpenerAction.mailto,
           mailto: ["test@google.com", "test2@google.com"],
           cc: ["test3@google.com"],
           bcc: ["test4@google.com"],
           subject: "subject",
         );
-        await meltTheCode().useLinkOpener(
+        await useLinkOpener(
           LinkOpenerAction.mailto,
           mailto: ["test@google.com", "test2@google.com"],
           cc: ["test3@google.com"],
@@ -208,18 +206,18 @@ void main() {
         fail("should not throw exception");
       }
 
-      meltTheCode().setFlutterModuleMock();
+      setFlutterModuleMock();
     });
   });
 
-  group("meltTheCode().useStorage() Tests", () {
+  group("useStorage() Tests", () {
     test("FlutterUseCaseFailure occurs", () async {
-      meltTheCode().setFlutterModuleMock(
+      setFlutterModuleMock(
         sharedPreferencesMock: MockSharedPreferences(true),
       );
 
       try {
-        await meltTheCode().useStorage(StorageAction.clear);
+        await useStorage(StorageAction.clear);
         fail("Should throw exception");
       } catch (ex) {
         expect(ex, isA<UseCaseFailure>());
@@ -227,24 +225,23 @@ void main() {
     });
 
     test("CRUD operations work, no throw", () async {
-      meltTheCode().setFlutterModuleMock(
+      setFlutterModuleMock(
         sharedPreferencesMock: MockSharedPreferences(false),
       );
 
-      var v = await meltTheCode().useStorage(StorageAction.get, "testKey");
+      var v = await useStorage(StorageAction.get, "testKey");
       expect(v, isNull);
 
-      await meltTheCode()
-          .useStorage(StorageAction.set, "testKey", "test key value");
+      await useStorage(StorageAction.set, "testKey", "test key value");
 
-      v = await meltTheCode().useStorage(StorageAction.get, "testKey");
+      v = await useStorage(StorageAction.get, "testKey");
       expect(v.toString(), "test key value");
 
-      await meltTheCode().useStorage(StorageAction.remove, "testKey");
-      v = await meltTheCode().useStorage(StorageAction.get, "testKey");
+      await useStorage(StorageAction.remove, "testKey");
+      v = await useStorage(StorageAction.get, "testKey");
       expect(v, isNull);
 
-      await meltTheCode().useStorage(StorageAction.clear);
+      await useStorage(StorageAction.clear);
     });
   });
 }

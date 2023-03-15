@@ -24,6 +24,7 @@ DEALINGS IN THE SOFTWARE.
 ===============================================================================
 */
 
+import "package:logging/logging.dart";
 import "package:melt_the_code_dart/melt_the_code_dart.dart";
 import "package:melt_the_code_dart/src/runtime_stub.dart"
     if (dart.library.io) 'package:melt_the_code_dart/src/runtime_io.dart'
@@ -34,13 +35,78 @@ import "package:melt_the_code_dart/src/runtime_stub.dart"
 abstract class Runtime {
   // Member Fields:
   static Runtime? _instance;
+  Logger? _logger = Logger('MeltTheCodeLogger');
+  bool _hasLoggerBeenInitialized = false;
+  LogHandlerCB? _logHandler;
 
   /// Gain access to the runtime instance
   static Runtime get instance {
-    _instance = getRuntime();
+    _instance ??= getRuntime();
     return _instance!;
   }
 
+  /// Accessor to aid in bypassing logic if we are in a unit test
+  /// environment.
+  bool isUnitTestPlatform();
+
+  /// Definition of the use logger use case function.
+  void useLogger(
+    LoggerAction action,
+    Object? data, [
+    Object? error,
+    StackTrace? stackTrace,
+  ]) {
+    // Initialize things for first time access and use.
+    if (!_hasLoggerBeenInitialized) {
+      Logger.root.level = Level.ALL;
+      Logger.root.onRecord.listen((record) {
+        // Go format to log the record
+        var logRecord =
+            "${record.time} [${record.level.name}]: ${record.message}.";
+        logRecord = record.error != null
+            ? "$logRecord\nERROR: ${record.error}"
+            : logRecord;
+        logRecord = record.stackTrace != null
+            ? "$logRecord\nSTACK TRACE:\n${record.stackTrace}"
+            : logRecord;
+        print(logRecord);
+
+        // Pass off that same record to a log handler for further processing.
+        if (_logHandler != null) {
+          _logHandler!(record);
+        }
+      });
+      _hasLoggerBeenInitialized = true;
+    }
+
+    // Go carry out the action
+    switch (action) {
+      case LoggerAction.setLogLevel:
+        Logger.root.level = (data as LogLevel).level;
+        break;
+      case LoggerAction.setLogHandler:
+        _logHandler = data as LogHandlerCB?;
+        break;
+      case LoggerAction.logInfo:
+        _logger!.info(data, error, stackTrace);
+        break;
+      case LoggerAction.logWarning:
+        _logger!.warning(data, error, stackTrace);
+        break;
+      case LoggerAction.logError:
+        _logger!.severe(data, error, stackTrace);
+        break;
+      case LoggerAction.logDebug:
+        _logger!.fine(data, error, stackTrace);
+        break;
+    }
+  }
+
   /// Definition of the use query runtime use case function.
-  dynamic useRuntimeQuery(RuntimeQueryAction action);
+  String useRuntimeQuery(RuntimeQueryAction action);
+
+  /// Support mocking for testing of the Runtime.
+  void setMock({Logger? loggerMock}) {
+    _logger = loggerMock;
+  }
 }

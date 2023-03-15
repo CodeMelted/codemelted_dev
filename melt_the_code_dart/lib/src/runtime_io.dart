@@ -35,7 +35,12 @@ Runtime getRuntime() => RuntimeIO();
 /// Represents the mobile or desktop/server runtime.
 class RuntimeIO extends Runtime {
   @override
-  dynamic useRuntimeQuery(RuntimeQueryAction action) {
+  bool isUnitTestPlatform() {
+    return Platform.environment.containsKey('FLUTTER_TEST');
+  }
+
+  @override
+  String useRuntimeQuery(RuntimeQueryAction action) {
     final osName = Platform.operatingSystem;
     switch (action) {
       case RuntimeQueryAction.eol:
@@ -43,13 +48,14 @@ class RuntimeIO extends Runtime {
       case RuntimeQueryAction.hostname:
         return Platform.localHostname;
       case RuntimeQueryAction.isBrowser:
-        return false;
+        return "false";
       case RuntimeQueryAction.isDesktop:
-        return osName == "linux" || osName == "macos" || osName == "windows";
+        return (osName == "linux" || osName == "macos" || osName == "windows")
+            .toString();
       case RuntimeQueryAction.isMobile:
-        return osName == "android" || osName == "ios";
+        return (osName == "android" || osName == "ios").toString();
       case RuntimeQueryAction.numberOfProcessors:
-        return Platform.numberOfProcessors;
+        return Platform.numberOfProcessors.toString();
       case RuntimeQueryAction.osName:
         return osName;
       case RuntimeQueryAction.osVersion:

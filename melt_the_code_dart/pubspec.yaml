@@ -1,6 +1,6 @@
 name: melt_the_code_dart
 description: A starting point for Dart libraries or applications.
-version: 0.2.1
+version: 0.4.0
 # repository: https://github.com/my_org/my_repo
 
 environment:
@@ -12,3 +12,4 @@ dependencies:
 dev_dependencies:
   lints: ^2.0.0
   test: ^1.21.0
+  mockito: ^5.3.2
